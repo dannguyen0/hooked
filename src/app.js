@@ -265,21 +265,72 @@ function renderHead() {
 }
 
 function renderInstrument() {
-  const sp = active, svg = $('tideSvg'), Wd = 960, Ht = 230, padB = 34, padT = 20;
+  const sp = active, svg = $('tideSvg');
+  const Wd = 960, Ht = 290, padT = 20, padB = 20;
+  const tideH = 170;           // tide curve lives in padT…padT+tideH
+  const stripY = padT + tideH + 10;  // activity strip top
+  const stripH = 20;           // activity strip height
+  svg.setAttribute('viewBox', `0 0 ${Wd} ${Ht}`);
+
   let g = '';
-  for (let i = 0; i <= 4; i++) { const y = padT + (Ht - padT - padB) * i / 4; g += `<line x1="0" y1="${y}" x2="${Wd}" y2="${y}" stroke="rgba(255,255,255,.05)"/>`; }
+
+  // subtle light grid lines
+  for (let i = 0; i <= 3; i++) {
+    const y = padT + tideH * i / 3;
+    g += `<line x1="0" y1="${y}" x2="${Wd}" y2="${y}" stroke="rgba(0,0,0,.05)" stroke-width="1"/>`;
+  }
+
   const sd = spotData[sp.id];
   const ex = sd?.ctx?.extrema;
-  // bite window shading
-  for (let m = 0; m < 1440; m += 15) {
+
+  // ── Activity strip (always drawn) ───────────────────────────────────────
+  g += `<text x="0" y="${stripY - 3}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9" font-weight="700" letter-spacing="1">FISH ACTIVITY</text>`;
+  // rounded clip rect for strip
+  g += `<clipPath id="stripClip"><rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="4"/></clipPath>`;
+  // background track
+  g += `<rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="4" fill="rgba(0,0,0,.06)"/>`;
+  // colored activity segments every 5 min
+  for (let m = 0; m < 1440; m += 5) {
     const s = scoreAt(sp, m).s;
-    if (s >= 55) { const x = Wd * m / 1440, w = Wd * 15 / 1440; const col = s >= 75 ? 'rgba(116,224,160,.16)' : 'rgba(255,176,58,.13)'; g += `<rect x="${x}" y="${padT}" width="${w + 1}" height="${Ht - padT - padB}" fill="${col}"/>`; }
+    const col = s >= 75 ? '#10B981' : s >= 55 ? '#F97316' : s >= 35 ? '#0EA5E9' : null;
+    if (!col) continue;
+    const opacity = s >= 75 ? 0.9 : s >= 55 ? 0.75 : 0.5;
+    const x = Wd * m / 1440, w = Wd * 5 / 1440;
+    g += `<rect x="${x}" y="${stripY}" width="${w + 0.5}" height="${stripH}" fill="${col}" opacity="${opacity}" clip-path="url(#stripClip)"/>`;
   }
+
+  // strip legend
+  const legX = Wd - 180, legY = stripY + stripH + 13;
+  [['#10B981','Prime'],['#F97316','Good'],['#0EA5E9','Fair']].forEach(([c, lbl], i) => {
+    g += `<rect x="${legX + i * 58}" y="${legY - 8}" width="8" height="8" rx="2" fill="${c}" opacity=".85"/>`;
+    g += `<text x="${legX + i * 58 + 11}" y="${legY}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9" font-weight="600">${lbl}</text>`;
+  });
+
+  // ── Solunar period markers ───────────────────────────────────────────────
+  if (sd?.ctx?.events) {
+    const { major, minor } = sd.ctx.events;
+    major.forEach(t => {
+      if (!t) return;
+      const m = (+t - +dayStart) / MIN;
+      if (m < 0 || m > 1440) return;
+      const x = Wd * m / 1440;
+      g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY - 2}" stroke="rgba(139,92,246,.25)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+      g += `<rect x="${x - 12}" y="${stripY}" width="24" height="${stripH}" fill="rgba(139,92,246,.18)" clip-path="url(#stripClip)"/>`;
+    });
+    minor.forEach(t => {
+      if (!t) return;
+      const m = (+t - +dayStart) / MIN;
+      if (m < 0 || m > 1440) return;
+      const x = Wd * m / 1440;
+      g += `<line x1="${x}" y1="${padT + 30}" x2="${x}" y2="${stripY - 2}" stroke="rgba(139,92,246,.14)" stroke-width="1" stroke-dasharray="2 4"/>`;
+    });
+  }
+
+  // ── Tide curve ───────────────────────────────────────────────────────────
   if (ex && ex.length) {
-    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .6, hi = Math.max(...vs) + .6;
+    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .5, hi = Math.max(...vs) + .5;
     const X = m => Wd * m / 1440;
-    const Y = v => padT + (Ht - padT - padB) * (1 - (v - lo) / (hi - lo));
-    // tide curve via cosine interpolation
+    const Y = v => padT + tideH * (1 - (v - lo) / (hi - lo));
     const tideHeight = ms => {
       let i = 0;
       while (i < ex.length - 1 && +ex[i + 1].t <= ms) i++;
@@ -290,40 +341,49 @@ function renderInstrument() {
     };
     let d = '';
     for (let m = 0; m <= 1440; m += 6) { const v = tideHeight(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ' ' + Y(v).toFixed(1) + ' '; }
-    g += `<path d="${d} L ${Wd} ${Ht - padB} L 0 ${Ht - padB} Z" fill="rgba(14,165,233,.10)"/><path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2"/>`;
+    const baseY = padT + tideH;
+    g += `<path d="${d} L ${Wd} ${baseY} L 0 ${baseY} Z" fill="rgba(14,165,233,.08)"/>`;
+    g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5"/>`;
     ex.forEach(e => {
       const m = (+e.t - +dayStart) / MIN;
-      g += `<circle cx="${X(m)}" cy="${Y(e.height)}" r="3" fill="#0EA5E9"/><text x="${X(m)}" y="${Y(e.height) - 9}" fill="#6B7280" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">${e.type} ${e.height.toFixed(1)}</text>`;
+      const cx = X(m), cy = Y(e.height);
+      g += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="#fff" stroke="#0EA5E9" stroke-width="2"/>`;
+      const labelY = e.type === 'H' ? cy - 11 : cy + 18;
+      g += `<text x="${cx}" y="${labelY}" fill="#4B5563" font-family="Space Grotesk" font-size="11" font-weight="700" text-anchor="middle">${e.type === 'H' ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
     });
     const xn = X(nowMin), vn = tideHeight(+dayStart + nowMin * MIN);
-    g += `<line x1="${xn}" y1="${padT - 4}" x2="${xn}" y2="${Ht - padB}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '4 3' : '0'}"/><circle cx="${xn}" cy="${Y(vn)}" r="5" fill="${isPreview ? '#0EA5E9' : '#F97316'}" stroke="#fff" stroke-width="1.5"/>`;
+    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.5" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".7"/>`;
+    g += `<circle cx="${xn}" cy="${Y(vn)}" r="5.5" fill="${isPreview ? '#0EA5E9' : '#F97316'}" stroke="#fff" stroke-width="2"/>`;
   } else {
-    const yMid = padT + (Ht - padT - padB) / 2;
+    const yMid = padT + tideH / 2;
     const isFresh = active.water === 'fresh';
-    const msg = sd?.loading
-      ? 'Fetching live tide data…'
-      : isFresh ? 'Freshwater spot — solunar + light scoring'
+    const msg = sd?.loading ? 'Fetching live tide data…'
+      : isFresh ? 'Freshwater — solunar + light scoring'
       : 'Add a NOAA Station ID to enable tide data';
-    g += `<line x1="0" y1="${yMid}" x2="${Wd}" y2="${yMid}" stroke="rgba(0,0,0,.08)" stroke-dasharray="5 5"/>`;
-    g += `<text x="${Wd / 2}" y="${yMid - 12}" fill="#9CA3AF" font-family="Space Grotesk" font-size="13" font-weight="600" text-anchor="middle">${msg}</text>`;
+    g += `<line x1="0" y1="${yMid}" x2="${Wd}" y2="${yMid}" stroke="rgba(0,0,0,.07)" stroke-dasharray="5 5"/>`;
+    g += `<text x="${Wd / 2}" y="${yMid - 10}" fill="#9CA3AF" font-family="Space Grotesk" font-size="13" font-weight="600" text-anchor="middle">${msg}</text>`;
     if (!isFresh && !sd?.loading) {
-      g += `<text x="${Wd / 2}" y="${yMid + 12}" fill="#F97316" font-family="Space Grotesk" font-size="11" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → re-add spot</text>`;
+      g += `<text x="${Wd / 2}" y="${yMid + 14}" fill="#F97316" font-family="Space Grotesk" font-size="11" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → edit spot</text>`;
     }
     const xn = Wd * nowMin / 1440;
-    g += `<line x1="${xn}" y1="${padT - 4}" x2="${xn}" y2="${Ht - padB}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '4 3' : '0'}"/>`;
+    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.5" opacity=".7"/>`;
   }
-  // sun markers
+
+  // ── Sun/moon rise-set markers ────────────────────────────────────────────
   if (sd?.ctx?.times) {
-    const sunTimes = sd.ctx.times;
-    [[sunTimes.sunrise, '↑'], [sunTimes.sunset, '↓']].forEach(([t, s]) => {
+    [[sd.ctx.times.sunrise, '☀ Rise'], [sd.ctx.times.sunset, '☀ Set']].forEach(([t, lbl]) => {
       if (!t) return;
       const m = (+t - +dayStart) / MIN;
-      g += `<text x="${Wd * m / 1440}" y="${Ht - padB + 16}" fill="#9CA3AF" font-family="Space Grotesk" font-size="11" font-weight="600" text-anchor="middle">${s}</text>`;
+      if (m < 0 || m > 1440) return;
+      const x = Wd * m / 1440;
+      g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY - 2}" stroke="rgba(251,191,36,.4)" stroke-width="1" stroke-dasharray="3 4"/>`;
+      g += `<text x="${x}" y="${stripY + stripH + 13}" fill="#D97706" font-family="Space Grotesk" font-size="9" font-weight="600" text-anchor="middle">${lbl}</text>`;
     });
   }
+
   svg.innerHTML = g;
   $('xaxis').innerHTML = ['12a', '4a', '8a', '12p', '4p', '8p', '12a'].map(t => `<span>${t}</span>`).join('');
-  $('nowLabel').textContent = (isPreview ? 'PREVIEW ' : 'NOW ') + fmt(nowMin);
+  $('nowLabel').textContent = (isPreview ? 'Preview · ' : 'Now · ') + fmt(nowMin);
   $('nowLabel').className = 'now-t' + (isPreview ? ' preview' : '');
   $('resetNow').hidden = !isPreview;
 }
@@ -346,9 +406,24 @@ function renderReadout() {
 
 function renderWindows() {
   const ws = winAt(active);
-  $('winList').innerHTML = ws.length
-    ? ws.map(w => { const b = band(w.pk); return `<li><span class="rng">${fmt(w.s)} – ${fmt(w.e)}</span><span class="dr">${active.water === 'fresh' ? 'feed' : w.dir}</span><span class="pk" data-band="${b}">${w.pk}</span></li>`; }).join('')
-    : `<div class="win-empty">No window clears the bite threshold today.<br>Slow grind — fish the best of what's there.</div>`;
+  if (!ws.length) {
+    $('winList').innerHTML = `<div class="win-empty">No window clears the bite threshold today.<br>Slow grind — fish the best of what's there.</div>`;
+    return;
+  }
+  const durStr = (s, e) => {
+    const mins = ((e % 1440) - (s % 1440) + 1440) % 1440;
+    return mins >= 60 ? `${Math.floor(mins/60)}h ${mins%60 ? (mins%60)+'m' : ''}`.trim() : `${mins}m`;
+  };
+  $('winList').innerHTML = ws.map(w => {
+    const b = band(w.pk);
+    const tide = active.water === 'fresh' ? 'solunar peak' : (w.dir === 'incoming' ? '↑ incoming' : w.dir === 'outgoing' ? '↓ outgoing' : 'slack');
+    const dur = durStr(w.s, w.e);
+    return `<li data-band="${b}">
+      <span class="rng">${fmt(w.s)} – ${fmt(w.e)}<small>${dur} · ${tide}</small></span>
+      <span></span>
+      <span class="pk" data-band="${b}">${w.pk}</span>
+    </li>`;
+  }).join('');
 }
 
 function renderFish() {

@@ -179,11 +179,11 @@ body::before {
   padding: 14px 20px; border-bottom: 1px solid var(--line);
 }
 .inst-top .lab { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
-.inst-top .now-t { font-family: var(--mono); font-size: 11px; color: var(--amber); font-weight: 700; }
+.inst-top .now-t { font-family: var(--disp); font-size: 12px; color: var(--amber); font-weight: 700; letter-spacing: .02em; }
 .inst-top .now-t.preview { color: var(--cyan); }
 .reset { font-size: 11px; font-weight: 500; color: var(--mute); margin-left: 12px; text-decoration: underline; text-decoration-style: dashed; }
-svg.tide { display: block; width: 100%; height: clamp(200px,26vh,300px); touch-action: none; }
-.inst-x { display: flex; justify-content: space-between; padding: 0 20px 12px; font-family: var(--mono); font-size: 10px; color: var(--mute); }
+svg.tide { display: block; width: 100%; height: clamp(220px,30vh,340px); touch-action: none; }
+.inst-x { display: flex; justify-content: space-between; padding: 2px 20px 14px; font-family: var(--disp); font-size: 10px; font-weight: 600; color: var(--mute); letter-spacing: .04em; }
 
 /* ── SCORE + WINDOWS ──────────────────────────────────────────────────── */
 .grid2 { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; margin-bottom: 48px; }
@@ -216,21 +216,26 @@ svg.tide { display: block; width: 100%; height: clamp(200px,26vh,300px); touch-a
 .bar[data-c="light"]   .fill { background: #8B5CF6; }
 
 /* ── BEST WINDOWS ─────────────────────────────────────────────────────── */
-.win { list-style: none; display: flex; flex-direction: column; }
+.win { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .win li {
-  display: grid; grid-template-columns: auto 1fr auto; gap: 12px;
-  align-items: center; padding: 13px 2px; border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: auto 1fr auto; gap: 10px;
+  align-items: center; padding: 12px 14px; border-radius: var(--r-sm);
+  background: var(--surface); border: 1px solid var(--line);
 }
-.win li:last-child { border-bottom: none; }
-.win .rng { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 700; }
-.win .dr { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.win li[data-band="prime"] { border-color: rgba(16,185,129,.3); background: rgba(16,185,129,.05); }
+.win li[data-band="good"]  { border-color: rgba(249,115,22,.3);  background: rgba(249,115,22,.05); }
+.win .rng { font-family: var(--disp); font-size: 14px; color: var(--ink); font-weight: 700; }
+.win .rng small { display: block; font-size: 11px; font-weight: 500; color: var(--mute); margin-top: 2px; text-transform: capitalize; }
 .win .pk {
-  font-family: var(--mono); font-weight: 700; font-size: 13px;
-  padding: 4px 10px; border-radius: 100px; border: 1.5px solid var(--line-2);
+  font-family: var(--disp); font-weight: 800; font-size: 18px;
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--line-2); color: var(--ink-dim);
 }
 .win .pk[data-band="prime"] { color: var(--green); border-color: rgba(16,185,129,.4);  background: var(--green-soft); }
 .win .pk[data-band="good"]  { color: var(--amber); border-color: rgba(249,115,22,.4);  background: var(--amber-soft); }
-.win-empty { font-size: 12px; font-weight: 500; color: var(--mute); padding: 8px 2px; line-height: 1.7; }
+.win .pk[data-band="fair"]  { color: var(--cyan);  border-color: rgba(14,165,233,.3);  background: var(--cyan-soft); }
+.win-empty { font-size: 13px; font-weight: 500; color: var(--mute); padding: 8px 2px; line-height: 1.7; }
 
 /* ── SPECIES GRID ─────────────────────────────────────────────────────── */
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 0 20px; }
