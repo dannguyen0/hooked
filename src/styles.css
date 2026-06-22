@@ -319,13 +319,17 @@ svg.tide { display: block; width: 100%; height: clamp(200px,26vh,300px); touch-a
 /* ── SPOT RAIL — CUSTOM DELETE ────────────────────────────────────────── */
 .spot-li { position: relative; display: flex; align-items: stretch; }
 .spot-li .spot { flex: 1; }
-.spot-del {
-  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-  font-size: 15px; color: var(--mute); padding: 4px 6px; border-radius: 6px;
+.spot-edit, .spot-del {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-size: 14px; color: var(--mute); padding: 4px 6px; border-radius: 6px;
   opacity: 0; transition: opacity .15s, color .15s, background .15s;
 }
+.spot-edit { right: 30px; }
+.spot-del  { right: 8px; }
+.spot-li:hover .spot-edit,
 .spot-li:hover .spot-del { opacity: 1; }
-.spot-del:hover { color: var(--red); background: rgba(239,68,68,.08); }
+.spot-edit:hover { color: var(--cyan); background: var(--cyan-soft); }
+.spot-del:hover  { color: var(--red); background: rgba(239,68,68,.08); }
 
 /* ── MODAL ────────────────────────────────────────────────────────────── */
 .modal-overlay {

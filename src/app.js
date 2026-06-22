@@ -1,4 +1,4 @@
-import { fetchTideExtrema, makeContext, computeBiteScore, bestWindows } from './fishing-core.js';
+import { fetchTideExtrema, makeContext, computeBiteScore, bestWindows } from './fishing-core.js?v=3';
 
 // ── Time constants ────────────────────────────────────────────────────────
 const MIN = 60000;
@@ -209,7 +209,7 @@ function renderRail() {
         <span class="nm">${sp.name}</span>
         <span class="chip" data-band="${b}">${bs}</span>
         <span class="meta">${sub}${best ? ` · peak ${fmt(best.pkm)}` : ''}</span>
-      </button>${isCustom ? `<button class="spot-del" data-del="${sp.id}" title="Delete spot">×</button>` : ''}
+      </button>${isCustom ? `<button class="spot-edit" data-edit="${sp.id}" title="Edit spot">✎</button><button class="spot-del" data-del="${sp.id}" title="Delete spot">×</button>` : ''}
     </li>`;
   }).join('');
   $('spotList').querySelectorAll('.spot').forEach(btn => btn.onclick = () => {
@@ -219,6 +219,11 @@ function renderRail() {
     renderAll();
     loadLiveData(sp);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  $('spotList').querySelectorAll('.spot-edit').forEach(btn => btn.onclick = e => {
+    e.stopPropagation();
+    const sp = SPOTS.find(s => s.id === btn.dataset.edit);
+    if (sp) openModalForEdit(sp);
   });
   $('spotList').querySelectorAll('.spot-del').forEach(btn => btn.onclick = e => {
     e.stopPropagation();
@@ -470,10 +475,42 @@ function closeModal() {
   document.body.style.overflow = '';
   addSpotForm.reset();
   speciesRowsEl.innerHTML = '';
+  editingSpotId = null;
+  $('modalTitle').textContent = 'Add Spot';
   if (leafletPin && leafletMap) { leafletMap.removeLayer(leafletPin); leafletPin = null; }
 }
 
-addSpotBtn.onclick = e => { e.preventDefault(); openModal(); };
+let editingSpotId = null;
+
+function openModalForEdit(sp) {
+  editingSpotId = sp.id;
+  $('modalTitle').textContent = 'Edit Spot';
+  $('f-name').value = sp.name;
+  $('f-station').value = sp.station || '';
+  $('f-lat').value = sp.lat;
+  $('f-lon').value = sp.lon;
+  $('f-tags').value = (sp.tags || []).join(', ');
+  addSpotForm.querySelector(`input[name="water"][value="${sp.water}"]`).checked = true;
+  speciesRowsEl.innerHTML = '';
+  (sp.fish || []).forEach((f, idx) => {
+    addSpeciesRowBtn.click();
+    const row = speciesRowsEl.children[idx];
+    row.querySelector(`[name="slug_${idx}"]`).value = f.slug;
+    row.querySelector(`[name="tide_${idx}"]`).value = f.tide || 'any';
+    row.querySelector(`[name="light_${idx}"]`).value = f.light || 'dawn';
+    row.querySelector(`[name="note_${idx}"]`).value = f.note || '';
+  });
+  openModal();
+  // place existing pin on map after map init
+  setTimeout(() => { if (sp.lat && sp.lon) placePin(sp.lat, sp.lon); updateNearestStationHint(); }, 120);
+}
+
+addSpotBtn.onclick = e => {
+  e.preventDefault();
+  editingSpotId = null;
+  $('modalTitle').textContent = 'Add Spot';
+  openModal();
+};
 closeModalBtn.onclick = closeModal;
 cancelModalBtn.onclick = closeModal;
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
@@ -524,10 +561,30 @@ addSpotForm.onsubmit = e => {
       note: row.querySelector(`[name="note_${idx}"]`)?.value?.trim() || '',
     });
   });
-  const id = 'custom_' + name.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now().toString(36);
-  const spot = { id, _custom: true, name, lat, lon, station: station || null, water, tags, extrema: null, cond: {}, fish };
-  closeModal();
-  addCustomSpot(spot);
+  if (editingSpotId) {
+    // Update existing custom spot in-place
+    const idx = SPOTS.findIndex(s => s.id === editingSpotId);
+    if (idx !== -1) {
+      const existing = SPOTS[idx];
+      SPOTS[idx] = { ...existing, name, lat, lon, station: station || null, water, tags, fish };
+      // Clear cached live data so it refetches with the new station
+      delete spotData[editingSpotId];
+      localStorage.removeItem(`hooked_v1_${editingSpotId}_${TODAY_ISO}`);
+      // Persist updated custom spots
+      const customs = SPOTS.filter(s => s._custom);
+      localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs));
+      if (active?.id === editingSpotId) active = SPOTS[idx];
+      closeModal();
+      initSampleCtx(SPOTS[idx]);
+      renderAll();
+      loadLiveData(SPOTS[idx]);
+    }
+  } else {
+    const id = 'custom_' + name.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + Date.now().toString(36);
+    const spot = { id, _custom: true, name, lat, lon, station: station || null, water, tags, extrema: null, cond: {}, fish };
+    closeModal();
+    addCustomSpot(spot);
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 

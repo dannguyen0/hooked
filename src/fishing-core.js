@@ -1,14 +1,35 @@
-// fishing-core.js
-// Pure-ish fishing logic for a personal, zero-cost fishing app.
-// One runtime dependency: suncalc (MIT). No API keys anywhere.
-//
-// Two layers:
-//   1) computeBiteScore() / bestWindows()  -> pure functions, fully testable offline.
-//   2) fetchTideExtrema() / fetchMarine()  -> free public data (NOAA + Open-Meteo), browser-safe (CORS ok).
-//
-// Times are JS Date objects. NOAA strings are local-station time; we parse them as local.
-
-import SunCalc from './suncalc.js';
+// fishing-core.js — SunCalc inlined to avoid ES module cache issues
+// SunCalc (c) 2014, Vladimir Agafonkin  https://github.com/mourner/suncalc  MIT License
+const SunCalc = (() => {
+  'use strict';
+  const PI=Math.PI,sin=Math.sin,cos=Math.cos,tan=Math.tan,asin=Math.asin,atan=Math.atan2,acos=Math.acos,rad=PI/180;
+  const dayMs=864e5,J1970=2440588,J2000=2451545;
+  const toJulian=d=>d.valueOf()/dayMs-0.5+J1970,fromJulian=j=>new Date((j+0.5-J1970)*dayMs),toDays=d=>toJulian(d)-J2000;
+  const e=rad*23.4397;
+  const rightAscension=(l,b)=>atan(sin(l)*cos(e)-tan(b)*sin(e),cos(l));
+  const declination=(l,b)=>asin(sin(b)*cos(e)+cos(b)*sin(e)*sin(l));
+  const azimuth=(H,phi,dec)=>atan(sin(H),cos(H)*sin(phi)-tan(dec)*cos(phi));
+  const altitude=(H,phi,dec)=>asin(sin(phi)*sin(dec)+cos(phi)*cos(dec)*cos(H));
+  const siderealTime=(d,lw)=>rad*(280.16+360.9856235*d)-lw;
+  const astroRefraction=h=>{if(h<0)h=0;return 0.0002967/Math.tan(h+0.00312536/(h+0.08901179));};
+  const solarMeanAnomaly=d=>rad*(357.5291+0.98560028*d);
+  const eclipticLongitude=M=>{const C=rad*(1.9148*sin(M)+0.02*sin(2*M)+0.0003*sin(3*M)),P=rad*102.9372;return M+C+P+PI;};
+  const sunCoords=d=>{const M=solarMeanAnomaly(d),L=eclipticLongitude(M);return{dec:declination(L,0),ra:rightAscension(L,0)};};
+  const SC={};
+  SC.getPosition=(date,lat,lng)=>{const lw=rad*-lng,phi=rad*lat,d=toDays(date),c=sunCoords(d),H=siderealTime(d,lw)-c.ra;return{azimuth:azimuth(H,phi,c.dec),altitude:altitude(H,phi,c.dec)};};
+  const times=SC.times=[[-0.833,'sunrise','sunset'],[-0.3,'sunriseEnd','sunsetStart'],[-6,'dawn','dusk'],[-12,'nauticalDawn','nauticalDusk'],[-18,'nightEnd','night'],[6,'goldenHourEnd','goldenHour']];
+  SC.addTime=(a,r,s)=>times.push([a,r,s]);
+  const J0=0.0009,julianCycle=(d,lw)=>Math.round(d-J0-lw/(2*PI)),approxTransit=(Ht,lw,n)=>J0+(Ht+lw)/(2*PI)+n;
+  const solarTransitJ=(ds,M,L)=>J2000+ds+0.0053*sin(M)-0.0069*sin(2*L),hourAngle=(h,phi,d)=>acos((sin(h)-sin(phi)*sin(d))/(cos(phi)*cos(d)));
+  const observerAngle=h=>-2.076*Math.sqrt(h)/60,getSetJ=(h,lw,phi,dec,n,M,L)=>solarTransitJ(approxTransit(hourAngle(h,phi,dec),lw,n),M,L);
+  SC.getTimes=(date,lat,lng,height=0)=>{const lw=rad*-lng,phi=rad*lat,dh=observerAngle(height),d=toDays(date),n=julianCycle(d,lw),ds=approxTransit(0,lw,n),M=solarMeanAnomaly(ds),L=eclipticLongitude(M),dec=declination(L,0),Jnoon=solarTransitJ(ds,M,L),r={solarNoon:fromJulian(Jnoon),nadir:fromJulian(Jnoon-0.5)};times.forEach(t=>{const h0=(t[0]+dh)*rad,Js=getSetJ(h0,lw,phi,dec,n,M,L);r[t[1]]=fromJulian(Jnoon-(Js-Jnoon));r[t[2]]=fromJulian(Js);});return r;};
+  const moonCoords=d=>{const L=rad*(218.316+13.176396*d),M=rad*(134.963+13.064993*d),F=rad*(93.272+13.229350*d),l=L+rad*6.289*sin(M),b=rad*5.128*sin(F),dt=385001-20905*cos(M);return{ra:rightAscension(l,b),dec:declination(l,b),dist:dt};};
+  SC.getMoonPosition=(date,lat,lng)=>{const lw=rad*-lng,phi=rad*lat,d=toDays(date),c=moonCoords(d),H=siderealTime(d,lw)-c.ra;let h=altitude(H,phi,c.dec);h+=astroRefraction(h);return{azimuth:azimuth(H,phi,c.dec),altitude:h,distance:c.dist,parallacticAngle:atan(sin(H),tan(phi)*cos(c.dec)-sin(c.dec)*cos(H))};};
+  SC.getMoonIllumination=date=>{const d=toDays(date||new Date()),s=sunCoords(d),m=moonCoords(d),sdist=149598000,phi=acos(sin(s.dec)*sin(m.dec)+cos(s.dec)*cos(m.dec)*cos(s.ra-m.ra)),inc=atan(sdist*sin(phi),m.dist-sdist*cos(phi)),angle=atan(cos(s.dec)*sin(s.ra-m.ra),sin(s.dec)*cos(m.dec)-cos(s.dec)*sin(m.dec)*cos(s.ra-m.ra));return{fraction:(1+cos(inc))/2,phase:0.5+0.5*inc*(angle<0?-1:1)/PI,angle};};
+  const hoursLater=(d,h)=>new Date(d.valueOf()+h*dayMs/24);
+  SC.getMoonTimes=(date,lat,lng,inUTC)=>{const t=new Date(date);inUTC?t.setUTCHours(0,0,0,0):t.setHours(0,0,0,0);const hc=0.133*rad;let h0=SC.getMoonPosition(t,lat,lng).altitude-hc,h1,h2,rise,set,ye;for(let i=1;i<=24;i+=2){h1=SC.getMoonPosition(hoursLater(t,i),lat,lng).altitude-hc;h2=SC.getMoonPosition(hoursLater(t,i+1),lat,lng).altitude-hc;const a=(h0+h2)/2-h1,b=(h2-h0)/2,xe=-b/(2*a);ye=(a*xe+b)*xe+h1;const d2=b*b-4*a*h1;let roots=0,x1,x2;if(d2>=0){const dx=Math.sqrt(d2)/(Math.abs(a)*2);x1=xe-dx;x2=xe+dx;if(Math.abs(x1)<=1)roots++;if(Math.abs(x2)<=1)roots++;if(x1<-1)x1=x2;}if(roots===1){if(h0<0)rise=i+x1;else set=i+x1;}else if(roots===2){rise=i+(ye<0?x2:x1);set=i+(ye<0?x1:x2);}if(rise&&set)break;h0=h2;}const r={};if(rise)r.rise=hoursLater(t,rise);if(set)r.set=hoursLater(t,set);if(!rise&&!set)r[ye>0?'alwaysUp':'alwaysDown']=true;return r;};
+  return SC;
+})();
 
 // ---------------------------------------------------------------------------
 // Weights — tune these to your spots. tide/solunar/light sum to 1; weather is a
