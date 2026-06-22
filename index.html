@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hooked — personal fishing instrument</title>
+<meta name="description" content="Personal fishing instrument: tides, best-time bite windows, and tackle for your local spots." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="src/leaflet.css" />
+<link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+<div class="shell">
+  <aside class="rail">
+    <div class="brand"><h1><span class="dot"></span>HOOKED</h1><p>PERSONAL FISHING INSTRUMENT</p></div>
+    <div class="rail-head"><span class="eyebrow">Spots</span><a href="#" id="addSpotBtn">+ add spot</a></div>
+    <ul class="spots" id="spotList"></ul>
+    <div class="rail-foot">HOME LAT 33.68 · LON −117.82<br>DATUM MLLW · TZ PT<br>LIVE NOAA + OPEN-METEO · 24H CACHE</div>
+  </aside>
+  <main class="main">
+    <div class="topbar"><div class="loc-chip">HOME&nbsp;·&nbsp;<b>Irvine, CA</b></div><div class="date" id="dateLabel">—</div></div>
+    <div class="sp-head"><h2 id="spName">—</h2><div class="coords" id="spCoords"></div></div>
+    <div class="tags" id="spTags"></div>
+    <div class="cond" id="cond"></div>
+    <div class="inst">
+      <div class="inst-top">
+        <span class="lab">Tide · Bite Window</span>
+        <span>
+          <span class="now-t" id="nowLabel">NOW —</span>
+          <button class="reset" id="resetNow" hidden>reset to now</button>
+          <span class="loading-tag" id="loadingIndicator" hidden>· fetching live data…</span>
+        </span>
+      </div>
+      <svg class="tide" id="tideSvg" viewBox="0 0 960 230" preserveAspectRatio="none" aria-label="Tide curve with bite windows; drag to preview a time"></svg>
+      <div class="inst-x" id="xaxis"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><span class="eyebrow">Bite score · <span id="roTime">now</span></span>
+        <div class="readout"><div class="score" id="scoreNum">—</div>
+          <div class="verdict"><div class="lab" id="scoreLab">—</div><div class="dir" id="scoreDir"></div></div></div>
+        <div class="bars">
+          <div class="bar" data-c="tide"><span class="bk">Tide</span><div class="track"><div class="fill" id="bTide"></div></div><span class="bv" id="vTide">0</span></div>
+          <div class="bar" data-c="solunar"><span class="bk">Solunar</span><div class="track"><div class="fill" id="bSol"></div></div><span class="bv" id="vSol">0</span></div>
+          <div class="bar" data-c="light"><span class="bk">Light</span><div class="track"><div class="fill" id="bLight"></div></div><span class="bv" id="vLight">0</span></div>
+        </div></div>
+      <div class="panel"><span class="eyebrow">Best windows today</span><ul class="win" id="winList"></ul></div>
+    </div>
+    <div class="sec-head"><h3>What's biting</h3><span class="ct" id="fishCount"></span></div>
+    <div class="fish" id="fishGrid"></div>
+    <div class="foot">
+      <b>SOURCES</b> — Tides: NOAA CO-OPS · Wind/pressure/swell: Open-Meteo · Sun/moon: SunCalc · Map: OpenStreetMap · Species &amp; tackle: curated from SoCal sources · Plates: generated locally<br>
+      <b>REGS</b> — Size/bag limits shown are from CDFW Sport Fishing Regulations. Always verify current regulations at wildlife.ca.gov before fishing.
+    </div>
+  </main>
+</div>
+
+<!-- Add Spot Modal -->
+<div class="modal-overlay" id="addSpotModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <span class="eyebrow" id="modalTitle">Add Spot</span>
+      <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+    </div>
+    <form class="modal-form" id="addSpotForm" autocomplete="off">
+      <div class="form-row">
+        <label class="form-label" for="f-name">SPOT NAME</label>
+        <input class="form-input" id="f-name" name="name" type="text" required placeholder="e.g. Balboa Pier">
+      </div>
+      <div class="form-2col">
+        <div class="form-row">
+          <label class="form-label">WATER TYPE</label>
+          <div class="form-radios">
+            <label class="form-radio"><input type="radio" name="water" value="salt" checked> Salt</label>
+            <label class="form-radio"><input type="radio" name="water" value="fresh"> Fresh</label>
+          </div>
+        </div>
+        <div class="form-row" id="stationRow">
+          <label class="form-label" for="f-station">NOAA STATION ID <span class="form-hint-inline">· enables live tide data</span></label>
+          <input class="form-input" id="f-station" name="station" type="text" placeholder="e.g. 9410580" maxlength="8">
+          <div class="station-notice" id="stationNotice">
+            <span class="station-notice-icon">🌊</span>
+            <span class="station-notice-text">
+              <b>Without a station ID, tide scoring is disabled.</b>
+              Find your 7-digit ID at <a href="https://tidesandcurrents.noaa.gov/stations.html?type=Water+Levels" target="_blank" rel="noopener">tidesandcurrents.noaa.gov</a>.
+              <span id="nearestStationHint"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map picker -->
+      <div class="form-row">
+        <label class="form-label">PICK LOCATION <span class="form-hint-inline">· click map or type below</span></label>
+        <div id="spotPickerMap" class="spot-picker-map"></div>
+      </div>
+
+      <div class="form-2col">
+        <div class="form-row">
+          <label class="form-label" for="f-lat">LATITUDE</label>
+          <input class="form-input" id="f-lat" name="lat" type="number" step="0.0001" required placeholder="33.5905">
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="f-lon">LONGITUDE</label>
+          <input class="form-input" id="f-lon" name="lon" type="number" step="0.0001" required placeholder="-117.8826">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="f-tags">TAGS</label>
+        <input class="form-input" id="f-tags" name="tags" type="text" placeholder="Jetty, Surf, Sand">
+        <span class="form-hint">Comma-separated</span>
+      </div>
+      <div class="form-section">
+        <div class="form-sec-head">
+          <span class="form-label">SPECIES AT THIS SPOT</span>
+          <button type="button" class="btn-add-sp" id="addSpeciesRowBtn">+ add species</button>
+        </div>
+        <div id="speciesRows"></div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelModal">Cancel</button>
+        <button type="submit" class="btn-save">Save Spot</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="src/leaflet.js"></script>
+<script type="module" src="src/app.js"></script>
+</body>
+</html>

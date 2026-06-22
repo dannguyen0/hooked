@@ -1,0 +1,396 @@
+{
+  "species": {
+    "kelp-bass": {
+      "n": "Calico / Kelp Bass",
+      "s": "Paralabrax clathratus",
+      "cast": "Tight to boiler rock & kelp edges, 20–40 ft; fan the up-current edge",
+      "depth": "Shallow, top 10–20 ft",
+      "regs": {
+        "size": "12\" TL",
+        "bag": "5/day",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Weedless paddletail swimbait",
+          "detail": "5–7\" (MC / Big Hammer / Kicker) on a 1/2–3/4 oz weighted weedless hook. Burn it over the kelp; don't swing on the bite — keep grinding till it loads.",
+          "line": "40–65 lb braid → 30–50 lb fluoro"
+        },
+        {
+          "name": "Leadhead swimbait",
+          "detail": "5\" Big Hammer on 1/2–1 oz head; count it down along rock edges, vary the sink.",
+          "line": "30 lb braid → 25 lb fluoro"
+        },
+        {
+          "name": "Surface iron",
+          "detail": "Tady/Salas over the shallowest part of the reef at first light; brisk retrieve.",
+          "line": "40 lb braid"
+        }
+      ]
+    },
+    "barred-sand-bass": {
+      "n": "Barred Sand Bass",
+      "s": "Paralabrax nebulifer",
+      "cast": "Fan-cast sandy flats & reef edges; retrieve near bottom",
+      "depth": "Bottom-oriented, 10–40 ft",
+      "regs": {
+        "size": "12\" TL",
+        "bag": "10/day combined (barred + spotted)",
+        "season": "Year-round · spawning aggregation closures may apply"
+      },
+      "rigs": [
+        {
+          "name": "Leadhead swimbait, slow-rolled",
+          "detail": "4–5\" plastic on 1/2–3/4 oz; stop-and-drop along the bottom. If one bites, more are there.",
+          "line": "20–30 lb braid → 20 lb fluoro"
+        },
+        {
+          "name": "Carolina-rigged plastic",
+          "detail": "3/4–1 oz sliding sinker, grub or swimbait dragged over sand/mud flats.",
+          "line": "20 lb fluoro"
+        },
+        {
+          "name": "Flylined squid or anchovy",
+          "detail": "Live bait on structure during the summer spawn; light line, patient drift.",
+          "line": "20 lb mono"
+        }
+      ]
+    },
+    "spotted-bay-bass": {
+      "n": "Spotted Bay Bass",
+      "s": "Paralabrax maculatofasciatus",
+      "cast": "To pilings, eelgrass edges & channel drop-offs; work slow near bottom",
+      "depth": "5–25 ft",
+      "regs": {
+        "size": "10\" TL",
+        "bag": "10/day combined (barred + spotted)",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Leadhead swimbait / dropshot",
+          "detail": "3–5\" swimbait on 3/16–3/8 oz (or dropshot). Reaction bites on the fall around structure.",
+          "line": "15 lb braid → 12 lb fluoro"
+        },
+        {
+          "name": "Curly-tail grub",
+          "detail": "AA Worms / Big Hammer grub on a light fine-wire leadhead; rotate the bait when chewed.",
+          "line": "12 lb braid"
+        },
+        {
+          "name": "Ned rig / small crank",
+          "detail": "Finesse around current breaks and dock shade when they're picky.",
+          "line": "10 lb fluoro"
+        }
+      ]
+    },
+    "largemouth-bass": {
+      "n": "Largemouth Bass",
+      "s": "Micropterus salmoides",
+      "cast": "Points, submerged timber & windward bank; red-clay cliffs in 18–25 ft midday",
+      "depth": "5–25 ft (deeper midday)",
+      "regs": {
+        "size": "12\" TL",
+        "bag": "5/day state limit · Irvine Lake: catch-and-release only per lake rules",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Wacky / Texas Senko",
+          "detail": "Soft stickbait worked slow around shoreline cover and fallen timber — the dependable Irvine producer.",
+          "line": "12–15 lb fluoro"
+        },
+        {
+          "name": "Dropshot, finesse plastic",
+          "detail": "Off Rocky Point and the red-clay cliffs at 18–25 ft during bright daytime hours.",
+          "line": "8 lb fluoro spinning"
+        },
+        {
+          "name": "Spinnerbait / shad crank / topwater",
+          "detail": "White spinnerbait or shad-pattern X-Rap at dawn, dusk and after dark — reaction. Bass are catch-and-release here.",
+          "line": "15 lb mono"
+        }
+      ]
+    },
+    "spotfin-croaker": {
+      "n": "Spotfin Croaker",
+      "s": "Roncador stearnsii",
+      "cast": "Into the first trough/gutter, 20–50 ft, on a building high",
+      "depth": "Shallow surf, 2–10 ft",
+      "regs": {
+        "size": "9\" TL",
+        "bag": "10/day",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Carolina rig, sand crab",
+          "detail": "Sliding egg sinker, #4 hook, fresh soft-shell sand crab in the first trough. Soft mouth — set on the load, not a jerk.",
+          "line": "12–15 lb mono"
+        },
+        {
+          "name": "High-low surf rig",
+          "detail": "Two dropper loops with mussel or ghost shrimp; covers two depths at once.",
+          "line": "15 lb mono"
+        },
+        {
+          "name": "Gulp! sandworm",
+          "detail": "Camo 2\" Gulp! on a dropper when crabs are scarce.",
+          "line": "12 lb mono"
+        }
+      ]
+    },
+    "california-corbina": {
+      "n": "California Corbina",
+      "s": "Menticirrhus undulatus",
+      "cast": "Sight-cast: lead cruising fish 6–10 ft, drop into the whitewash",
+      "depth": "Ultra-shallow — often inches; to ~18 ft",
+      "regs": {
+        "size": "10\" TL",
+        "bag": "10/day",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Light Carolina / swivel rig, sand crab",
+          "detail": "Live soft-shell sand crab, #2–6, light egg sinker. Lead the fish, cast into breaking whitewater to hide the splash, then let the surf work the bait — don't move it.",
+          "line": "8–15 lb fluoro leader"
+        },
+        {
+          "name": "Fly-lined sand crab (no weight)",
+          "detail": "On an outgoing tide, let line out and drift the crab away from the beach — deadly.",
+          "line": "10 lb fluoro"
+        },
+        {
+          "name": "Gulp! sandworm",
+          "detail": "Camo sandworm in winter when crabs thin out; corbina rarely take hard lures.",
+          "line": "8 lb fluoro"
+        }
+      ]
+    },
+    "pacific-bonito": {
+      "n": "Pacific Bonito",
+      "s": "Sarda lineolata",
+      "cast": "Long casts into surface boils at the harbor mouth, 60–100 ft",
+      "depth": "Surface to mid-water",
+      "regs": {
+        "size": "No minimum",
+        "bag": "10/day",
+        "season": "Year-round · seasonal availability varies"
+      },
+      "rigs": [
+        {
+          "name": "Cast jig / chrome",
+          "detail": "1 oz Krocodile or Tady 45 chrome; fast, erratic retrieve through the boil.",
+          "line": "25 lb braid → 25 lb fluoro"
+        },
+        {
+          "name": "Flylined sardine / anchovy",
+          "detail": "Live bait drifted to a working school; light line for more bites.",
+          "line": "20 lb mono"
+        },
+        {
+          "name": "Small swimbait / feather",
+          "detail": "4\" swimbait or a trolled feather when they're picky on chrome.",
+          "line": "20 lb braid"
+        }
+      ]
+    },
+    "pacific-mackerel": {
+      "n": "Pacific Mackerel",
+      "s": "Scomber japonicus",
+      "cast": "Drop straight down off pier/jetty pilings, or short casts to the school",
+      "depth": "Surface to 30 ft",
+      "regs": {
+        "size": "No minimum",
+        "bag": "30/day",
+        "season": "Year-round · seasonal availability varies"
+      },
+      "rigs": [
+        {
+          "name": "Sabiki rig, tipped",
+          "detail": "Size 4–6 sabiki with squid tips on the hooks; jig vertically. Best bait-maker at first light.",
+          "line": "12 lb mono"
+        },
+        {
+          "name": "Small chrome jig",
+          "detail": "Lucky Joe or tiny Krocodile when they're chasing on top.",
+          "line": "10 lb mono"
+        },
+        {
+          "name": "Bait under a float",
+          "detail": "Cut squid suspended for a hands-off setup off the pier.",
+          "line": "12 lb mono"
+        }
+      ]
+    },
+    "barred-surfperch": {
+      "n": "Barred Surfperch",
+      "s": "Amphistichus argenteus",
+      "cast": "Into the trough just beyond the breakers, 20–40 ft; fish the foam seam",
+      "depth": "Surf zone, 2–8 ft",
+      "regs": {
+        "size": "No minimum",
+        "bag": "20/day (surfperch complex combined)",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Carolina rig, sand crab",
+          "detail": "Live or fresh sand crab, #4–6, light sliding sinker, drifted through the trough on the incoming. The #1 bait, hands down.",
+          "line": "10–15 lb (or braid → 12 lb fluoro)"
+        },
+        {
+          "name": "Hi-low dropper rig",
+          "detail": "Two droppers with sand crab or Gulp! sandworm; great for locating schooled fish.",
+          "line": "12 lb mono"
+        },
+        {
+          "name": "Small grub on leadhead",
+          "detail": "2\" motor-oil/root-beer grub on a light head when fish are aggressive.",
+          "line": "10 lb braid"
+        }
+      ]
+    },
+    "opaleye": {
+      "n": "Opaleye",
+      "s": "Girella nigricans",
+      "cast": "Short casts into rocky wash zones & tidepool edges; berley the spot",
+      "depth": "Shallow over rock, 3–15 ft",
+      "regs": {
+        "size": "10\" TL",
+        "bag": "10/day",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Float rig, frozen peas",
+          "detail": "Small #8 hook under a float, baited with frozen peas or moss; chum a wash zone over rock to draw them up.",
+          "line": "8 lb mono"
+        },
+        {
+          "name": "Light dropper, shellfish",
+          "detail": "Ghost shrimp or mussel on a fine-wire hook tight to the rocks.",
+          "line": "8 lb mono"
+        },
+        {
+          "name": "Bread / innkeeper worm",
+          "detail": "Doughball or innkeeper worm when they're keyed on chum.",
+          "line": "6 lb mono"
+        }
+      ]
+    },
+    "california-sheephead": {
+      "n": "California Sheephead",
+      "s": "Bodianus pulcher",
+      "cast": "To reef edges & crevices; let it sit on the bottom, 20–50 ft",
+      "depth": "Over reef, 10–60 ft",
+      "regs": {
+        "size": "12\" TL",
+        "bag": "5/day",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Dropper-loop, shellfish",
+          "detail": "1–2 oz, #1 hook with whole shrimp, mussel or crab parked on the bottom near reef structure. Big canines crush shellfish.",
+          "line": "25–30 lb mono"
+        },
+        {
+          "name": "Live or cut squid",
+          "detail": "On a leadhead or dropper down in the rocks — a sheephead magnet.",
+          "line": "30 lb mono"
+        },
+        {
+          "name": "Rock crab / mussel",
+          "detail": "Natural reef forage fished tight to crevices.",
+          "line": "25 lb mono"
+        }
+      ]
+    },
+    "black-crappie": {
+      "n": "Black Crappie",
+      "s": "Pomoxis nigromaculatus",
+      "cast": "To brush, docks & timber; suspend over the school and hold depth",
+      "depth": "6–20 ft (deeper in heat/cold)",
+      "regs": {
+        "size": "9\" TL",
+        "bag": "25/day",
+        "season": "Year-round (inland waters)"
+      },
+      "rigs": [
+        {
+          "name": "Mini-jig under a float",
+          "detail": "1/16 oz white or glow tube/jig suspended over brush; count down to the school then hold that depth. A floating lantern at night pulls them in.",
+          "line": "6 lb mono"
+        },
+        {
+          "name": "Live minnow / micro-swimbait",
+          "detail": "Minnow under a slip float, or a small minnow-profile bait — crappie key on baitfish.",
+          "line": "6 lb mono"
+        },
+        {
+          "name": "Small spinner / inline",
+          "detail": "Tiny spinner or micro-crank slow-rolled past structure.",
+          "line": "6 lb mono"
+        }
+      ]
+    },
+    "channel-catfish": {
+      "n": "Channel Catfish",
+      "s": "Ictalurus punctatus",
+      "cast": "To the flats, west shore & dam; soak on the bottom, 30–70 ft out",
+      "depth": "8–30 ft, deeper after dark",
+      "regs": {
+        "size": "No minimum",
+        "bag": "10/day",
+        "season": "Year-round (inland waters)"
+      },
+      "rigs": [
+        {
+          "name": "Slip-sinker bottom rig, cut bait",
+          "detail": "Carolina-style sliding sinker, 2/0 hook, cut mackerel or bonito on the bottom. Evening and night are best; the proven Irvine cat bait.",
+          "line": "15–20 lb mono"
+        },
+        {
+          "name": "Nightcrawler / chicken liver",
+          "detail": "Classic bottom soak on a sliding-sinker rig; will pick these up even in trout season.",
+          "line": "15 lb mono"
+        },
+        {
+          "name": "Prepared / stink bait",
+          "detail": "Catmando or dough bait on a treble for scent-tracking cats.",
+          "line": "15 lb mono"
+        }
+      ]
+    },
+    "california-halibut": {
+      "n": "California Halibut",
+      "s": "Paralichthys californicus",
+      "cast": "Fan-cast sand flats & channel edges; drag slowly, 30–60 ft",
+      "depth": "Surf channels & flats, 5–30 ft",
+      "regs": {
+        "size": "22\" TL",
+        "bag": "5/day",
+        "season": "Year-round"
+      },
+      "rigs": [
+        {
+          "name": "Carolina rig, live bait or swimbait",
+          "detail": "1/2–3/4 oz sliding sinker with a live smelt/anchovy, or a Big Hammer/MS Slug dragged slow along the sand. Eat is a soft tap then weight — sweep-set, don't jerk.",
+          "line": "15–20 lb braid → 15 lb fluoro"
+        },
+        {
+          "name": "Dropshot live bait",
+          "detail": "Live smelt just off the bottom over sand flats; deadly on bigger flatties.",
+          "line": "15 lb fluoro"
+        },
+        {
+          "name": "Crank / jerkbait near bottom",
+          "detail": "In bays/harbors over clean sand with less grass; keep it ticking bottom.",
+          "line": "15 lb mono"
+        }
+      ]
+    }
+  }
+}

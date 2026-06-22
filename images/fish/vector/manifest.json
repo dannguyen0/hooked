@@ -1,0 +1,72 @@
+{
+  "kelp-bass": {
+    "name": "Calico / Kelp Bass",
+    "sci": "Paralabrax clathratus",
+    "file": "kelp-bass.png"
+  },
+  "barred-sand-bass": {
+    "name": "Barred Sand Bass",
+    "sci": "Paralabrax nebulifer",
+    "file": "barred-sand-bass.png"
+  },
+  "spotted-bay-bass": {
+    "name": "Spotted Bay Bass",
+    "sci": "Paralabrax maculatofasciatus",
+    "file": "spotted-bay-bass.png"
+  },
+  "largemouth-bass": {
+    "name": "Largemouth Bass",
+    "sci": "Micropterus salmoides",
+    "file": "largemouth-bass.png"
+  },
+  "spotfin-croaker": {
+    "name": "Spotfin Croaker",
+    "sci": "Roncador stearnsii",
+    "file": "spotfin-croaker.png"
+  },
+  "california-corbina": {
+    "name": "California Corbina",
+    "sci": "Menticirrhus undulatus",
+    "file": "california-corbina.png"
+  },
+  "pacific-bonito": {
+    "name": "Pacific Bonito",
+    "sci": "Sarda lineolata",
+    "file": "pacific-bonito.png"
+  },
+  "pacific-mackerel": {
+    "name": "Pacific Mackerel",
+    "sci": "Scomber japonicus",
+    "file": "pacific-mackerel.png"
+  },
+  "barred-surfperch": {
+    "name": "Barred Surfperch",
+    "sci": "Amphistichus argenteus",
+    "file": "barred-surfperch.png"
+  },
+  "opaleye": {
+    "name": "Opaleye",
+    "sci": "Girella nigricans",
+    "file": "opaleye.png"
+  },
+  "california-sheephead": {
+    "name": "California Sheephead",
+    "sci": "Bodianus pulcher",
+    "file": "california-sheephead.png"
+  },
+  "black-crappie": {
+    "name": "Black Crappie",
+    "sci": "Pomoxis nigromaculatus",
+    "file": "black-crappie.png"
+  },
+  "channel-catfish": {
+    "name": "Channel Catfish",
+    "sci": "Ictalurus punctatus",
+    "file": "channel-catfish.png"
+  },
+  "california-halibut": {
+    "name": "California Halibut",
+    "sci": "Paralichthys californicus",
+    "file": "california-halibut.png"
+  }
+}

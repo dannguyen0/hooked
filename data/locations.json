@@ -1,0 +1,331 @@
+{
+  "locations": [
+    {
+      "id": "newport",
+      "name": "Newport Harbor · West Jetty",
+      "lat": 33.5905,
+      "lon": -117.8826,
+      "station": "9410580",
+      "water": "salt",
+      "tags": [
+        "Jetty",
+        "Channel",
+        "Sand"
+      ],
+      "extrema": [
+        [
+          3,
+          18,
+          4.7,
+          "H"
+        ],
+        [
+          9,
+          44,
+          0.2,
+          "L"
+        ],
+        [
+          15,
+          58,
+          3.8,
+          "H"
+        ],
+        [
+          22,
+          20,
+          -0.4,
+          "L"
+        ]
+      ],
+      "cond": {
+        "wind": "7 kn",
+        "windDir": "SW",
+        "swell": "2.3 ft",
+        "swellP": "11 s",
+        "baro": "1014",
+        "trend": -1.6,
+        "moon": "68%"
+      },
+      "fish": [
+        {
+          "slug": "kelp-bass",
+          "tide": "incoming",
+          "light": "dawn",
+          "note": "Work the jetty rocks on the push; let it sink into the wash."
+        },
+        {
+          "slug": "california-halibut",
+          "tide": "outgoing",
+          "light": "dusk",
+          "note": "Drag the channel edge slow; expect a soft tap then weight."
+        },
+        {
+          "slug": "spotfin-croaker",
+          "tide": "incoming",
+          "light": "night",
+          "note": "First trough on a building high; set on the load."
+        },
+        {
+          "slug": "pacific-bonito",
+          "tide": "any",
+          "light": "dawn",
+          "note": "Chase boils at the harbor mouth on a grey-light morning."
+        }
+      ]
+    },
+    {
+      "id": "cdm",
+      "name": "Corona del Mar State Beach",
+      "lat": 33.593,
+      "lon": -117.869,
+      "station": "9410580",
+      "water": "salt",
+      "tags": [
+        "Surf",
+        "Sand",
+        "Jetty"
+      ],
+      "extrema": [
+        [
+          3,
+          30,
+          4.5,
+          "H"
+        ],
+        [
+          9,
+          55,
+          0.4,
+          "L"
+        ],
+        [
+          16,
+          8,
+          3.7,
+          "H"
+        ],
+        [
+          22,
+          34,
+          -0.2,
+          "L"
+        ]
+      ],
+      "cond": {
+        "wind": "5 kn",
+        "windDir": "W",
+        "swell": "2.0 ft",
+        "swellP": "13 s",
+        "baro": "1015",
+        "trend": -0.8,
+        "moon": "68%"
+      },
+      "fish": [
+        {
+          "slug": "barred-surfperch",
+          "tide": "incoming",
+          "light": "dawn",
+          "note": "Read the troughs at low; fish the foam seam."
+        },
+        {
+          "slug": "california-corbina",
+          "tide": "incoming",
+          "light": "midday",
+          "note": "Sight-fish them tailing in inches of water on a warm flood."
+        },
+        {
+          "slug": "kelp-bass",
+          "tide": "incoming",
+          "light": "dusk",
+          "note": "Tuck casts tight to the rock fingers at the south end."
+        }
+      ]
+    },
+    {
+      "id": "crystal",
+      "name": "Crystal Cove Reef",
+      "lat": 33.568,
+      "lon": -117.829,
+      "station": "9410580",
+      "water": "salt",
+      "tags": [
+        "Reef",
+        "Rock",
+        "Kelp",
+        "Tidepool"
+      ],
+      "extrema": [
+        [
+          3,
+          40,
+          4.6,
+          "H"
+        ],
+        [
+          10,
+          2,
+          0.5,
+          "L"
+        ],
+        [
+          16,
+          18,
+          3.6,
+          "H"
+        ],
+        [
+          22,
+          40,
+          -0.1,
+          "L"
+        ]
+      ],
+      "cond": {
+        "wind": "9 kn",
+        "windDir": "WSW",
+        "swell": "3.1 ft",
+        "swellP": "10 s",
+        "baro": "1013",
+        "trend": -2.2,
+        "moon": "68%"
+      },
+      "fish": [
+        {
+          "slug": "kelp-bass",
+          "tide": "incoming",
+          "light": "dawn",
+          "note": "Stay tight to structure; pull hard early or they bury you in kelp."
+        },
+        {
+          "slug": "california-sheephead",
+          "tide": "any",
+          "light": "midday",
+          "note": "Reef edges and crevices; let bait sit on the bottom."
+        },
+        {
+          "slug": "opaleye",
+          "tide": "incoming",
+          "light": "midday",
+          "note": "Berley a wash zone over rock; small hooks, light leader."
+        },
+        {
+          "slug": "barred-sand-bass",
+          "tide": "outgoing",
+          "light": "dusk",
+          "note": "Sandy gaps between reef on the drop; slow yo-yo retrieve."
+        }
+      ]
+    },
+    {
+      "id": "dana",
+      "name": "Dana Point Harbor",
+      "lat": 33.4612,
+      "lon": -117.703,
+      "station": "9410580",
+      "water": "salt",
+      "tags": [
+        "Harbor",
+        "Pier",
+        "Sheltered"
+      ],
+      "extrema": [
+        [
+          3,
+          12,
+          4.4,
+          "H"
+        ],
+        [
+          9,
+          38,
+          0.6,
+          "L"
+        ],
+        [
+          15,
+          50,
+          3.9,
+          "H"
+        ],
+        [
+          22,
+          12,
+          -0.3,
+          "L"
+        ]
+      ],
+      "cond": {
+        "wind": "4 kn",
+        "windDir": "SW",
+        "swell": "1.4 ft",
+        "swellP": "12 s",
+        "baro": "1016",
+        "trend": 0.4,
+        "moon": "68%"
+      },
+      "fish": [
+        {
+          "slug": "spotted-bay-bass",
+          "tide": "outgoing",
+          "light": "dusk",
+          "note": "Dock pilings and eelgrass edges; reaction bites on the drop."
+        },
+        {
+          "slug": "california-halibut",
+          "tide": "incoming",
+          "light": "dawn",
+          "note": "Fan-cast the harbor sand flats off the launch ramp."
+        },
+        {
+          "slug": "pacific-mackerel",
+          "tide": "any",
+          "light": "dawn",
+          "note": "Load the bait tank off the pier at first light."
+        }
+      ]
+    },
+    {
+      "id": "irvinelake",
+      "name": "Irvine Lake (Santiago Res.)",
+      "lat": 33.736,
+      "lon": -117.706,
+      "station": null,
+      "water": "fresh",
+      "tags": [
+        "Freshwater",
+        "Reservoir",
+        "Shore-only",
+        "No tide"
+      ],
+      "extrema": null,
+      "cond": {
+        "wind": "3 kn",
+        "windDir": "NW",
+        "baro": "1015",
+        "trend": -0.6,
+        "moon": "68%"
+      },
+      "fish": [
+        {
+          "slug": "largemouth-bass",
+          "tide": "—",
+          "light": "dawn",
+          "note": "Points and timber early; cliffs at 18–25 ft midday. Catch-and-release."
+        },
+        {
+          "slug": "channel-catfish",
+          "tide": "—",
+          "light": "night",
+          "note": "Soak cut bait on the flats or west shore after dark."
+        },
+        {
+          "slug": "black-crappie",
+          "tide": "—",
+          "light": "dusk",
+          "note": "Suspend a mini-jig over brush; floating lantern after dark."
+        }
+      ]
+    }
+  ]
+}

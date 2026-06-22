@@ -1,0 +1,17 @@
+{
+  "name": "hooked",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal fishing instrument — tides, bite windows, and tackle for your spots.",
+  "scripts": {
+    "serve": "python3 -m http.server 8000",
+    "plates": "python3 scripts/fishgen.py",
+    "photos": "python3 scripts/fishgen_photo.py",
+    "enrich": "node scripts/enrich.mjs"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "suncalc": "^1.9.0"
+  }
+}

@@ -1,0 +1,8 @@
+# Vector plate generator (free, offline)
+cairosvg>=2.7
+pillow>=10.0
+# Photoreal generator (optional — uncomment what you use)
+# google-genai>=1.0      # Google Imagen / Gemini image
+# openai>=1.0            # GPT Image 2
+# requests>=2.31         # local Stable Diffusion / ComfyUI endpoint
+# rembg>=2.0             # --transparent background cutout
