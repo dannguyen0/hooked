@@ -1,4 +1,4 @@
-# 🎣 Fathom
+# 🎣 Hooked
 
 A personal fishing instrument — your own lightweight Fishbrain. For each of your local spots it
 shows today's **tide**, the **best-time bite windows**, and **what's biting** with ranked tackle,
