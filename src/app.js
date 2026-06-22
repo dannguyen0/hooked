@@ -202,13 +202,11 @@ function renderRail() {
     const best = ws[0];
     const bs = best ? best.pk : scoreAt(sp, nowMin).s;
     const b = band(bs);
-    const sub = sp.water === 'fresh' ? 'Fresh · No tides' : sp.station ? `NOAA ${sp.station}` : 'No station — add ID';
     const isCustom = !!sp._custom;
     return `<li class="spot-li">
       <button class="spot" data-id="${sp.id}" aria-current="${sp.id === active.id}">
         <span class="nm">${sp.name}</span>
         <span class="chip" data-band="${b}">${bs}</span>
-        <span class="meta">${sub}${best ? ` · peak ${fmt(best.pkm)}` : ''}</span>
       </button>${isCustom ? `<button class="spot-edit" data-edit="${sp.id}" title="Edit spot">✎</button><button class="spot-del" data-del="${sp.id}" title="Delete spot">×</button>` : ''}
     </li>`;
   }).join('');
@@ -266,47 +264,53 @@ function renderHead() {
 
 function renderInstrument() {
   const sp = active, svg = $('tideSvg');
-  const Wd = 960, Ht = 290, padT = 20, padB = 20;
-  const tideH = 170;           // tide curve lives in padT…padT+tideH
-  const stripY = padT + tideH + 10;  // activity strip top
-  const stripH = 20;           // activity strip height
+  // Viewbox: wider:taller ratio gives the tide curve natural proportions
+  const Wd = 960, Ht = 380;
+  const padT = 30, padL = 0;
+  const tideH = 220;            // tide curve pixel height
+  const stripY = padT + tideH + 18;
+  const stripH = 24;
+  const footY  = stripY + stripH + 22; // sun/legend row
   svg.setAttribute('viewBox', `0 0 ${Wd} ${Ht}`);
 
   let g = '';
 
-  // subtle light grid lines
-  for (let i = 0; i <= 3; i++) {
-    const y = padT + tideH * i / 3;
-    g += `<line x1="0" y1="${y}" x2="${Wd}" y2="${y}" stroke="rgba(0,0,0,.05)" stroke-width="1"/>`;
-  }
-
   const sd = spotData[sp.id];
   const ex = sd?.ctx?.extrema;
 
-  // ── Activity strip (always drawn) ───────────────────────────────────────
-  g += `<text x="0" y="${stripY - 3}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9" font-weight="700" letter-spacing="1">FISH ACTIVITY</text>`;
-  // rounded clip rect for strip
-  g += `<clipPath id="stripClip"><rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="4"/></clipPath>`;
-  // background track
-  g += `<rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="4" fill="rgba(0,0,0,.06)"/>`;
-  // colored activity segments every 5 min
-  for (let m = 0; m < 1440; m += 5) {
+  // ── Legend row (top of chart, inside SVG) ───────────────────────────────
+  const legItems = [
+    ['#10B981','Prime ≥75'],['#F97316','Good 55–74'],['#0EA5E9','Fair 35–54'],
+    ['rgba(139,92,246,.7)','Solunar peak'],
+  ];
+  let legX = 0;
+  legItems.forEach(([c, lbl]) => {
+    g += `<rect x="${legX}" y="6" width="10" height="10" rx="2.5" fill="${c}"/>`;
+    g += `<text x="${legX + 14}" y="15" fill="#6B7280" font-family="Space Grotesk" font-size="11" font-weight="600">${lbl}</text>`;
+    legX += lbl.length * 6.8 + 26;
+  });
+
+  // ── Subtle grid lines ────────────────────────────────────────────────────
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + tideH * i / 4;
+    g += `<line x1="0" y1="${y}" x2="${Wd}" y2="${y}" stroke="rgba(0,0,0,.05)" stroke-width="1"/>`;
+  }
+
+  // ── Activity strip ───────────────────────────────────────────────────────
+  g += `<text x="0" y="${stripY - 5}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9.5" font-weight="700" letter-spacing="1.5">FISH ACTIVITY</text>`;
+  g += `<clipPath id="stripClip"><rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="5"/></clipPath>`;
+  g += `<rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="5" fill="rgba(0,0,0,.05)"/>`;
+
+  for (let m = 0; m < 1440; m += 4) {
     const s = scoreAt(sp, m).s;
     const col = s >= 75 ? '#10B981' : s >= 55 ? '#F97316' : s >= 35 ? '#0EA5E9' : null;
     if (!col) continue;
-    const opacity = s >= 75 ? 0.9 : s >= 55 ? 0.75 : 0.5;
-    const x = Wd * m / 1440, w = Wd * 5 / 1440;
-    g += `<rect x="${x}" y="${stripY}" width="${w + 0.5}" height="${stripH}" fill="${col}" opacity="${opacity}" clip-path="url(#stripClip)"/>`;
+    const op = s >= 75 ? 0.88 : s >= 55 ? 0.72 : 0.48;
+    const x = Wd * m / 1440, w = Wd * 4 / 1440 + 0.5;
+    g += `<rect x="${x}" y="${stripY}" width="${w}" height="${stripH}" fill="${col}" opacity="${op}" clip-path="url(#stripClip)"/>`;
   }
 
-  // strip legend
-  const legX = Wd - 180, legY = stripY + stripH + 13;
-  [['#10B981','Prime'],['#F97316','Good'],['#0EA5E9','Fair']].forEach(([c, lbl], i) => {
-    g += `<rect x="${legX + i * 58}" y="${legY - 8}" width="8" height="8" rx="2" fill="${c}" opacity=".85"/>`;
-    g += `<text x="${legX + i * 58 + 11}" y="${legY}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9" font-weight="600">${lbl}</text>`;
-  });
-
-  // ── Solunar period markers ───────────────────────────────────────────────
+  // ── Solunar markers ──────────────────────────────────────────────────────
   if (sd?.ctx?.events) {
     const { major, minor } = sd.ctx.events;
     major.forEach(t => {
@@ -314,75 +318,74 @@ function renderInstrument() {
       const m = (+t - +dayStart) / MIN;
       if (m < 0 || m > 1440) return;
       const x = Wd * m / 1440;
-      g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY - 2}" stroke="rgba(139,92,246,.25)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
-      g += `<rect x="${x - 12}" y="${stripY}" width="24" height="${stripH}" fill="rgba(139,92,246,.18)" clip-path="url(#stripClip)"/>`;
+      g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY}" stroke="rgba(139,92,246,.22)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+      g += `<rect x="${x - 14}" y="${stripY}" width="28" height="${stripH}" fill="rgba(139,92,246,.22)" clip-path="url(#stripClip)"/>`;
     });
     minor.forEach(t => {
       if (!t) return;
       const m = (+t - +dayStart) / MIN;
       if (m < 0 || m > 1440) return;
       const x = Wd * m / 1440;
-      g += `<line x1="${x}" y1="${padT + 30}" x2="${x}" y2="${stripY - 2}" stroke="rgba(139,92,246,.14)" stroke-width="1" stroke-dasharray="2 4"/>`;
+      g += `<line x1="${x}" y1="${padT + 40}" x2="${x}" y2="${stripY}" stroke="rgba(139,92,246,.12)" stroke-width="1" stroke-dasharray="2 4"/>`;
     });
   }
 
   // ── Tide curve ───────────────────────────────────────────────────────────
   if (ex && ex.length) {
-    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .5, hi = Math.max(...vs) + .5;
+    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .4, hi = Math.max(...vs) + .4;
     const X = m => Wd * m / 1440;
     const Y = v => padT + tideH * (1 - (v - lo) / (hi - lo));
-    const tideHeight = ms => {
+    const interp = ms => {
       let i = 0;
       while (i < ex.length - 1 && +ex[i + 1].t <= ms) i++;
       const a = ex[i], b = ex[i + 1];
       if (!b || ms <= +a.t) return a.height;
-      const span = +b.t - +a.t, ph = (ms - +a.t) / span;
+      const ph = (ms - +a.t) / (+b.t - +a.t);
       return a.height + (b.height - a.height) * (1 - Math.cos(Math.PI * ph)) / 2;
     };
     let d = '';
-    for (let m = 0; m <= 1440; m += 6) { const v = tideHeight(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ' ' + Y(v).toFixed(1) + ' '; }
+    for (let m = 0; m <= 1440; m += 4) { const v = interp(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ',' + Y(v).toFixed(1) + ' '; }
     const baseY = padT + tideH;
-    g += `<path d="${d} L ${Wd} ${baseY} L 0 ${baseY} Z" fill="rgba(14,165,233,.08)"/>`;
-    g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5"/>`;
+    g += `<path d="${d}L${Wd},${baseY} L0,${baseY}Z" fill="rgba(14,165,233,.09)"/>`;
+    g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linejoin="round"/>`;
     ex.forEach(e => {
-      const m = (+e.t - +dayStart) / MIN;
-      const cx = X(m), cy = Y(e.height);
-      g += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="#fff" stroke="#0EA5E9" stroke-width="2"/>`;
-      const labelY = e.type === 'H' ? cy - 11 : cy + 18;
-      g += `<text x="${cx}" y="${labelY}" fill="#4B5563" font-family="Space Grotesk" font-size="11" font-weight="700" text-anchor="middle">${e.type === 'H' ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
+      const m = (+e.t - +dayStart) / MIN, cx = X(m), cy = Y(e.height);
+      g += `<circle cx="${cx}" cy="${cy}" r="4" fill="#fff" stroke="#0EA5E9" stroke-width="2.5"/>`;
+      const up = e.type === 'H';
+      g += `<text x="${cx}" y="${up ? cy - 13 : cy + 20}" fill="#374151" font-family="Space Grotesk" font-size="12" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
+      g += `<text x="${cx}" y="${up ? cy - 1 : cy + 32}" fill="#9CA3AF" font-family="Space Grotesk" font-size="10" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
     });
-    const xn = X(nowMin), vn = tideHeight(+dayStart + nowMin * MIN);
-    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.5" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".7"/>`;
-    g += `<circle cx="${xn}" cy="${Y(vn)}" r="5.5" fill="${isPreview ? '#0EA5E9' : '#F97316'}" stroke="#fff" stroke-width="2"/>`;
+    const xn = X(nowMin), vn = interp(+dayStart + nowMin * MIN);
+    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".8"/>`;
+    g += `<circle cx="${xn}" cy="${Y(vn)}" r="6" fill="${isPreview ? '#0EA5E9' : '#F97316'}" stroke="#fff" stroke-width="2.5"/>`;
   } else {
     const yMid = padT + tideH / 2;
     const isFresh = active.water === 'fresh';
     const msg = sd?.loading ? 'Fetching live tide data…'
       : isFresh ? 'Freshwater — solunar + light scoring'
       : 'Add a NOAA Station ID to enable tide data';
-    g += `<line x1="0" y1="${yMid}" x2="${Wd}" y2="${yMid}" stroke="rgba(0,0,0,.07)" stroke-dasharray="5 5"/>`;
-    g += `<text x="${Wd / 2}" y="${yMid - 10}" fill="#9CA3AF" font-family="Space Grotesk" font-size="13" font-weight="600" text-anchor="middle">${msg}</text>`;
-    if (!isFresh && !sd?.loading) {
-      g += `<text x="${Wd / 2}" y="${yMid + 14}" fill="#F97316" font-family="Space Grotesk" font-size="11" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → edit spot</text>`;
-    }
+    g += `<line x1="0" y1="${yMid}" x2="${Wd}" y2="${yMid}" stroke="rgba(0,0,0,.07)" stroke-dasharray="6 5"/>`;
+    g += `<text x="${Wd/2}" y="${yMid - 10}" fill="#9CA3AF" font-family="Space Grotesk" font-size="14" font-weight="600" text-anchor="middle">${msg}</text>`;
+    if (!isFresh && !sd?.loading)
+      g += `<text x="${Wd/2}" y="${yMid + 16}" fill="#F97316" font-family="Space Grotesk" font-size="12" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → edit spot</text>`;
     const xn = Wd * nowMin / 1440;
-    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.5" opacity=".7"/>`;
+    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" opacity=".8"/>`;
   }
 
-  // ── Sun/moon rise-set markers ────────────────────────────────────────────
+  // ── Sun rise/set ─────────────────────────────────────────────────────────
   if (sd?.ctx?.times) {
-    [[sd.ctx.times.sunrise, '☀ Rise'], [sd.ctx.times.sunset, '☀ Set']].forEach(([t, lbl]) => {
+    [[sd.ctx.times.sunrise,'☀ Rise'],[sd.ctx.times.sunset,'☀ Set']].forEach(([t,lbl]) => {
       if (!t) return;
       const m = (+t - +dayStart) / MIN;
       if (m < 0 || m > 1440) return;
       const x = Wd * m / 1440;
-      g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY - 2}" stroke="rgba(251,191,36,.4)" stroke-width="1" stroke-dasharray="3 4"/>`;
-      g += `<text x="${x}" y="${stripY + stripH + 13}" fill="#D97706" font-family="Space Grotesk" font-size="9" font-weight="600" text-anchor="middle">${lbl}</text>`;
+      g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY}" stroke="rgba(251,191,36,.45)" stroke-width="1" stroke-dasharray="4 4"/>`;
+      g += `<text x="${x}" y="${footY}" fill="#D97706" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">${lbl}</text>`;
     });
   }
 
   svg.innerHTML = g;
-  $('xaxis').innerHTML = ['12a', '4a', '8a', '12p', '4p', '8p', '12a'].map(t => `<span>${t}</span>`).join('');
+  $('xaxis').innerHTML = ['12a','4a','8a','12p','4p','8p','12a'].map(t=>`<span>${t}</span>`).join('');
   $('nowLabel').textContent = (isPreview ? 'Preview · ' : 'Now · ') + fmt(nowMin);
   $('nowLabel').className = 'now-t' + (isPreview ? ' preview' : '');
   $('resetNow').hidden = !isPreview;
@@ -419,7 +422,7 @@ function renderWindows() {
     const tide = active.water === 'fresh' ? 'solunar peak' : (w.dir === 'incoming' ? '↑ incoming' : w.dir === 'outgoing' ? '↓ outgoing' : 'slack');
     const dur = durStr(w.s, w.e);
     return `<li data-band="${b}">
-      <span class="rng">${fmt(w.s)} – ${fmt(w.e)}<small>${dur} · ${tide}</small></span>
+      <span class="rng">${fmt(w.s)} – ${fmt(w.e)}<small>${dur} · ${tide}</small><span class="win-peak">Peak&nbsp;${fmt(w.pkm)}</span></span>
       <span></span>
       <span class="pk" data-band="${b}">${w.pk}</span>
     </li>`;
