@@ -205,8 +205,8 @@ function renderRail() {
     const isCustom = !!sp._custom;
     return `<li class="spot-li">
       <button class="spot" data-id="${sp.id}" aria-current="${sp.id === active.id}">
-        <span class="nm">${sp.name}</span>
         <span class="chip" data-band="${b}">${bs}</span>
+        <span class="nm">${sp.name}</span>
       </button>${isCustom ? `<button class="spot-edit" data-edit="${sp.id}" title="Edit spot">✎</button><button class="spot-del" data-del="${sp.id}" title="Delete spot">×</button>` : ''}
     </li>`;
   }).join('');
@@ -251,6 +251,13 @@ function renderHead() {
   const moonSub = ctx ? moonLabel(ctx.moonPhase) : '';
   const liveTag = (lw || ctx) ? ' <small class="live-tag">LIVE</small>' : '';
 
+  const ICONS = {
+    Wind: `<svg class="cond-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1 5h9a2.5 2.5 0 1 0-2.5-2.5"/><path d="M1 9h12a2.5 2.5 0 1 1-2.5 2.5"/><path d="M1 13h7"/></svg>`,
+    Surface: `<svg class="cond-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1 10 Q3 7 5 10 Q7 13 9 10 Q11 7 13 10"/><path d="M1 6.5 Q3 3.5 5 6.5 Q7 9.5 9 6.5 Q11 3.5 13 6.5"/></svg>`,
+    Swell:  `<svg class="cond-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1 10 Q3 7 5 10 Q7 13 9 10 Q11 7 13 10"/><path d="M1 6.5 Q3 3.5 5 6.5 Q7 9.5 9 6.5 Q11 3.5 13 6.5"/></svg>`,
+    Pressure:`<svg class="cond-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="9" r="5.5"/><path d="M8 9 L11 4.5"/><circle cx="8" cy="9" r="1" fill="currentColor" stroke="none"/></svg>`,
+    Moon:   `<svg class="cond-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M11.5 10A5.5 5.5 0 1 1 6 4.5a4 4 0 0 0 5.5 5.5Z"/></svg>`,
+  };
   const cells = [
     ['Wind', `${windStr} <small>${windDir}</small>${lw ? liveTag : ''}`],
     sp.water === 'fresh'
@@ -259,15 +266,15 @@ function renderHead() {
     ['Pressure', `${baroStr} <small class="${trend < 0 ? 'down' : 'up'}">${trend < 0 ? '▼' : '▲'}${Math.abs(trend).toFixed(1)}</small>`],
     ['Moon', `${moonStr} <small>${moonSub}</small>`],
   ];
-  $('cond').innerHTML = cells.map(([k, v]) => `<div class="cell"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  $('cond').innerHTML = cells.map(([k, v]) => `<div class="cell"><div class="k">${ICONS[k] || ''}${k}</div><div class="v">${v}</div></div>`).join('');
 }
 
 function renderInstrument() {
   const sp = active, svg = $('tideSvg');
   // Viewbox: wider:taller ratio gives the tide curve natural proportions
-  const Wd = 960, Ht = 380;
+  const Wd = 960, Ht = 440;
   const padT = 30, padL = 0;
-  const tideH = 220;            // tide curve pixel height
+  const tideH = 260;            // tide curve pixel height
   const stripY = padT + tideH + 18;
   const stripH = 24;
   const footY  = stripY + stripH + 22; // sun/legend row
@@ -394,7 +401,7 @@ function renderInstrument() {
 function renderReadout() {
   const r = scoreAt(active, nowMin), b = band(r.s);
   const col = b === 'prime' ? 'var(--green)' : b === 'good' ? 'var(--amber)' : b === 'fair' ? 'var(--cyan)' : 'var(--ink-dim)';
-  $('scoreNum').innerHTML = `${r.s}<small>/100</small>`; $('scoreNum').style.color = col;
+  $('scoreNum').innerHTML = `${r.s}`; $('scoreNum').style.color = col;
   $('scoreLab').textContent = labl(r.s); $('scoreLab').style.color = col;
   const hasExtrema = active.extrema?.length || spotData[active.id]?.ctx?.extrema?.length;
   $('scoreDir').textContent = hasExtrema

@@ -12,6 +12,86 @@
 <link rel="stylesheet" href="src/styles.css" />
 </head>
 <body>
+<!-- Animated wave background -->
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 1920 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Group 1: green, upper -->
+    <g class="wg1">
+      <path d="M-960,160 Q-720,132 -480,160 Q-240,188 0,160 Q240,132 480,160 Q720,188 960,160 Q1200,132 1440,160 Q1680,188 1920,160 Q2160,132 2400,160 Q2640,188 2880,160" fill="none" stroke="#10B981" stroke-width="1.2" opacity="0.055"/>
+      <path d="M-960,172 Q-720,144 -480,172 Q-240,200 0,172 Q240,144 480,172 Q720,200 960,172 Q1200,144 1440,172 Q1680,200 1920,172 Q2160,144 2400,172 Q2640,200 2880,172" fill="none" stroke="#10B981" stroke-width="0.9" opacity="0.04"/>
+      <path d="M-960,150 Q-720,122 -480,150 Q-240,178 0,150 Q240,122 480,150 Q720,178 960,150 Q1200,122 1440,150 Q1680,178 1920,150 Q2160,122 2400,150 Q2640,178 2880,150" fill="none" stroke="#10B981" stroke-width="0.7" opacity="0.03"/>
+      <path d="M-960,183 Q-720,155 -480,183 Q-240,211 0,183 Q240,155 480,183 Q720,211 960,183 Q1200,155 1440,183 Q1680,211 1920,183 Q2160,155 2400,183 Q2640,211 2880,183" fill="none" stroke="#10B981" stroke-width="0.8" opacity="0.03"/>
+    </g>
+    <!-- Group 2: cyan, mid-upper -->
+    <g class="wg2">
+      <path d="M-960,340 Q-720,310 -480,340 Q-240,370 0,340 Q240,310 480,340 Q720,370 960,340 Q1200,310 1440,340 Q1680,370 1920,340 Q2160,310 2400,340 Q2640,370 2880,340" fill="none" stroke="#0EA5E9" stroke-width="1.1" opacity="0.05"/>
+      <path d="M-960,355 Q-720,325 -480,355 Q-240,385 0,355 Q240,325 480,355 Q720,385 960,355 Q1200,325 1440,355 Q1680,385 1920,355 Q2160,325 2400,355 Q2640,385 2880,355" fill="none" stroke="#0EA5E9" stroke-width="0.8" opacity="0.035"/>
+      <path d="M-960,328 Q-720,298 -480,328 Q-240,358 0,328 Q240,298 480,328 Q720,358 960,328 Q1200,298 1440,328 Q1680,358 1920,328 Q2160,298 2400,328 Q2640,358 2880,328" fill="none" stroke="#0EA5E9" stroke-width="0.7" opacity="0.03"/>
+      <path d="M-960,368 Q-720,338 -480,368 Q-240,398 0,368 Q240,338 480,368 Q720,398 960,368 Q1200,338 1440,368 Q1680,398 1920,368 Q2160,338 2400,368 Q2640,398 2880,368" fill="none" stroke="#0EA5E9" stroke-width="0.9" opacity="0.025"/>
+    </g>
+    <!-- Group 3: amber, mid -->
+    <g class="wg3">
+      <path d="M-960,500 Q-720,468 -480,500 Q-240,532 0,500 Q240,468 480,500 Q720,532 960,500 Q1200,468 1440,500 Q1680,532 1920,500 Q2160,468 2400,500 Q2640,532 2880,500" fill="none" stroke="#F97316" stroke-width="1.0" opacity="0.04"/>
+      <path d="M-960,514 Q-720,482 -480,514 Q-240,546 0,514 Q240,482 480,514 Q720,546 960,514 Q1200,482 1440,514 Q1680,546 1920,514 Q2160,482 2400,514 Q2640,546 2880,514" fill="none" stroke="#F97316" stroke-width="0.8" opacity="0.03"/>
+      <path d="M-960,487 Q-720,455 -480,487 Q-240,519 0,487 Q240,455 480,487 Q720,519 960,487 Q1200,455 1440,487 Q1680,519 1920,487 Q2160,455 2400,487 Q2640,519 2880,487" fill="none" stroke="#F97316" stroke-width="0.7" opacity="0.025"/>
+      <path d="M-960,526 Q-720,494 -480,526 Q-240,558 0,526 Q240,494 480,526 Q720,558 960,526 Q1200,494 1440,526 Q1680,558 1920,526 Q2160,494 2400,526 Q2640,558 2880,526" fill="none" stroke="#F97316" stroke-width="0.6" opacity="0.02"/>
+    </g>
+    <!-- Group 4: green, mid-lower -->
+    <g class="wg4">
+      <path d="M-960,645 Q-720,618 -480,645 Q-240,672 0,645 Q240,618 480,645 Q720,672 960,645 Q1200,618 1440,645 Q1680,672 1920,645 Q2160,618 2400,645 Q2640,672 2880,645" fill="none" stroke="#10B981" stroke-width="1.1" opacity="0.045"/>
+      <path d="M-960,658 Q-720,631 -480,658 Q-240,685 0,658 Q240,631 480,658 Q720,685 960,658 Q1200,631 1440,658 Q1680,685 1920,658 Q2160,631 2400,658 Q2640,685 2880,658" fill="none" stroke="#10B981" stroke-width="0.8" opacity="0.032"/>
+      <path d="M-960,634 Q-720,607 -480,634 Q-240,661 0,634 Q240,607 480,634 Q720,661 960,634 Q1200,607 1440,634 Q1680,661 1920,634 Q2160,607 2400,634 Q2640,661 2880,634" fill="none" stroke="#10B981" stroke-width="0.7" opacity="0.025"/>
+      <path d="M-960,668 Q-720,641 -480,668 Q-240,695 0,668 Q240,641 480,668 Q720,695 960,668 Q1200,641 1440,668 Q1680,695 1920,668 Q2160,641 2400,668 Q2640,695 2880,668" fill="none" stroke="#10B981" stroke-width="0.7" opacity="0.02"/>
+    </g>
+    <!-- Group 5: cyan, lower -->
+    <g class="wg5">
+      <path d="M-960,795 Q-720,768 -480,795 Q-240,822 0,795 Q240,768 480,795 Q720,822 960,795 Q1200,768 1440,795 Q1680,822 1920,795 Q2160,768 2400,795 Q2640,822 2880,795" fill="none" stroke="#0EA5E9" stroke-width="1.2" opacity="0.05"/>
+      <path d="M-960,808 Q-720,781 -480,808 Q-240,835 0,808 Q240,781 480,808 Q720,835 960,808 Q1200,781 1440,808 Q1680,835 1920,808 Q2160,781 2400,808 Q2640,835 2880,808" fill="none" stroke="#0EA5E9" stroke-width="0.9" opacity="0.035"/>
+      <path d="M-960,782 Q-720,755 -480,782 Q-240,809 0,782 Q240,755 480,782 Q720,809 960,782 Q1200,755 1440,782 Q1680,809 1920,782 Q2160,755 2400,782 Q2640,809 2880,782" fill="none" stroke="#0EA5E9" stroke-width="0.7" opacity="0.028"/>
+      <path d="M-960,819 Q-720,792 -480,819 Q-240,846 0,819 Q240,792 480,819 Q720,846 960,819 Q1200,792 1440,819 Q1680,846 1920,819 Q2160,792 2400,819 Q2640,846 2880,819" fill="none" stroke="#0EA5E9" stroke-width="0.8" opacity="0.022"/>
+    </g>
+  </svg>
+</div>
+<!-- Animated wave background: 5 groups of 4 strokes each, long wavelengths -->
+<div class="wave-bg" aria-hidden="true">
+  <svg class="waves-svg" viewBox="0 0 2880 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- group 1 – green, 4 strokes -->
+    <g class="wg wg1">
+      <path d="M0,220 C360,180 720,260 1080,220 C1440,180 1800,260 2160,220 C2520,180 2700,240 2880,220"/>
+      <path d="M0,235 C360,195 720,275 1080,235 C1440,195 1800,275 2160,235 C2520,195 2700,255 2880,235"/>
+      <path d="M0,248 C360,208 720,288 1080,248 C1440,208 1800,288 2160,248 C2520,208 2700,268 2880,248"/>
+      <path d="M0,260 C360,220 720,300 1080,260 C1440,220 1800,300 2160,260 C2520,220 2700,280 2880,260"/>
+    </g>
+    <!-- group 2 – cyan, 4 strokes -->
+    <g class="wg wg2">
+      <path d="M0,170 C480,130 960,210 1440,170 C1920,130 2400,210 2880,170"/>
+      <path d="M0,183 C480,143 960,223 1440,183 C1920,143 2400,223 2880,183"/>
+      <path d="M0,195 C480,155 960,235 1440,195 C1920,155 2400,235 2880,195"/>
+      <path d="M0,206 C480,166 960,246 1440,206 C1920,166 2400,246 2880,206"/>
+    </g>
+    <!-- group 3 – amber, 4 strokes -->
+    <g class="wg wg3">
+      <path d="M0,290 C540,250 1080,330 1620,290 C2160,250 2520,310 2880,290"/>
+      <path d="M0,302 C540,262 1080,342 1620,302 C2160,262 2520,322 2880,302"/>
+      <path d="M0,313 C540,273 1080,353 1620,313 C2160,273 2520,333 2880,313"/>
+      <path d="M0,323 C540,283 1080,363 1620,323 C2160,283 2520,343 2880,323"/>
+    </g>
+    <!-- group 4 – cyan light, 4 strokes -->
+    <g class="wg wg4">
+      <path d="M0,120 C600,80 1200,160 1800,120 C2400,80 2700,130 2880,120"/>
+      <path d="M0,132 C600,92 1200,172 1800,132 C2400,92 2700,142 2880,132"/>
+      <path d="M0,143 C600,103 1200,183 1800,143 C2400,103 2700,153 2880,143"/>
+      <path d="M0,153 C600,113 1200,193 1800,153 C2400,113 2700,163 2880,153"/>
+    </g>
+    <!-- group 5 – green light, 4 strokes -->
+    <g class="wg wg5">
+      <path d="M0,340 C720,300 1440,380 2160,340 C2520,320 2760,350 2880,340"/>
+      <path d="M0,350 C720,310 1440,390 2160,350 C2520,330 2760,360 2880,350"/>
+      <path d="M0,359 C720,319 1440,399 2160,359 C2520,339 2760,369 2880,359"/>
+      <path d="M0,367 C720,327 1440,400 2160,367 C2520,347 2760,377 2880,367"/>
+    </g>
+  </svg>
+</div>
 <div class="shell">
   <aside class="rail">
     <div class="brand"><h1><span class="dot"></span>HOOKED</h1><p>PERSONAL FISHING INSTRUMENT</p></div>
@@ -33,7 +113,7 @@
           <span class="loading-tag" id="loadingIndicator" hidden>· fetching live data…</span>
         </span>
       </div>
-      <svg class="tide" id="tideSvg" viewBox="0 0 960 230" preserveAspectRatio="none" aria-label="Tide curve with bite windows; drag to preview a time"></svg>
+      <svg class="tide" id="tideSvg" viewBox="0 0 960 380" aria-label="Tide curve with bite windows; drag to preview a time"></svg>
       <div class="inst-x" id="xaxis"></div>
     </div>
     <div class="grid2">
@@ -127,6 +207,6 @@
 </div>
 
 <script src="src/leaflet.js"></script>
-<script type="module" src="src/app.js?v=6"></script>
+<script type="module" src="src/app.js?v=8"></script>
 </body>
 </html>

@@ -76,6 +76,27 @@ body::after {
   background-repeat: no-repeat;
 }
 
+/* ── Animated waves ──────────────────────────────────────────────────────── */
+.wave-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.waves-svg {
+  position: absolute; bottom: 0; left: -100%; width: 300%; height: 70vh; min-height: 320px;
+}
+.wg { fill: none; stroke-width: 1.2; stroke-linecap: round; }
+.wg path { vector-effect: non-scaling-stroke; }
+
+.wg1 { stroke: rgba(16,185,129,.11); animation: waveSlide 22s linear infinite; }
+.wg2 { stroke: rgba(14,165,233,.09); animation: waveSlide 30s linear infinite reverse; }
+.wg3 { stroke: rgba(249,115,22,.07); animation: waveSlide 26s linear infinite 4s; }
+.wg4 { stroke: rgba(14,165,233,.08); animation: waveSlide 35s linear infinite 2s reverse; }
+.wg5 { stroke: rgba(16,185,129,.06); animation: waveSlide 28s linear infinite 8s; }
+
+@keyframes waveSlide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(33.33%); }
+}
+
 .shell { position: relative; z-index: 1; display: grid; grid-template-columns: var(--rail) 1fr; min-height: 100vh; }
 @media(max-width:860px) { .shell { grid-template-columns: 1fr; } }
 
@@ -112,9 +133,9 @@ body::after {
 
 .spots { list-style: none; padding: 0 12px 18px; display: flex; flex-direction: column; gap: 6px; }
 .spot {
-  width: 100%; text-align: left; padding: 12px 13px; border-radius: var(--r-sm);
+  width: 100%; text-align: left; padding: 10px 13px; border-radius: var(--r-sm);
   border: 1px solid transparent;
-  display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; align-items: center;
+  display: flex; align-items: center; gap: 12px;
   transition: background .15s, border-color .15s, box-shadow .15s;
 }
 .spot:hover { background: var(--surface); border-color: var(--line); }
@@ -122,15 +143,14 @@ body::after {
   background: var(--bg2); border-color: var(--line-2);
   box-shadow: var(--shadow-sm), inset 3px 0 0 var(--amber);
 }
-.spot .nm { font-size: 14px; font-weight: 600; color: var(--ink); }
-.spot .meta { grid-column: 1; font-size: 11px; color: var(--mute); font-family: var(--mono); letter-spacing: .02em; }
+.spot .nm { flex: 1; font-size: 14px; font-weight: 600; color: var(--ink); font-family: var(--disp); }
 
 .chip {
-  grid-row: 1/3; font-weight: 700; font-size: 14px;
+  flex: none; font-weight: 700; font-size: 14px;
   width: 40px; height: 40px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   border: 1.5px solid var(--line-2); color: var(--ink-dim); background: var(--surface);
-  font-family: var(--mono);
+  font-family: var(--disp);
 }
 .chip[data-band="prime"]  { color: var(--green); border-color: rgba(16,185,129,.35); background: var(--green-soft); }
 .chip[data-band="good"]   { color: var(--amber); border-color: rgba(249,115,22,.35);  background: var(--amber-soft); }
@@ -165,6 +185,19 @@ body::after {
   padding: 4px 11px; background: var(--bg2);
 }
 
+/* ── BACKGROUND WAVES ────────────────────────────────────────────────── */
+.bg-waves { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.bg-waves svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wg1 { animation: wave-drift 32s linear infinite; }
+.wg2 { animation: wave-drift 46s linear infinite reverse; }
+.wg3 { animation: wave-drift 24s linear infinite; }
+.wg4 { animation: wave-drift 52s linear infinite reverse; }
+.wg5 { animation: wave-drift 38s linear infinite; }
+@keyframes wave-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-960px); }
+}
+
 /* ── COND STRIP ───────────────────────────────────────────────────────── */
 .cond {
   display: grid; grid-template-columns: repeat(4,1fr);
@@ -179,7 +212,8 @@ body::after {
   .cell:nth-child(2) { border-right: none; }
   .cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
 }
-.cell .k { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.cell .k { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); display: flex; align-items: center; gap: 5px; }
+.cond-icon { width: 14px; height: 14px; flex: none; }
 .cell .v { font-family: var(--mono); font-size: 20px; margin-top: 6px; color: var(--ink); font-weight: 700; }
 .cell .v small { font-size: 11px; color: var(--ink-dim); font-weight: 400; }
 .up { color: var(--amber); } .down { color: var(--cyan); }
@@ -198,7 +232,7 @@ body::after {
 .inst-top .now-t { font-family: var(--disp); font-size: 12px; color: var(--amber); font-weight: 700; letter-spacing: .02em; }
 .inst-top .now-t.preview { color: var(--cyan); }
 .reset { font-size: 11px; font-weight: 500; color: var(--mute); margin-left: 12px; text-decoration: underline; text-decoration-style: dashed; }
-svg.tide { display: block; width: 100%; aspect-ratio: 960/380; max-height: 420px; touch-action: none; }
+svg.tide { display: block; width: 100%; aspect-ratio: 960/440; max-height: 500px; touch-action: none; }
 .inst-x { display: flex; justify-content: space-between; padding: 2px 20px 14px; font-family: var(--disp); font-size: 10px; font-weight: 600; color: var(--mute); letter-spacing: .04em; }
 
 /* ── SCORE + WINDOWS ──────────────────────────────────────────────────── */
