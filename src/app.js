@@ -339,14 +339,33 @@ function renderInstrument() {
 
   // ── Tide curve ───────────────────────────────────────────────────────────
   if (ex && ex.length) {
-    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .4, hi = Math.max(...vs) + .4;
+    // Extend extrema with synthetic boundary points so the curve is smooth
+    // across the full 24h instead of going flat at the edges
+    const loH = Math.min(...ex.map(e => e.height));
+    const hiH = Math.max(...ex.map(e => e.height));
+    const spanPre = ex.length > 1 ? +ex[1].t - +ex[0].t : 6 * 60 * MIN;
+    const spanPost = ex.length > 1 ? +ex[ex.length-1].t - +ex[ex.length-2].t : 6 * 60 * MIN;
+    const synPre = {
+      t: new Date(+ex[0].t - spanPre),
+      height: ex[0].type === 'H' ? loH : hiH,
+      type: ex[0].type === 'H' ? 'L' : 'H', virtual: true
+    };
+    const synPost = {
+      t: new Date(+ex[ex.length-1].t + spanPost),
+      height: ex[ex.length-1].type === 'H' ? loH : hiH,
+      type: ex[ex.length-1].type === 'H' ? 'L' : 'H', virtual: true
+    };
+    const allEx = [synPre, ...ex, synPost];
+
+    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .5, hi = Math.max(...vs) + .5;
     const X = m => Wd * m / 1440;
     const Y = v => padT + tideH * (1 - (v - lo) / (hi - lo));
     const interp = ms => {
       let i = 0;
-      while (i < ex.length - 1 && +ex[i + 1].t <= ms) i++;
-      const a = ex[i], b = ex[i + 1];
-      if (!b || ms <= +a.t) return a.height;
+      while (i < allEx.length - 1 && +allEx[i + 1].t <= ms) i++;
+      const a = allEx[i], b = allEx[i + 1];
+      if (!b) return a.height;
+      if (ms <= +a.t) return a.height;
       const ph = (ms - +a.t) / (+b.t - +a.t);
       return a.height + (b.height - a.height) * (1 - Math.cos(Math.PI * ph)) / 2;
     };
@@ -355,13 +374,22 @@ function renderInstrument() {
     const baseY = padT + tideH;
     g += `<path d="${d}L${Wd},${baseY} L0,${baseY}Z" fill="rgba(14,165,233,.09)"/>`;
     g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+    // Labels with white background pill for readability
     ex.forEach(e => {
       const m = (+e.t - +dayStart) / MIN, cx = X(m), cy = Y(e.height);
-      g += `<circle cx="${cx}" cy="${cy}" r="4" fill="#fff" stroke="#0EA5E9" stroke-width="2.5"/>`;
       const up = e.type === 'H';
-      g += `<text x="${cx}" y="${up ? cy - 13 : cy + 20}" fill="#374151" font-family="Space Grotesk" font-size="12" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
-      g += `<text x="${cx}" y="${up ? cy - 1 : cy + 32}" fill="#9CA3AF" font-family="Space Grotesk" font-size="10" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
+      const lblY = up ? cy - 38 : cy + 18;
+      const timeY = lblY + 16;
+      // pill background
+      g += `<rect x="${cx - 38}" y="${lblY - 14}" width="76" height="34" rx="6" fill="rgba(255,255,255,.90)" stroke="rgba(0,0,0,.07)" stroke-width="1"/>`;
+      g += `<text x="${cx}" y="${lblY}" fill="${up ? '#0EA5E9' : '#374151'}" font-family="Space Grotesk" font-size="13" font-weight="800" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
+      g += `<text x="${cx}" y="${timeY}" fill="#6B7280" font-family="Space Grotesk" font-size="11" font-weight="600" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
+      // connector line from pill to dot
+      g += `<line x1="${cx}" y1="${up ? lblY + 20 : lblY - 2}" x2="${cx}" y2="${up ? cy - 4 : cy + 4}" stroke="#0EA5E9" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>`;
+      g += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#fff" stroke="#0EA5E9" stroke-width="2.5"/>`;
     });
+
     const xn = X(nowMin), vn = interp(+dayStart + nowMin * MIN);
     g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".8"/>`;
     g += `<circle cx="${xn}" cy="${Y(vn)}" r="6" fill="${isPreview ? '#0EA5E9' : '#F97316'}" stroke="#fff" stroke-width="2.5"/>`;
