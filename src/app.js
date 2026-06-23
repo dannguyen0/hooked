@@ -295,9 +295,9 @@ function renderInstrument() {
   ];
   let legX = padL;
   legItems.forEach(([c, lbl]) => {
-    g += `<rect x="${legX}" y="6" width="9" height="9" rx="2" fill="${c}"/>`;
-    g += `<text x="${legX + 13}" y="15" fill="#6B7280" font-family="Space Grotesk" font-size="10" font-weight="600">${lbl}</text>`;
-    legX += lbl.length * 6.2 + 22;
+    g += `<rect x="${legX}" y="7" width="9" height="9" rx="2" fill="${c}"/>`;
+    g += `<text x="${legX + 13}" y="16" fill="#6B7280" font-family="Space Grotesk" font-size="12" font-weight="600">${lbl}</text>`;
+    legX += lbl.length * 7.0 + 24;
   });
 
   // ── Subtle grid lines ────────────────────────────────────────────────────
