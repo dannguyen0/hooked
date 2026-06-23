@@ -216,7 +216,7 @@ body::before {
 .inst-top .now-t { font-family: var(--disp); font-size: 12px; color: var(--amber); font-weight: 700; letter-spacing: .02em; }
 .inst-top .now-t.preview { color: var(--cyan); }
 .reset { font-size: 11px; font-weight: 500; color: var(--mute); margin-left: 12px; text-decoration: underline; text-decoration-style: dashed; }
-svg.tide { display: block; width: 100%; aspect-ratio: 960/440; max-height: 500px; touch-action: none; }
+svg.tide { display: block; width: 100%; touch-action: none; }
 .inst-x { display: flex; justify-content: space-between; padding: 2px 20px 14px; font-family: var(--disp); font-size: 10px; font-weight: 600; color: var(--mute); letter-spacing: .04em; }
 
 /* ── SCORE + WINDOWS ──────────────────────────────────────────────────── */

@@ -271,14 +271,15 @@ function renderHead() {
 
 function renderInstrument() {
   const sp = active, svg = $('tideSvg');
-  // Viewbox: wider:taller ratio gives the tide curve natural proportions
-  const Wd = 960, Ht = 440;
-  const padT = 30, padL = 0;
-  const tideH = 260;            // tide curve pixel height
-  const stripY = padT + tideH + 18;
-  const stripH = 24;
-  const footY  = stripY + stripH + 22; // sun/legend row
+  const Wd = 960;
+  const padT = 28;
+  const tideH = 248;
+  const stripY = padT + tideH + 14;
+  const stripH = 22;
+  const footY  = stripY + stripH + 18;
+  const Ht     = footY + 12;           // tight fit — no dead space
   svg.setAttribute('viewBox', `0 0 ${Wd} ${Ht}`);
+  svg.style.aspectRatio = `${Wd}/${Ht}`;
 
   let g = '';
 
