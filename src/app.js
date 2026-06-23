@@ -271,17 +271,19 @@ function renderHead() {
 
 function renderInstrument() {
   const sp = active, svg = $('tideSvg');
-  const Wd = 960;
+  const Wd = 960, padL = 18, padR = 18;
   const padT = 28;
   const tideH = 248;
   const stripY = padT + tideH + 14;
   const stripH = 22;
   const footY  = stripY + stripH + 18;
-  const Ht     = footY + 12;           // tight fit — no dead space
+  const Ht     = footY + 12;
   svg.setAttribute('viewBox', `0 0 ${Wd} ${Ht}`);
   svg.style.aspectRatio = `${Wd}/${Ht}`;
 
   let g = '';
+  const stripW = Wd - padL - padR;
+  const Xm = m => padL + stripW * m / 1440;
 
   const sd = spotData[sp.id];
   const ex = sd?.ctx?.extrema;
@@ -301,20 +303,20 @@ function renderInstrument() {
   // ── Subtle grid lines ────────────────────────────────────────────────────
   for (let i = 0; i <= 4; i++) {
     const y = padT + tideH * i / 4;
-    g += `<line x1="0" y1="${y}" x2="${Wd}" y2="${y}" stroke="rgba(0,0,0,.05)" stroke-width="1"/>`;
+    g += `<line x1="${padL}" y1="${y}" x2="${Wd - padR}" y2="${y}" stroke="rgba(0,0,0,.05)" stroke-width="1"/>`;
   }
 
   // ── Activity strip ───────────────────────────────────────────────────────
-  g += `<text x="0" y="${stripY - 5}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9.5" font-weight="700" letter-spacing="1.5">FISH ACTIVITY</text>`;
-  g += `<clipPath id="stripClip"><rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="5"/></clipPath>`;
-  g += `<rect x="0" y="${stripY}" width="${Wd}" height="${stripH}" rx="5" fill="rgba(0,0,0,.05)"/>`;
+  g += `<text x="${padL}" y="${stripY - 5}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9.5" font-weight="700" letter-spacing="1.5">FISH ACTIVITY</text>`;
+  g += `<clipPath id="stripClip"><rect x="${padL}" y="${stripY}" width="${stripW}" height="${stripH}" rx="5"/></clipPath>`;
+  g += `<rect x="${padL}" y="${stripY}" width="${stripW}" height="${stripH}" rx="5" fill="rgba(0,0,0,.05)"/>`;
 
   for (let m = 0; m < 1440; m += 4) {
     const s = scoreAt(sp, m).s;
     const col = s >= 75 ? '#10B981' : s >= 55 ? '#F97316' : s >= 35 ? '#0EA5E9' : null;
     if (!col) continue;
     const op = s >= 75 ? 0.88 : s >= 55 ? 0.72 : 0.48;
-    const x = Wd * m / 1440, w = Wd * 4 / 1440 + 0.5;
+    const x = padL + stripW * m / 1440, w = stripW * 4 / 1440 + 0.5;
     g += `<rect x="${x}" y="${stripY}" width="${w}" height="${stripH}" fill="${col}" opacity="${op}" clip-path="url(#stripClip)"/>`;
   }
 
@@ -325,7 +327,7 @@ function renderInstrument() {
       if (!t) return;
       const m = (+t - +dayStart) / MIN;
       if (m < 0 || m > 1440) return;
-      const x = Wd * m / 1440;
+      const x = Xm(m);
       g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY}" stroke="rgba(139,92,246,.22)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
       g += `<rect x="${x - 14}" y="${stripY}" width="28" height="${stripH}" fill="rgba(139,92,246,.22)" clip-path="url(#stripClip)"/>`;
     });
@@ -333,7 +335,7 @@ function renderInstrument() {
       if (!t) return;
       const m = (+t - +dayStart) / MIN;
       if (m < 0 || m > 1440) return;
-      const x = Wd * m / 1440;
+      const x = Xm(m);
       g += `<line x1="${x}" y1="${padT + 40}" x2="${x}" y2="${stripY}" stroke="rgba(139,92,246,.12)" stroke-width="1" stroke-dasharray="2 4"/>`;
     });
   }
@@ -359,7 +361,7 @@ function renderInstrument() {
     const allEx = [synPre, ...ex, synPost];
 
     const vs = ex.map(e => e.height), lo = Math.min(...vs) - .5, hi = Math.max(...vs) + .5;
-    const X = m => Wd * m / 1440;
+    const X = m => Xm(m);
     const Y = v => padT + tideH * (1 - (v - lo) / (hi - lo));
     const interp = ms => {
       let i = 0;
@@ -373,7 +375,7 @@ function renderInstrument() {
     let d = '';
     for (let m = 0; m <= 1440; m += 4) { const v = interp(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ',' + Y(v).toFixed(1) + ' '; }
     const baseY = padT + tideH;
-    g += `<path d="${d}L${Wd},${baseY} L0,${baseY}Z" fill="rgba(14,165,233,.09)"/>`;
+    g += `<path d="${d}L${Wd - padR},${baseY} L${padL},${baseY}Z" fill="rgba(14,165,233,.09)"/>`;
     g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linejoin="round"/>`;
 
     // Labels with white background pill for readability
@@ -400,11 +402,11 @@ function renderInstrument() {
     const msg = sd?.loading ? 'Fetching live tide data…'
       : isFresh ? 'Freshwater — solunar + light scoring'
       : 'Add a NOAA Station ID to enable tide data';
-    g += `<line x1="0" y1="${yMid}" x2="${Wd}" y2="${yMid}" stroke="rgba(0,0,0,.07)" stroke-dasharray="6 5"/>`;
+    g += `<line x1="${padL}" y1="${yMid}" x2="${Wd - padR}" y2="${yMid}" stroke="rgba(0,0,0,.07)" stroke-dasharray="6 5"/>`;
     g += `<text x="${Wd/2}" y="${yMid - 10}" fill="#9CA3AF" font-family="Space Grotesk" font-size="14" font-weight="600" text-anchor="middle">${msg}</text>`;
     if (!isFresh && !sd?.loading)
       g += `<text x="${Wd/2}" y="${yMid + 16}" fill="#F97316" font-family="Space Grotesk" font-size="12" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → edit spot</text>`;
-    const xn = Wd * nowMin / 1440;
+    const xn = Xm(nowMin);
     g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" opacity=".8"/>`;
   }
 
@@ -414,7 +416,7 @@ function renderInstrument() {
       if (!t) return;
       const m = (+t - +dayStart) / MIN;
       if (m < 0 || m > 1440) return;
-      const x = Wd * m / 1440;
+      const x = Xm(m);
       g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY}" stroke="rgba(251,191,36,.45)" stroke-width="1" stroke-dasharray="4 4"/>`;
       g += `<text x="${x}" y="${footY}" fill="#D97706" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">${lbl}</text>`;
     });
