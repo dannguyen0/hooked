@@ -60,41 +60,25 @@ body::before {
   z-index: 0;
 }
 
-/* Abstract dithered fish silhouettes */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60'%3E%3Cellipse cx='52' cy='30' rx='34' ry='16' fill='%2310B981' opacity='.06'/%3E%3Cellipse cx='52' cy='30' rx='24' ry='10' fill='none' stroke='%2310B981' stroke-width='1.5' opacity='.08'/%3E%3Cpath d='M86 30 Q100 18 108 30 Q100 42 86 30Z' fill='%2310B981' opacity='.07'/%3E%3Ccircle cx='24' cy='27' r='3' fill='%2310B981' opacity='.10'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'%3E%3Cellipse cx='42' cy='25' rx='28' ry='13' fill='%230EA5E9' opacity='.06'/%3E%3Cellipse cx='42' cy='25' rx='18' ry='8' fill='none' stroke='%230EA5E9' stroke-width='1.5' opacity='.07'/%3E%3Cpath d='M70 25 Q82 15 90 25 Q82 35 70 25Z' fill='%230EA5E9' opacity='.06'/%3E%3Ccircle cx='20' cy='22' r='2.5' fill='%230EA5E9' opacity='.09'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 70'%3E%3Cellipse cx='60' cy='35' rx='40' ry='20' fill='%23F97316' opacity='.05'/%3E%3Cellipse cx='60' cy='35' rx='28' ry='13' fill='none' stroke='%23F97316' stroke-width='1.5' opacity='.06'/%3E%3Cpath d='M100 35 Q116 21 126 35 Q116 49 100 35Z' fill='%23F97316' opacity='.05'/%3E%3Ccircle cx='28' cy='31' r='3.5' fill='%23F97316' opacity='.08'/%3E%3C/svg%3E");
-  background-size: 320px 160px, 240px 120px, 400px 200px;
-  background-position: 80% 20%, 15% 65%, 55% 85%;
-  background-repeat: no-repeat;
-}
 
-/* ── Animated waves ──────────────────────────────────────────────────────── */
+/* ── Animated gradient wave ribbons ─────────────────────────────────────── */
 .wave-bg {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
 }
 .waves-svg {
-  position: absolute; bottom: 0; left: -100%; width: 300%; height: 70vh; min-height: 320px;
+  position: absolute; bottom: 0; left: -100%; width: 300%; height: 75vh; min-height: 380px;
 }
-.wg { fill: none; stroke-width: 1.2; stroke-linecap: round; }
-.wg path { vector-effect: non-scaling-stroke; }
 
-.wg1 { stroke: rgba(16,185,129,.11); animation: waveSlide 22s linear infinite; }
-.wg2 { stroke: rgba(14,165,233,.09); animation: waveSlide 30s linear infinite reverse; }
-.wg3 { stroke: rgba(249,115,22,.07); animation: waveSlide 26s linear infinite 4s; }
-.wg4 { stroke: rgba(14,165,233,.08); animation: waveSlide 35s linear infinite 2s reverse; }
-.wg5 { stroke: rgba(16,185,129,.06); animation: waveSlide 28s linear infinite 8s; }
+.wr1 { animation: waveSlide 28s ease-in-out infinite; }
+.wr2 { animation: waveSlide 36s ease-in-out infinite reverse; }
+.wr3 { animation: waveSlide 24s ease-in-out infinite 4s; }
+.wr4 { animation: waveSlide 32s ease-in-out infinite 2s reverse; }
+.wr5 { animation: waveSlide 40s ease-in-out infinite 6s; }
 
 @keyframes waveSlide {
-  from { transform: translateX(0); }
-  to   { transform: translateX(33.33%); }
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(16.67%); }
+  100% { transform: translateX(0); }
 }
 
 .shell { position: relative; z-index: 1; display: grid; grid-template-columns: var(--rail) 1fr; min-height: 100vh; }

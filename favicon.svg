@@ -1,0 +1,18 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="14" fill="white"/>
+  <defs>
+    <linearGradient id="hk" x1="32" y1="8" x2="48" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#F97316"/>
+      <stop offset="45%"  stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <!-- Hook eye (small loop at top) -->
+  <circle cx="30" cy="13" r="5" fill="none" stroke="url(#hk)" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Shank -->
+  <line x1="30" y1="18" x2="30" y2="42" stroke="url(#hk)" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Bend and point (J-curve) -->
+  <path d="M30,42 C30,54 50,56 50,46 C50,38 38,36 34,40" fill="none" stroke="url(#hk)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Barb -->
+  <path d="M34,40 L40,35" fill="none" stroke="url(#hk)" stroke-width="3" stroke-linecap="round"/>
+</svg>

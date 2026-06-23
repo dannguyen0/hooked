@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Hooked — personal fishing instrument</title>
 <meta name="description" content="Personal fishing instrument: tides, best-time bite windows, and tackle for your local spots." />
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -52,44 +53,68 @@
     </g>
   </svg>
 </div>
-<!-- Animated wave background: 5 groups of 4 strokes each, long wavelengths -->
+<!-- Animated gradient wave ribbons -->
 <div class="wave-bg" aria-hidden="true">
-  <svg class="waves-svg" viewBox="0 0 2880 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- group 1 – green, 4 strokes -->
-    <g class="wg wg1">
-      <path d="M0,220 C360,180 720,260 1080,220 C1440,180 1800,260 2160,220 C2520,180 2700,240 2880,220"/>
-      <path d="M0,235 C360,195 720,275 1080,235 C1440,195 1800,275 2160,235 C2520,195 2700,255 2880,235"/>
-      <path d="M0,248 C360,208 720,288 1080,248 C1440,208 1800,288 2160,248 C2520,208 2700,268 2880,248"/>
-      <path d="M0,260 C360,220 720,300 1080,260 C1440,220 1800,300 2160,260 C2520,220 2700,280 2880,260"/>
-    </g>
-    <!-- group 2 – cyan, 4 strokes -->
-    <g class="wg wg2">
-      <path d="M0,170 C480,130 960,210 1440,170 C1920,130 2400,210 2880,170"/>
-      <path d="M0,183 C480,143 960,223 1440,183 C1920,143 2400,223 2880,183"/>
-      <path d="M0,195 C480,155 960,235 1440,195 C1920,155 2400,235 2880,195"/>
-      <path d="M0,206 C480,166 960,246 1440,206 C1920,166 2400,246 2880,206"/>
-    </g>
-    <!-- group 3 – amber, 4 strokes -->
-    <g class="wg wg3">
-      <path d="M0,290 C540,250 1080,330 1620,290 C2160,250 2520,310 2880,290"/>
-      <path d="M0,302 C540,262 1080,342 1620,302 C2160,262 2520,322 2880,302"/>
-      <path d="M0,313 C540,273 1080,353 1620,313 C2160,273 2520,333 2880,313"/>
-      <path d="M0,323 C540,283 1080,363 1620,323 C2160,283 2520,343 2880,323"/>
-    </g>
-    <!-- group 4 – cyan light, 4 strokes -->
-    <g class="wg wg4">
-      <path d="M0,120 C600,80 1200,160 1800,120 C2400,80 2700,130 2880,120"/>
-      <path d="M0,132 C600,92 1200,172 1800,132 C2400,92 2700,142 2880,132"/>
-      <path d="M0,143 C600,103 1200,183 1800,143 C2400,103 2700,153 2880,143"/>
-      <path d="M0,153 C600,113 1200,193 1800,153 C2400,113 2700,163 2880,153"/>
-    </g>
-    <!-- group 5 – green light, 4 strokes -->
-    <g class="wg wg5">
-      <path d="M0,340 C720,300 1440,380 2160,340 C2520,320 2760,350 2880,340"/>
-      <path d="M0,350 C720,310 1440,390 2160,350 C2520,330 2760,360 2880,350"/>
-      <path d="M0,359 C720,319 1440,399 2160,359 C2520,339 2760,369 2880,359"/>
-      <path d="M0,367 C720,327 1440,400 2160,367 C2520,347 2760,377 2880,367"/>
-    </g>
+  <svg class="waves-svg" viewBox="0 0 2880 560" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Cyan → Green ribbon -->
+      <linearGradient id="wg1" x1="0" y1="0" x2="2880" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#0EA5E9" stop-opacity="0.22"/>
+        <stop offset="40%"  stop-color="#10B981" stop-opacity="0.18"/>
+        <stop offset="70%"  stop-color="#0EA5E9" stop-opacity="0.20"/>
+        <stop offset="100%" stop-color="#10B981" stop-opacity="0.16"/>
+      </linearGradient>
+      <!-- Green → Cyan ribbon -->
+      <linearGradient id="wg2" x1="0" y1="0" x2="2880" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#10B981" stop-opacity="0.18"/>
+        <stop offset="35%"  stop-color="#0EA5E9" stop-opacity="0.22"/>
+        <stop offset="65%"  stop-color="#10B981" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0.20"/>
+      </linearGradient>
+      <!-- Cyan → Amber accent -->
+      <linearGradient id="wg3" x1="0" y1="0" x2="2880" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#0EA5E9" stop-opacity="0.12"/>
+        <stop offset="50%"  stop-color="#F97316" stop-opacity="0.10"/>
+        <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0.12"/>
+      </linearGradient>
+      <!-- Deep cyan ribbon -->
+      <linearGradient id="wg4" x1="0" y1="0" x2="2880" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#0EA5E9" stop-opacity="0.20"/>
+        <stop offset="50%"  stop-color="#10B981" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0.18"/>
+      </linearGradient>
+      <!-- Green soft bottom -->
+      <linearGradient id="wg5" x1="0" y1="0" x2="2880" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#10B981" stop-opacity="0.13"/>
+        <stop offset="60%"  stop-color="#0EA5E9" stop-opacity="0.17"/>
+        <stop offset="100%" stop-color="#10B981" stop-opacity="0.11"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Ribbon 1: large upper cyan-green sweep -->
+    <path class="wr wr1" fill="url(#wg1)"
+      d="M0,80 C360,20 720,150 1080,70 C1440,0 1800,110 2160,50 C2520,0 2750,70 2880,50
+         L2880,210 C2750,230 2520,150 2160,200 C1800,250 1440,130 1080,200 C720,260 360,150 0,210 Z"/>
+
+    <!-- Ribbon 2: crossing mid-screen green wave -->
+    <path class="wr wr2" fill="url(#wg2)"
+      d="M0,190 C480,130 960,270 1440,180 C1920,90 2400,240 2880,160
+         L2880,320 C2400,380 1920,220 1440,320 C960,400 480,270 0,340 Z"/>
+
+    <!-- Ribbon 3: amber-cyan accent, thinner band crossing lower-mid -->
+    <path class="wr wr3" fill="url(#wg3)"
+      d="M0,290 C540,240 1080,360 1620,280 C2160,200 2520,310 2880,260
+         L2880,370 C2520,410 2160,300 1620,380 C1080,450 540,340 0,390 Z"/>
+
+    <!-- Ribbon 4: deep sweeping cyan ribbon lower half -->
+    <path class="wr wr4" fill="url(#wg4)"
+      d="M0,350 C360,290 720,420 1080,340 C1440,260 1800,390 2160,310 C2520,240 2750,350 2880,300
+         L2880,450 C2750,480 2520,370 2160,440 C1800,500 1440,380 1080,460 C720,530 360,420 0,480 Z"/>
+
+    <!-- Ribbon 5: soft green base wave -->
+    <path class="wr wr5" fill="url(#wg5)"
+      d="M0,430 C600,375 1200,490 1800,420 C2400,355 2700,430 2880,400
+         L2880,560 L0,560 Z"/>
   </svg>
 </div>
 <div class="shell">
@@ -207,6 +232,6 @@
 </div>
 
 <script src="src/leaflet.js"></script>
-<script type="module" src="src/app.js?v=8"></script>
+<script type="module" src="src/app.js?v=9"></script>
 </body>
 </html>
