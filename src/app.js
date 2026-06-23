@@ -293,11 +293,11 @@ function renderInstrument() {
     ['#10B981','Prime ≥75'],['#F97316','Good 55–74'],['#0EA5E9','Fair 35–54'],
     ['rgba(139,92,246,.7)','Solunar peak'],
   ];
-  let legX = 0;
+  let legX = padL;
   legItems.forEach(([c, lbl]) => {
-    g += `<rect x="${legX}" y="6" width="10" height="10" rx="2.5" fill="${c}"/>`;
-    g += `<text x="${legX + 14}" y="15" fill="#6B7280" font-family="Space Grotesk" font-size="11" font-weight="600">${lbl}</text>`;
-    legX += lbl.length * 6.8 + 26;
+    g += `<rect x="${legX}" y="6" width="9" height="9" rx="2" fill="${c}"/>`;
+    g += `<text x="${legX + 13}" y="15" fill="#6B7280" font-family="Space Grotesk" font-size="10" font-weight="600">${lbl}</text>`;
+    legX += lbl.length * 6.2 + 22;
   });
 
   // ── Subtle grid lines ────────────────────────────────────────────────────
@@ -382,12 +382,12 @@ function renderInstrument() {
     ex.forEach(e => {
       const m = (+e.t - +dayStart) / MIN, cx = X(m), cy = Y(e.height);
       const up = e.type === 'H';
-      const lblY = up ? cy - 38 : cy + 18;
-      const timeY = lblY + 16;
+      const lblY = up ? cy - 30 : cy + 14;
+      const timeY = lblY + 13;
       // pill background
-      g += `<rect x="${cx - 38}" y="${lblY - 14}" width="76" height="34" rx="6" fill="rgba(255,255,255,.90)" stroke="rgba(0,0,0,.07)" stroke-width="1"/>`;
-      g += `<text x="${cx}" y="${lblY}" fill="${up ? '#0EA5E9' : '#374151'}" font-family="Space Grotesk" font-size="13" font-weight="800" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
-      g += `<text x="${cx}" y="${timeY}" fill="#6B7280" font-family="Space Grotesk" font-size="11" font-weight="600" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
+      g += `<rect x="${cx - 30}" y="${lblY - 11}" width="60" height="27" rx="5" fill="rgba(255,255,255,.92)" stroke="rgba(0,0,0,.08)" stroke-width="1"/>`;
+      g += `<text x="${cx}" y="${lblY}" fill="${up ? '#0EA5E9' : '#374151'}" font-family="Space Grotesk" font-size="10.5" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
+      g += `<text x="${cx}" y="${timeY}" fill="#6B7280" font-family="Space Grotesk" font-size="9.5" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
       // connector line from pill to dot
       g += `<line x1="${cx}" y1="${up ? lblY + 20 : lblY - 2}" x2="${cx}" y2="${up ? cy - 4 : cy + 4}" stroke="#0EA5E9" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>`;
       g += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#fff" stroke="#0EA5E9" stroke-width="2.5"/>`;
