@@ -209,7 +209,9 @@ $('dateLabel').textContent = today.toLocaleDateString('en-US', { weekday: 'short
 
 function renderRail() {
   $('spotList').innerHTML = SPOTS.map(sp => {
-    const bs = scoreAt(sp, realNow).s;
+    const ws = winAt(sp);
+    const best = ws[0];
+    const bs = best ? best.pk : scoreAt(sp, realNow).s;
     const b = band(bs);
     const isCustom = !!sp._custom;
     return `<li class="spot-li">
