@@ -166,14 +166,25 @@ function winAt(spot) {
 
 // ── Custom spots (localStorage) ───────────────────────────────────────────
 const CUSTOM_KEY = 'hooked_custom_v1';
+const HIDDEN_KEY = 'hooked_hidden_v1';
 function loadCustomSpots() {
   try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); } catch { return []; }
 }
 function saveCustomSpots(spots) {
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(spots));
 }
-function deleteCustomSpot(id) {
-  saveCustomSpots(loadCustomSpots().filter(s => s.id !== id));
+function loadHiddenIds() {
+  try { return JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'); } catch { return []; }
+}
+function hideSpot(id) {
+  const hidden = loadHiddenIds();
+  if (!hidden.includes(id)) { hidden.push(id); localStorage.setItem(HIDDEN_KEY, JSON.stringify(hidden)); }
+}
+function deleteSpot(id) {
+  const sp = SPOTS.find(s => s.id === id);
+  if (!sp) return;
+  if (sp._custom) saveCustomSpots(loadCustomSpots().filter(s => s.id !== id));
+  else hideSpot(id);
   SPOTS = SPOTS.filter(s => s.id !== id);
   delete spotData[id];
   if (active.id === id) { active = SPOTS[0]; nowMin = realNow; isPreview = false; }
@@ -207,7 +218,9 @@ function renderRail() {
       <button class="spot" data-id="${sp.id}" aria-current="${sp.id === active.id}">
         <span class="chip" data-band="${b}">${bs}</span>
         <span class="nm">${sp.name}</span>
-      </button>${isCustom ? `<button class="spot-edit" data-edit="${sp.id}" title="Edit spot">✎</button><button class="spot-del" data-del="${sp.id}" title="Delete spot">×</button>` : ''}
+      </button>
+      ${isCustom ? `<button class="spot-edit" data-edit="${sp.id}" title="Edit spot">✎</button>` : ''}
+      <button class="spot-del" data-del="${sp.id}" title="Remove spot">×</button>
     </li>`;
   }).join('');
   $('spotList').querySelectorAll('.spot').forEach(btn => btn.onclick = () => {
@@ -226,7 +239,7 @@ function renderRail() {
   $('spotList').querySelectorAll('.spot-del').forEach(btn => btn.onclick = e => {
     e.stopPropagation();
     const sp = SPOTS.find(s => s.id === btn.dataset.del);
-    if (sp && confirm(`Delete "${sp.name}"?`)) deleteCustomSpot(sp.id);
+    if (sp && confirm(`Remove "${sp.name}" from your list?`)) deleteSpot(sp.id);
   });
 }
 
@@ -779,7 +792,8 @@ document.querySelectorAll('input[name="water"]').forEach(r => r.onchange = () =>
       fetch('data/species.json').then(r => r.json()),
     ]);
     FISHDB = fish.species;
-    SPOTS = locs.locations;
+    const hiddenIds = loadHiddenIds();
+    SPOTS = locs.locations.filter(s => !hiddenIds.includes(s.id));
     // Merge custom spots from localStorage
     loadCustomSpots().forEach(sp => SPOTS.push(sp));
     // Build sample contexts for all spots immediately (enables instant render)

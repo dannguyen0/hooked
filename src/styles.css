@@ -300,7 +300,7 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   border-bottom: 1px solid var(--line);
   background: radial-gradient(130% 100% at 50% 30%, rgba(14,165,233,.07), transparent 70%), var(--surface);
 }
-.plate img { max-height: 124px; max-width: 90%; filter: drop-shadow(0 6px 16px rgba(0,0,0,.12)); }
+.plate img { max-height: 124px; max-width: 90%; mix-blend-mode: multiply; filter: drop-shadow(0 4px 12px rgba(0,0,0,.10)); }
 .plate .ph { font-size: 10px; font-weight: 600; color: var(--mute); letter-spacing: .1em; text-transform: uppercase; }
 
 .cbody { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
