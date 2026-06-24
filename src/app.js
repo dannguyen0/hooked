@@ -209,9 +209,7 @@ $('dateLabel').textContent = today.toLocaleDateString('en-US', { weekday: 'short
 
 function renderRail() {
   $('spotList').innerHTML = SPOTS.map(sp => {
-    const ws = winAt(sp);
-    const best = ws[0];
-    const bs = best ? best.pk : scoreAt(sp, nowMin).s;
+    const bs = scoreAt(sp, realNow).s;
     const b = band(bs);
     const isCustom = !!sp._custom;
     return `<li class="spot-li">
@@ -297,6 +295,13 @@ function renderInstrument() {
   let g = '';
   const stripW = Wd - padL - padR;
   const Xm = m => padL + stripW * m / 1440;
+
+  // Clip path that constrains the tide chart content (curve + labels) to the chart area
+  g += `<defs>
+    <clipPath id="tideClip">
+      <rect x="${padL - 2}" y="${padT - 2}" width="${stripW + 4}" height="${tideH + 4}"/>
+    </clipPath>
+  </defs>`;
 
   const sd = spotData[sp.id];
   const ex = sd?.ctx?.extrema;
@@ -388,26 +393,23 @@ function renderInstrument() {
     let d = '';
     for (let m = 0; m <= 1440; m += 4) { const v = interp(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ',' + Y(v).toFixed(1) + ' '; }
     const baseY = padT + tideH;
+    g += `<g clip-path="url(#tideClip)">`;
     g += `<path d="${d}L${Wd - padR},${baseY} L${padL},${baseY}Z" fill="rgba(14,165,233,.09)"/>`;
     g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linejoin="round"/>`;
 
-    // Labels with white background pill for readability
+    // Labels — clipped to tide area, positioned above/below extrema dots
     ex.forEach(e => {
       const m = (+e.t - +dayStart) / MIN, cx = X(m), cy = Y(e.height);
       const up = e.type === 'H';
-      // clamp so 27px-tall pill stays inside the tide chart area
-      const chartTop = padT + 12, chartBot = padT + tideH - 8;
-      const rawLblY = up ? cy - 30 : cy + 14;
-      const lblY = Math.min(Math.max(rawLblY, chartTop), chartBot - 27);
+      const lblY = up ? Math.max(cy - 30, padT + 14) : Math.min(cy + 14, padT + tideH - 30);
       const timeY = lblY + 13;
-      // pill background
       g += `<rect x="${cx - 30}" y="${lblY - 11}" width="60" height="27" rx="5" fill="rgba(255,255,255,.92)" stroke="rgba(0,0,0,.08)" stroke-width="1"/>`;
       g += `<text x="${cx}" y="${lblY}" fill="${up ? '#0EA5E9' : '#374151'}" font-family="Space Grotesk" font-size="10.5" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
       g += `<text x="${cx}" y="${timeY}" fill="#6B7280" font-family="Space Grotesk" font-size="9.5" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
-      // connector line from pill to dot
       g += `<line x1="${cx}" y1="${up ? lblY + 20 : lblY - 2}" x2="${cx}" y2="${up ? cy - 4 : cy + 4}" stroke="#0EA5E9" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>`;
       g += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#fff" stroke="#0EA5E9" stroke-width="2.5"/>`;
     });
+    g += `</g>`;
 
     const xn = X(nowMin), vn = interp(+dayStart + nowMin * MIN);
     g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".8"/>`;
