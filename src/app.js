@@ -704,19 +704,63 @@ addSpotForm.onsubmit = e => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
+// ── NOAA station lookup — fetch all tide stations once, cache in localStorage ─
+const NOAA_CACHE_KEY = 'hooked_noaa_stations_v1';
+let _noaaStations = null;
+
+async function getNoaaStations() {
+  if (_noaaStations) return _noaaStations;
+  try {
+    const cached = localStorage.getItem(NOAA_CACHE_KEY);
+    if (cached) { _noaaStations = JSON.parse(cached); return _noaaStations; }
+  } catch {}
+  try {
+    const res = await fetch('https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=tidepredictions&units=english');
+    const data = await res.json();
+    // Slim down to just what we need: id, name, lat, lng
+    _noaaStations = (data.stations || []).map(s => ({ id: s.id, name: s.name, lat: s.lat, lng: s.lng }));
+    try { localStorage.setItem(NOAA_CACHE_KEY, JSON.stringify(_noaaStations)); } catch {}
+    return _noaaStations;
+  } catch { return []; }
+}
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
 // ── Lat/lon inputs → move map pin + nearest station hint ─────────────────
-function updateNearestStationHint() {
+async function updateNearestStationHint() {
   const lat = parseFloat($('f-lat').value);
   const lon = parseFloat($('f-lon').value);
   const hint = $('nearestStationHint');
+  const stationInput = $('f-station');
   if (!hint || isNaN(lat) || isNaN(lon)) return;
-  const stationSpots = SPOTS.filter(s => s.station && s.water === 'salt');
-  if (!stationSpots.length) { hint.textContent = ''; return; }
-  const nearest = stationSpots.reduce((best, s) => {
-    const d = Math.hypot(s.lat - lat, s.lon - lon);
-    return (!best || d < best.d) ? { s, d } : best;
-  }, null);
-  if (nearest) hint.innerHTML = ` Nearest known: <b>${nearest.s.name}</b> uses station <b>${nearest.s.station}</b>.`;
+
+  // Only for salt water spots
+  const waterVal = document.querySelector('input[name="water"]:checked')?.value;
+  if (waterVal !== 'salt') { hint.textContent = ''; return; }
+
+  hint.innerHTML = ' <i style="color:#9CA3AF">Looking up nearest station…</i>';
+  const stations = await getNoaaStations();
+  if (!stations.length) { hint.textContent = ''; return; }
+
+  let best = null, bestDist = Infinity;
+  for (const s of stations) {
+    const d = haversineKm(lat, lon, s.lat, s.lng);
+    if (d < bestDist) { bestDist = d; best = s; }
+  }
+  if (!best) { hint.textContent = ''; return; }
+
+  const km = bestDist.toFixed(1), mi = (bestDist * 0.621).toFixed(1);
+  hint.innerHTML = ` Nearest: <b>${best.name}</b> · ID <b>${best.id}</b> · ${mi} mi away.
+    <a href="#" style="color:var(--amber);font-weight:700;margin-left:6px" id="useStationBtn">Use this</a>`;
+  $('useStationBtn')?.addEventListener('click', e => {
+    e.preventDefault();
+    stationInput.value = best.id;
+    hint.innerHTML = ` ✓ Auto-filled station <b>${best.id}</b> (${best.name}, ${mi} mi).`;
+  });
 }
 $('f-lat').addEventListener('input', () => { syncPinFromInputs(); updateNearestStationHint(); });
 $('f-lon').addEventListener('input', () => { syncPinFromInputs(); updateNearestStationHint(); });
