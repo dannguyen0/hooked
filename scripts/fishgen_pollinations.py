@@ -104,10 +104,10 @@ def download(slug, prompt, overwrite=False):
             data = r.read()
         with open(out, "wb") as f:
             f.write(data)
-        print(f"✓  ({len(data)//1024} KB)")
+        print(f"OK  ({len(data)//1024} KB)")
         return True
     except Exception as e:
-        print(f"✗  {e}")
+        print(f"FAIL  {e}")
         return False
 
 def main():
