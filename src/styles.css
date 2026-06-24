@@ -198,7 +198,7 @@ body::before {
 }
 .cell .k { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); display: flex; align-items: center; gap: 5px; }
 .cond-icon { width: 14px; height: 14px; flex: none; }
-.cell .v { font-family: var(--mono); font-size: 20px; margin-top: 6px; color: var(--ink); font-weight: 700; }
+.cell .v { font-family: var(--mono); font-size: 24px; margin-top: 6px; color: var(--ink); font-weight: 700; }
 .cell .v small { font-size: 11px; color: var(--ink-dim); font-weight: 400; }
 .up { color: var(--amber); } .down { color: var(--cyan); }
 
@@ -298,7 +298,7 @@ svg.tide { display: block; width: 100%; touch-action: none; }
 .plate {
   height: 140px; display: flex; align-items: center; justify-content: center;
   border-bottom: 1px solid var(--line);
-  background: radial-gradient(130% 100% at 50% 30%, rgba(14,165,233,.07), transparent 70%), var(--surface);
+  background: #ffffff;
 }
 .plate img { max-height: 124px; max-width: 90%; mix-blend-mode: multiply; filter: drop-shadow(0 4px 12px rgba(0,0,0,.10)); }
 .plate .ph { font-size: 10px; font-weight: 600; color: var(--mute); letter-spacing: .1em; text-transform: uppercase; }

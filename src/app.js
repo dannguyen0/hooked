@@ -395,7 +395,10 @@ function renderInstrument() {
     ex.forEach(e => {
       const m = (+e.t - +dayStart) / MIN, cx = X(m), cy = Y(e.height);
       const up = e.type === 'H';
-      const lblY = up ? cy - 30 : cy + 14;
+      // clamp so 27px-tall pill stays inside the tide chart area
+      const chartTop = padT + 12, chartBot = padT + tideH - 8;
+      const rawLblY = up ? cy - 30 : cy + 14;
+      const lblY = Math.min(Math.max(rawLblY, chartTop), chartBot - 27);
       const timeY = lblY + 13;
       // pill background
       g += `<rect x="${cx - 30}" y="${lblY - 11}" width="60" height="27" rx="5" fill="rgba(255,255,255,.92)" stroke="rgba(0,0,0,.08)" stroke-width="1"/>`;
