@@ -7,9 +7,9 @@
       "depth": "Shallow, top 10–20 ft",
       "regs": {"size":"12\" TL","bag":"5/day","season":"Year-round"},
       "rigs": [
-        {"name":"Weedless paddletail swimbait","detail":"5–7\" (MC / Big Hammer / Kicker) on a 1/2–3/4 oz weighted weedless hook. Burn it over the kelp; don't swing on the bite — keep grinding till it loads.","line":"40–65 lb braid → 30–50 lb fluoro"},
-        {"name":"Leadhead swimbait","detail":"5\" Big Hammer on 1/2–1 oz head; count it down along rock edges, vary the sink.","line":"30 lb braid → 25 lb fluoro"},
-        {"name":"Surface iron","detail":"Tady/Salas over the shallowest part of the reef at first light; brisk retrieve.","line":"40 lb braid"}
+        {"name":"Weedless paddletail swimbait","detail":"5–7\" Big Hammer, MC Swimbait, or Kicker Fish on a 1/2–3/4 oz Owner Beast or Gamakatsu Superline weedless hook. Burn it over the kelp; don't swing on the bite — keep grinding till it loads.","line":"40–65 lb braid → 30–50 lb Seaguar fluoro"},
+        {"name":"Leadhead swimbait","detail":"5\" Big Hammer on a 1/2–1 oz Owner Ultrahead; count it down along rock edges and vary the sink. White/chartreuse in low light, natural in clear water.","line":"30 lb Sufix 832 → 25 lb Seaguar fluoro"},
+        {"name":"Surface iron","detail":"Tady 45 or Salas 6X Jr. in chrome/blue-white; burn it across the shallowest part of the reef at first light with a fast, erratic retrieve.","line":"40 lb braid"}
       ]
     },
     "barred-sand-bass": {
@@ -19,9 +19,9 @@
       "depth": "Bottom-oriented, 10–40 ft",
       "regs": {"size":"12\" TL","bag":"10/day combined (barred + spotted)","season":"Year-round · spawning aggregation closures may apply"},
       "rigs": [
-        {"name":"Leadhead swimbait, slow-rolled","detail":"4–5\" plastic on 1/2–3/4 oz; stop-and-drop along the bottom. If one bites, more are there.","line":"20–30 lb braid → 20 lb fluoro"},
-        {"name":"Carolina-rigged plastic","detail":"3/4–1 oz sliding sinker, grub or swimbait dragged over sand/mud flats.","line":"20 lb fluoro"},
-        {"name":"Flylined squid or anchovy","detail":"Live bait on structure during the summer spawn; light line, patient drift.","line":"20 lb mono"}
+        {"name":"Leadhead swimbait, slow-rolled","detail":"4–5\" Big Hammer or MC Swimbait on a 1/2–3/4 oz Owner Ultrahead; stop-and-drop along the bottom. Natural/smoke colors in clear water, white or chartreuse on overcast days.","line":"20–30 lb Sufix → 20 lb Seaguar fluoro"},
+        {"name":"Carolina-rigged plastic","detail":"3/4–1 oz sliding sinker, #2 Owner hook, Roboworm or Yamamoto grub dragged over sand/mud flats. Green pumpkin and watermelon are reliable.","line":"20 lb Seaguar fluoro"},
+        {"name":"Flylined live squid or anchovy","detail":"Hook squid through the mantle or anchovy through the nose on a 2/0 Owner SSW; drift near structure during the summer spawn.","line":"20 lb Ande mono"}
       ]
     },
     "spotted-bay-bass": {
@@ -31,9 +31,9 @@
       "depth": "5–25 ft",
       "regs": {"size":"10\" TL","bag":"10/day combined (barred + spotted)","season":"Year-round"},
       "rigs": [
-        {"name":"Leadhead swimbait / dropshot","detail":"3–5\" swimbait on 3/16–3/8 oz (or dropshot). Reaction bites on the fall around structure.","line":"15 lb braid → 12 lb fluoro"},
-        {"name":"Curly-tail grub","detail":"AA Worms / Big Hammer grub on a light fine-wire leadhead; rotate the bait when chewed.","line":"12 lb braid"},
-        {"name":"Ned rig / small crank","detail":"Finesse around current breaks and dock shade when they're picky.","line":"10 lb fluoro"}
+        {"name":"Leadhead swimbait / dropshot","detail":"3–5\" Big Hammer or Z-Man Swimmerz on a 3/16–3/8 oz Gamakatsu round head, or dropshot with a Roboworm straight tail. Reaction bites on the fall around pilings — let it hit bottom.","line":"15 lb Sufix braid → 12 lb Seaguar fluoro"},
+        {"name":"Curly-tail grub","detail":"AA Worms or Big Hammer 3\" grub on a 1/8 oz Gamakatsu round head; motor oil, green pumpkin, or white depending on water clarity. Rotate the bait when they chew it off.","line":"12 lb Sufix braid"},
+        {"name":"Ned rig / small crank","detail":"Z-Man TRD or Yamamoto Senko Jr. on a 1/16 oz Ned head around dock shade and current breaks. Lucky Craft Pointer 78 minnow crank when they want something bigger.","line":"10 lb Seaguar fluoro"}
       ]
     },
     "largemouth-bass": {
@@ -43,9 +43,9 @@
       "depth": "5–25 ft (deeper midday)",
       "regs": {"size":"12\" TL","bag":"5/day state limit · Irvine Lake: catch-and-release only per lake rules","season":"Year-round"},
       "rigs": [
-        {"name":"Wacky / Texas Senko","detail":"Soft stickbait worked slow around shoreline cover and fallen timber — the dependable Irvine producer.","line":"12–15 lb fluoro"},
-        {"name":"Dropshot, finesse plastic","detail":"Off Rocky Point and the red-clay cliffs at 18–25 ft during bright daytime hours.","line":"8 lb fluoro spinning"},
-        {"name":"Spinnerbait / shad crank / topwater","detail":"White spinnerbait or shad-pattern X-Rap at dawn, dusk and after dark — reaction. Bass are catch-and-release here.","line":"15 lb mono"}
+        {"name":"Wacky / Texas Senko","detail":"4–5\" Yamamoto Senko wacky-rigged on a Gamakatsu G-Finesse hook, or Texas-rigged with a 1/8 oz bullet sinker around fallen timber. Green pumpkin and watermelon red are the go-to colors at Irvine.","line":"12–15 lb Seaguar fluoro"},
+        {"name":"Dropshot, Roboworm","detail":"Roboworm 4.5\" Straight Tail on a #1 Gamakatsu dropshot hook, 12–18\" leader off a 3/16 oz weight; work slowly off the red-clay cliff edges at 18–25 ft during bright daytime.","line":"8 lb Seaguar Invizx spinning"},
+        {"name":"Spinnerbait / topwater","detail":"White 1/2 oz Strike King Premier Plus spinnerbait at dawn along the bank, or Heddon Zara Spook / Lucky Craft Sammy 100 on top after dark. Bass are catch-and-release at Irvine.","line":"15 lb Berkley Trilene mono"}
       ]
     },
     "spotfin-croaker": {
@@ -55,9 +55,9 @@
       "depth": "Shallow surf, 2–10 ft",
       "regs": {"size":"9\" TL","bag":"10/day","season":"Year-round"},
       "rigs": [
-        {"name":"Carolina rig, sand crab","detail":"Sliding egg sinker, #4 hook, fresh soft-shell sand crab in the first trough. Soft mouth — set on the load, not a jerk.","line":"12–15 lb mono"},
-        {"name":"High-low surf rig","detail":"Two dropper loops with mussel or ghost shrimp; covers two depths at once.","line":"15 lb mono"},
-        {"name":"Gulp! sandworm","detail":"Camo 2\" Gulp! on a dropper when crabs are scarce.","line":"12 lb mono"}
+        {"name":"Carolina rig, sand crab","detail":"1/2 oz egg sinker, Mustad #4 beak hook, fresh soft-shell sand crab in the first trough. Soft mouth — feel for the weight before setting. Best bait by far during summer.","line":"12–15 lb Ande mono"},
+        {"name":"High-low surf rig, mussels","detail":"Two Mustad #4 dropper loops baited with fresh blue mussels or ghost shrimp; covers two depths and doubles your shot at a bite.","line":"15 lb Ande mono"},
+        {"name":"Berkley Gulp! Sandworm","detail":"2\" Gulp! Sandworm in natural or camo on a #6 Gamakatsu hook when sand crabs are scarce. Scent does the work.","line":"12 lb Ande mono"}
       ]
     },
     "california-corbina": {
@@ -67,9 +67,9 @@
       "depth": "Ultra-shallow — often inches; to ~18 ft",
       "regs": {"size":"10\" TL","bag":"10/day","season":"Year-round"},
       "rigs": [
-        {"name":"Light Carolina / swivel rig, sand crab","detail":"Live soft-shell sand crab, #2–6, light egg sinker. Lead the fish, cast into breaking whitewater to hide the splash, then let the surf work the bait — don't move it.","line":"8–15 lb fluoro leader"},
-        {"name":"Fly-lined sand crab (no weight)","detail":"On an outgoing tide, let line out and drift the crab away from the beach — deadly.","line":"10 lb fluoro"},
-        {"name":"Gulp! sandworm","detail":"Camo sandworm in winter when crabs thin out; corbina rarely take hard lures.","line":"8 lb fluoro"}
+        {"name":"Light Carolina, live sand crab","detail":"Live soft-shell sand crab on a #2–4 Gamakatsu Octopus hook with a 1/4 oz egg sinker. Lead the corbina 6 ft, pitch into the whitewater, and don't move it — let the surf tumble the crab naturally.","line":"8–12 lb Seaguar fluoro leader"},
+        {"name":"Fly-lined sand crab, no weight","detail":"Same hook, no sinker; let line out on the outgoing tide so the crab drifts away from the beach in the foam. Deadly technique.","line":"10 lb Seaguar fluoro"},
+        {"name":"Berkley Gulp! Sandworm","detail":"2\" Gulp! Sandworm in camo or blood-red when sand crabs thin out in winter. Corbina rarely hit hard plastics but they'll eat this.","line":"8 lb Seaguar fluoro"}
       ]
     },
     "pacific-bonito": {
@@ -79,9 +79,9 @@
       "depth": "Surface to mid-water",
       "regs": {"size":"No minimum","bag":"10/day","season":"Year-round · seasonal availability varies"},
       "rigs": [
-        {"name":"Cast jig / chrome","detail":"1 oz Krocodile or Tady 45 chrome; fast, erratic retrieve through the boil.","line":"25 lb braid → 25 lb fluoro"},
-        {"name":"Flylined sardine / anchovy","detail":"Live bait drifted to a working school; light line for more bites.","line":"20 lb mono"},
-        {"name":"Small swimbait / feather","detail":"4\" swimbait or a trolled feather when they're picky on chrome.","line":"20 lb braid"}
+        {"name":"Chrome cast jig","detail":"1 oz Luhr-Jensen Krocodile or Tady 45 in chrome/blue; fast erratic retrieve through the boil. Change angles when they stop biting — bonito spook easily after a few casts.","line":"25 lb Sufix 832 → 25 lb Seaguar fluoro"},
+        {"name":"Flylined sardine or anchovy","detail":"Live bait nose-hooked on a 1/0 Owner SSW; drift into a working school with minimal weight. Bonito bite best on the lightest possible line.","line":"20 lb Ande mono"},
+        {"name":"Iron jig or feather jig","detail":"Salas 6X Jr. or a white/blue feather jig trolled slowly or cast to breaking fish. Also works as a run-and-gun option when the school moves fast.","line":"20 lb Sufix braid"}
       ]
     },
     "pacific-mackerel": {
@@ -91,9 +91,9 @@
       "depth": "Surface to 30 ft",
       "regs": {"size":"No minimum","bag":"30/day","season":"Year-round · seasonal availability varies"},
       "rigs": [
-        {"name":"Sabiki rig, tipped","detail":"Size 4–6 sabiki with squid tips on the hooks; jig vertically. Best bait-maker at first light.","line":"12 lb mono"},
-        {"name":"Small chrome jig","detail":"Lucky Joe or tiny Krocodile when they're chasing on top.","line":"10 lb mono"},
-        {"name":"Bait under a float","detail":"Cut squid suspended for a hands-off setup off the pier.","line":"12 lb mono"}
+        {"name":"Hayabusa sabiki rig, tipped","detail":"Size 4–6 Hayabusa sabiki with small squid tips on each hook; drop to the school and jig steadily. Best bait-maker at first light. Rinse and re-use the rig.","line":"12 lb Ande mono"},
+        {"name":"Small chrome jig","detail":"1/2 oz Krocodile or Lucky Joe in chrome or blue-white; fan-cast and retrieve fast when the school is busting on top.","line":"10 lb Ande mono"},
+        {"name":"Cut squid under a float","detail":"1\" strip of squid on a #6 Gamakatsu hook suspended under a small bobber 3–5 ft down; hands-off approach that works all day from the pier.","line":"12 lb Ande mono"}
       ]
     },
     "barred-surfperch": {
@@ -103,9 +103,9 @@
       "depth": "Surf zone, 2–8 ft",
       "regs": {"size":"No minimum","bag":"20/day (surfperch complex combined)","season":"Year-round"},
       "rigs": [
-        {"name":"Carolina rig, sand crab","detail":"Live or fresh sand crab, #4–6, light sliding sinker, drifted through the trough on the incoming. The #1 bait, hands down.","line":"10–15 lb (or braid → 12 lb fluoro)"},
-        {"name":"Hi-low dropper rig","detail":"Two droppers with sand crab or Gulp! sandworm; great for locating schooled fish.","line":"12 lb mono"},
-        {"name":"Small grub on leadhead","detail":"2\" motor-oil/root-beer grub on a light head when fish are aggressive.","line":"10 lb braid"}
+        {"name":"Carolina rig, sand crab","detail":"Live or fresh sand crab on a #4–6 Gamakatsu Octopus hook with a 1/2 oz sliding egg sinker; drift through the trough on the incoming. The single best surfperch bait in SoCal.","line":"10–15 lb Ande or braid → 12 lb Seaguar fluoro"},
+        {"name":"Hi-low dropper rig","detail":"Two #4 Mustad droppers with sand crab or 2\" Berkley Gulp! Sandworm; great for covering two depths to locate schooled fish quickly.","line":"12 lb Ande mono"},
+        {"name":"Grub on a light leadhead","detail":"2\" motor-oil or root-beer Z-Man GrubZ on a 1/8 oz Gamakatsu round head cast into the wash and retrieved slowly through the foam.","line":"10 lb Sufix braid"}
       ]
     },
     "opaleye": {
@@ -115,9 +115,9 @@
       "depth": "Shallow over rock, 3–15 ft",
       "regs": {"size":"10\" TL","bag":"10/day","season":"Year-round"},
       "rigs": [
-        {"name":"Float rig, frozen peas","detail":"Small #8 hook under a float, baited with frozen peas or moss; chum a wash zone over rock to draw them up.","line":"8 lb mono"},
-        {"name":"Light dropper, shellfish","detail":"Ghost shrimp or mussel on a fine-wire hook tight to the rocks.","line":"8 lb mono"},
-        {"name":"Bread / innkeeper worm","detail":"Doughball or innkeeper worm when they're keyed on chum.","line":"6 lb mono"}
+        {"name":"Float rig, frozen peas","detail":"Small Thill or Drennan float with a #8 Gamakatsu hook baited with 2–3 frozen peas. Chum the wash zone first — toss a handful of peas to draw fish up before presenting your hook.","line":"8 lb Berkley Trilene mono"},
+        {"name":"Light dropper, ghost shrimp","detail":"Fresh or frozen ghost shrimp on a fine-wire #8 Gamakatsu Hook tight to the rocks; also works for other reef species sharing the same zone.","line":"8 lb Berkley Trilene mono"},
+        {"name":"Berkley Gulp! or innkeeper worm","detail":"Small piece of Gulp! in natural or a live innkeeper worm on a #8 hook when they're keyed on chum and movement.","line":"6 lb Seaguar fluoro"}
       ]
     },
     "california-sheephead": {
@@ -127,9 +127,9 @@
       "depth": "Over reef, 10–60 ft",
       "regs": {"size":"12\" TL","bag":"5/day","season":"Year-round"},
       "rigs": [
-        {"name":"Dropper-loop, shellfish","detail":"1–2 oz, #1 hook with whole shrimp, mussel or crab parked on the bottom near reef structure. Big canines crush shellfish.","line":"25–30 lb mono"},
-        {"name":"Live or cut squid","detail":"On a leadhead or dropper down in the rocks — a sheephead magnet.","line":"30 lb mono"},
-        {"name":"Rock crab / mussel","detail":"Natural reef forage fished tight to crevices.","line":"25 lb mono"}
+        {"name":"Dropper-loop, whole shrimp","detail":"1–2 oz sinker, #1 Owner SSW hook with a whole fresh shrimp, mussel, or rock crab parked on the bottom near structure. Big canine teeth crush shellfish — no need to finesse it.","line":"25–30 lb Ande mono"},
+        {"name":"Live or cut squid on leadhead","detail":"Fresh squid on a 1/2 oz Gamakatsu round head dropped into crevices — one of the most consistent sheephead baits year-round.","line":"30 lb Ande mono"},
+        {"name":"Berkley Gulp! shrimp","detail":"3\" Gulp! Shrimp in natural or pink on a #1 hook fished right on the reef bottom; holds scent longer than cut bait in current.","line":"25 lb Seaguar fluoro"}
       ]
     },
     "black-crappie": {
@@ -139,9 +139,9 @@
       "depth": "6–20 ft (deeper in heat/cold)",
       "regs": {"size":"9\" TL","bag":"25/day","season":"Year-round (inland waters)"},
       "rigs": [
-        {"name":"Mini-jig under a float","detail":"1/16 oz white or glow tube/jig suspended over brush; count down to the school then hold that depth. A floating lantern at night pulls them in.","line":"6 lb mono"},
-        {"name":"Live minnow / micro-swimbait","detail":"Minnow under a slip float, or a small minnow-profile bait — crappie key on baitfish.","line":"6 lb mono"},
-        {"name":"Small spinner / inline","detail":"Tiny spinner or micro-crank slow-rolled past structure.","line":"6 lb mono"}
+        {"name":"Mini-jig under a float","detail":"1/16 oz Bobby Garland Baby Shad or Strike King Mr. Crappie tube in white or glow; suspend under a small Thill float at the school depth. Floating lantern at night concentrates fish fast.","line":"6 lb Berkley Trilene mono"},
+        {"name":"Live minnow / micro-swimbait","detail":"1.5\" minnow under a slip float, or a Z-Man 2\" MinnowZ on a 1/32 oz head — crappie are visual feeders and key on small baitfish profiles.","line":"6 lb Berkley Trilene mono"},
+        {"name":"Tiny spinner / ultra-light crank","detail":"Blakemore Road Runner 1/16 oz or Rapala Ultra-Light Minnow slow-rolled past brush piles and dock posts.","line":"6 lb Berkley Trilene mono"}
       ]
     },
     "channel-catfish": {
@@ -151,9 +151,9 @@
       "depth": "8–30 ft, deeper after dark",
       "regs": {"size":"No minimum","bag":"10/day","season":"Year-round (inland waters)"},
       "rigs": [
-        {"name":"Slip-sinker bottom rig, cut bait","detail":"Carolina-style sliding sinker, 2/0 hook, cut mackerel or bonito on the bottom. Evening and night are best; the proven Irvine cat bait.","line":"15–20 lb mono"},
-        {"name":"Nightcrawler / chicken liver","detail":"Classic bottom soak on a sliding-sinker rig; will pick these up even in trout season.","line":"15 lb mono"},
-        {"name":"Prepared / stink bait","detail":"Catmando or dough bait on a treble for scent-tracking cats.","line":"15 lb mono"}
+        {"name":"Slip-sinker bottom rig, cut mackerel","detail":"1–2 oz egg sinker, 18\" leader, 2/0 Mustad Demon circle hook with fresh-cut mackerel or bonito on the bottom. The classic Irvine cat setup — evening and night produce best.","line":"15–20 lb Ande mono"},
+        {"name":"Nightcrawler / chicken liver","detail":"Whole nightcrawler or chicken liver on a 1/0 Gamakatsu Octopus circle hook on a sliding sinker rig; versatile and effective even during trout season.","line":"15 lb Ande mono"},
+        {"name":"Magic Bait or Catmando stink bait","detail":"Dip bait on a Catfish Charlie treble sponge hook; strong scent trail draws cats in murky water or after dark.","line":"15 lb Ande mono"}
       ]
     },
     "california-halibut": {
@@ -163,9 +163,9 @@
       "depth": "Surf channels & flats, 5–30 ft",
       "regs": {"size":"22\" TL","bag":"5/day","season":"Year-round"},
       "rigs": [
-        {"name":"Carolina rig, live bait or swimbait","detail":"1/2–3/4 oz sliding sinker with a live smelt/anchovy, or a Big Hammer/MS Slug dragged slow along the sand. Eat is a soft tap then weight — sweep-set, don't jerk.","line":"15–20 lb braid → 15 lb fluoro"},
-        {"name":"Dropshot live bait","detail":"Live smelt just off the bottom over sand flats; deadly on bigger flatties.","line":"15 lb fluoro"},
-        {"name":"Crank / jerkbait near bottom","detail":"In bays/harbors over clean sand with less grass; keep it ticking bottom.","line":"15 lb mono"}
+        {"name":"Carolina rig, swimbait or live bait","detail":"1/2–3/4 oz sliding sinker, 18\" leader, 3/0 Owner SSW; rig a 5\" Big Hammer or MS Slug and drag it slow along the sand. Or flyline a live smelt/anchovy. The eat is a soft tap then dead weight — sweep-set, don't jerk.","line":"15–20 lb Sufix braid → 15 lb Seaguar fluoro"},
+        {"name":"Dropshot, live smelt","detail":"Live smelt on a 1/0 Gamakatsu dropshot hook, 12\" above a 3/8 oz weight; hover just off the bottom over sand flats. Deadly on bigger fish.","line":"15 lb Seaguar fluoro"},
+        {"name":"Lucky Craft Pointer 100 / jerkbait","detail":"Lucky Craft Pointer 100SP or Rapala X-Rap in sardine or ghost minnow; twitch-pause along the bottom edge in harbors and bays over clean sand.","line":"15 lb Seaguar fluoro"}
       ]
     },
     "yellowfin-croaker": {
@@ -175,21 +175,21 @@
       "depth": "Surf zone to 30 ft",
       "regs": {"size":"No minimum","bag":"10/day","season":"Year-round"},
       "rigs": [
-        {"name":"Ghost shrimp, light rig","detail":"Live or fresh ghost shrimp on a #4–6 hook with a small egg sinker; very sensitive bite, use a stiff-tip rod and watch for the tap-tap-pull.","line":"12–15 lb mono"},
-        {"name":"Hi-low surf rig, mussel","detail":"Two droppers with fresh mussel or clam along the first trough; productive after dark.","line":"15 lb mono"},
-        {"name":"Sand crab on a dropper","detail":"Soft-shell or peeler sand crab on a single-hook dropper — also takes spotfin at the same spot.","line":"12 lb mono"}
+        {"name":"Ghost shrimp on a light rig","detail":"Live or fresh ghost shrimp on a #4 Gamakatsu Octopus hook with a 1/4–1/2 oz egg sinker. Very sensitive bite — use a stiff-tip rod and watch for the tap-tap-pull before setting.","line":"12–15 lb Ande mono"},
+        {"name":"Hi-low rig, mussels or clams","detail":"Two Mustad #4 droppers baited with fresh blue mussel or razor clam along the first trough; productive from dusk through midnight.","line":"15 lb Ande mono"},
+        {"name":"Berkley Gulp! Sandworm","detail":"2\" Gulp! Sandworm in natural or blood on a single #4 dropper; scent reaches fish the cast can't. Works when ghost shrimp are unavailable.","line":"12 lb Ande mono"}
       ]
     },
     "white-croaker": {
       "n": "White Croaker (Tommy Croaker)",
       "s": "Genyonemus lineatus",
-      "cast": "Drop down off any pier or jetty; very short or vertical presentations work best",
+      "cast": "Drop down off any pier or jetty; short or vertical presentations work best",
       "depth": "Bottom, 5–40 ft",
       "regs": {"size":"No minimum","bag":"10/day","season":"Year-round"},
       "rigs": [
-        {"name":"Sabiki / small high-low rig","detail":"Size 6–8 sabiki or two small droppers baited with cut squid or anchovy; just drop to the bottom and jig lightly. Prolific biter.","line":"10 lb mono"},
-        {"name":"Small Carolina rig, cut squid","detail":"1/4 oz slider with a #6 hook and strip of squid; drag slowly on the sand bottom.","line":"12 lb mono"},
-        {"name":"Nightcrawler on a dropper","detail":"Works surprisingly well from piers at night; also picks up perch and small bass.","line":"10 lb mono"}
+        {"name":"Hayabusa sabiki, small hooks","detail":"Size 8–10 Hayabusa sabiki baited with tiny pieces of squid or anchovy; drop to the bottom and jig lightly. Prolific biter that doubles as live bait for larger species.","line":"10 lb Ande mono"},
+        {"name":"Small Carolina rig, cut squid","detail":"1/4 oz slider, #6 Mustad beak hook, thin strip of squid dragged slowly on the sand bottom; also picks up perch and small bass on the same rod.","line":"12 lb Ande mono"},
+        {"name":"Berkley Gulp! or nightcrawler drop","detail":"Small piece of Gulp! or half a nightcrawler on a #8 Gamakatsu hook with a split shot; effective all night from piers and jetties.","line":"10 lb Ande mono"}
       ]
     },
     "white-seabass": {
@@ -199,9 +199,9 @@
       "depth": "15–60 ft along structure",
       "regs": {"size":"28\" TL","bag":"3/day","season":"Year-round · check current CDFW closures"},
       "rigs": [
-        {"name":"Live squid, flylined","detail":"The single best WSB bait — hook through the mantle and let it swim freely near the kelp edge or channel bottom at dawn. No weight.","line":"30–40 lb fluoro leader"},
-        {"name":"Live mackerel / sardine","detail":"Hooked through the nose on a 4/0–6/0 circle hook; drift or slow-troll along kelp walls.","line":"40 lb braid → 40 lb fluoro"},
-        {"name":"Large swimbaits","detail":"8–10\" soft swimbait on a 2–3 oz head worked slowly along the bottom near kelp — effective when live bait is unavailable.","line":"50 lb braid → 40 lb fluoro"}
+        {"name":"Live squid, flylined","detail":"The top WSB bait — hook through the mantle on a 4/0 Owner SSW and let it swim freely near the kelp edge or channel bottom at dawn with zero weight. No dropper, no sinker.","line":"40 lb Seaguar Premiam Max fluoro leader"},
+        {"name":"Live mackerel or sardine","detail":"Nose-hook on a 5/0–6/0 Owner SSW circle hook; slow-drift or motor-troll along kelp walls at 1–1.5 mph. Circle hooks give the fish time to turn.","line":"40 lb Sufix 832 braid → 40 lb Seaguar fluoro"},
+        {"name":"MC Swimbait 8–10\"","detail":"Large MC Swimbait or Huddleston Deluxe on a 2–3 oz heavy swimbait head worked slowly along the bottom near kelp structure — most effective when live bait isn't available.","line":"50 lb Sufix braid → 40 lb Seaguar fluoro"}
       ]
     },
     "california-scorpionfish": {
@@ -210,11 +210,11 @@
       "cast": "Drop straight down over reef and rocky structure; no movement needed",
       "depth": "Rocky bottom, 10–60 ft",
       "regs": {"size":"10\" TL","bag":"5/day","season":"Year-round"},
-      "note": "Venomous spines — handle with a wet rag or pliers. Delicious table fish.",
+      "note": "Venomous dorsal spines — handle with a wet rag or long-nose pliers. Excellent eating.",
       "rigs": [
-        {"name":"Bottom dropper, live shrimp or squid","detail":"1–2 oz weight, #1–2/0 hook, live or fresh ghost shrimp or cut squid placed directly on the bottom over rocky structure. Scorpion fish ambush — they don't chase bait.","line":"20–25 lb mono"},
-        {"name":"Shrimp fly or small leadhead","detail":"Small shrimp-pattern fly or 1/4 oz leadhead with a curly tail right on the reef; lift and drop slowly.","line":"20 lb mono"},
-        {"name":"Chunk of mackerel or squid","detail":"Any oily bottom bait parked on the rocks will eventually find a sculpin.","line":"20 lb mono"}
+        {"name":"Bottom dropper, fresh squid or shrimp","detail":"1–2 oz bank sinker, #1–2/0 Owner SSW hook, fresh squid strip or ghost shrimp placed directly on the rocky bottom. Sculpin ambush — don't move it. Drop, feel the bottom, wait.","line":"20–25 lb Ande mono"},
+        {"name":"Shrimp fly on a dropper","detail":"A small shrimp-pattern Grunt or shrimp fly on a 12\" dropper above the weight; lightly lift-drop over the reef to trigger the strike.","line":"20 lb Ande mono"},
+        {"name":"Berkley Gulp! Shrimp, 3\"","detail":"3\" Gulp! Shrimp in natural or pink on a #1 Gamakatsu hook sitting on the rocks; holds scent longer than fresh bait in current.","line":"20 lb Seaguar fluoro"}
       ]
     },
     "blue-rockfish": {
@@ -222,11 +222,11 @@
       "s": "Sebastes mystinus",
       "cast": "Mid-water over the kelp canopy; vertical jigging or drift bait works well",
       "depth": "Mid-water to 80 ft over structure",
-      "regs": {"size":"No minimum","bag":"10/day (rockfish complex)","season":"Verify CDFW regs before fishing — seasonal and depth closures apply"},
+      "regs": {"size":"No minimum","bag":"10/day (rockfish complex)","season":"Verify CDFW regs — seasonal and depth closures apply"},
       "rigs": [
-        {"name":"Dropper loop rig, cut squid","detail":"Two-hook dropper rig with strips of squid or anchovy; drift mid-water above the kelp canopy — blue rockfish school here and bite readily.","line":"20 lb mono"},
-        {"name":"Small metal jig","detail":"1/2–1 oz diamond jig or chrome butterfly jig jigged vertically through the school.","line":"20 lb braid"},
-        {"name":"Small swimbait","detail":"3–4\" paddle-tail on a 1/4–1/2 oz head worked through the mid-water column.","line":"15 lb braid → 15 lb fluoro"}
+        {"name":"Dropper loop rig, cut squid","detail":"Two-hook Mustad dropper rig with strips of squid or anchovy; drift mid-water just above the kelp canopy. Blue rockfish school here and bite an unweighted bait on the fall.","line":"20 lb Ande mono"},
+        {"name":"Diamond jig or butterfly jig","detail":"1/2–1 oz Salas Christy II or Shimano Butterfly jig; drop to mid-water and jig steadily upward. Chrome and blue-white are go-to colors.","line":"20 lb Sufix 832 braid"},
+        {"name":"Z-Man SwimmerZ, 3–4\"","detail":"Z-Man 3\" SwimmerZ on a 1/4–1/2 oz Gamakatsu round head; work it through the water column with a steady retrieve over the kelp canopy.","line":"15 lb Sufix braid → 15 lb Seaguar fluoro"}
       ]
     },
     "rainbow-trout": {
@@ -236,9 +236,9 @@
       "depth": "Top 20 ft in cold weather; deeper in summer",
       "regs": {"size":"No minimum (stocked fish)","bag":"5/day","season":"Stocked Nov–Apr at Irvine Lake; verify current schedule"},
       "rigs": [
-        {"name":"PowerBait on a sliding sinker","detail":"1/4 oz sliding egg sinker, 24\" 6 lb fluoro leader, #14 treble with a ball of chartreuse or rainbow PowerBait floating just off the bottom near the inlet. Classic and deadly on planted fish.","line":"8 lb main → 6 lb fluoro leader"},
-        {"name":"Kastmaster or small spoon, trolled","detail":"1/4–3/8 oz gold or silver Kastmaster trolled slowly at 1.5–2 mph near the surface on a long line. Cover water to find the school.","line":"8 lb mono"},
-        {"name":"Live nightcrawler under a float","detail":"Whole nightcrawler suspended 3–6 ft under a bobber drifted in the current near the inlet — works best early morning.","line":"8 lb mono"}
+        {"name":"Berkley PowerBait, sliding sinker","detail":"1/4 oz sliding egg sinker, 24\" 6 lb Seaguar leader, #14 Berkley PowerBait treble hook with a ball of chartreuse or rainbow PowerBait floating just off the bottom near the inlet. Classic and deadly on planted fish.","line":"8 lb main → 6 lb Seaguar fluoro leader"},
+        {"name":"Acme Kastmaster, trolled","detail":"1/4–3/8 oz gold or silver Acme Kastmaster trolled at 1.5–2 mph on a long line near the surface. Cover water to find the school — color can matter on pressured fish.","line":"8 lb Berkley Trilene mono"},
+        {"name":"Nightcrawler under a Thill float","detail":"Whole nightcrawler on a #6 Gamakatsu hook suspended 3–6 ft under a Thill float drifted near the inlet current. Most effective early morning in winter.","line":"8 lb Berkley Trilene mono"}
       ]
     },
     "bluegill": {
@@ -248,9 +248,9 @@
       "depth": "1–10 ft along cover",
       "regs": {"size":"No minimum","bag":"25/day","season":"Year-round (inland waters)"},
       "rigs": [
-        {"name":"Float rig, cricket or waxworm","detail":"Small bobber 2–3 ft up, #8 hook with a live cricket or waxworm; best bait for consistent action. Let it sit and wait for the dip.","line":"6 lb mono"},
-        {"name":"Small jig, 1/32 oz","detail":"Tiny tube jig or marabou jig on ultra-light gear — panfish crack, and they hit it fast.","line":"4–6 lb mono"},
-        {"name":"Nightcrawler piece","detail":"Small chunk of nightcrawler on a #10 hook with a split shot; works all day.","line":"6 lb mono"}
+        {"name":"Float rig, cricket or waxworm","detail":"Small Thill float 2–3 ft up on a #8 Gamakatsu hook with a live cricket or waxworm. Let it sit still and watch for the dip — the single most reliable bluegill setup.","line":"6 lb Berkley Trilene mono"},
+        {"name":"Bobby Garland 1/32 oz jig","detail":"Bobby Garland Baby Shad or Mo' Glo in white or chartreuse on a 1/32 oz jig head; twitch lightly through the water column near docks and brush piles.","line":"4–6 lb Berkley Trilene mono"},
+        {"name":"Nightcrawler piece","detail":"Small chunk of nightcrawler on a #10 Gamakatsu hook with a BB split shot; works all day for bluegill, and often picks up bass and crappie on the same rod.","line":"6 lb Berkley Trilene mono"}
       ]
     },
     "striped-bass": {
@@ -260,9 +260,9 @@
       "depth": "10–40 ft near structure",
       "regs": {"size":"18\" TL","bag":"2/day","season":"Year-round · verify current DFW regulations"},
       "rigs": [
-        {"name":"Swimbait, large profile","detail":"6–9\" paddle-tail or soft-body bait on a 1–2 oz head worked slowly near the bottom along rocky structure. Stripers are ambush feeders.","line":"30–40 lb braid → 25 lb fluoro"},
-        {"name":"Live crawfish / mudsucker","detail":"Hooked through the tail on a 3/0 hook with a light sinker; incredibly effective near rocky bottom and structure.","line":"25 lb fluoro"},
-        {"name":"Cut mackerel or sardine","detail":"Bottom-soaked on a sliding sinker rig at known striper haunts — great at night.","line":"30 lb mono"}
+        {"name":"Large swimbait","detail":"6–9\" Huddleston Deluxe or MC Swimbait on a 1.5–2 oz head; fish it s-l-o-w along the bottom near rocky structure and channel bends. Stripers are ambush feeders — they don't chase fast retrieves.","line":"30–40 lb Sufix 832 braid → 25 lb Seaguar fluoro"},
+        {"name":"Live crawfish or mudsucker","detail":"Hooked through the tail on a 3/0 Owner SSW with a 1/2 oz sliding sinker; incredibly effective near rocky bottom. Mudsuckers (staghorn sculpin) are the top live bait.","line":"25 lb Seaguar fluoro"},
+        {"name":"Cut mackerel, bottom rig","detail":"Fresh-cut mackerel on a 2/0 Owner circle hook, 1–2 oz sinker, soaked on the bottom at known striper haunts. Stripers nose-down at night — circle hooks make catch-and-release easy.","line":"30 lb Ande mono"}
       ]
     }
   }

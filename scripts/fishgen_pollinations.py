@@ -106,6 +106,54 @@ PROMPTS = {
         "California halibut Paralichthys californicus eyed-side view, flat oval body, "
         "mottled brown-grey upper surface with pale blotches, large mouth with sharp teeth, "
         "both eyes visible on left topside, precise scientific accuracy",
+
+    "yellowfin-croaker":
+        PREFIX +
+        "Yellowfin croaker Umbrina roncador, elongated silver body with brassy sheen, "
+        "faint diagonal wavy lines on sides, yellow-orange tinge on fins especially pelvic "
+        "and anal fins, underslung mouth with small chin barbel, precise scientific accuracy",
+
+    "white-croaker":
+        PREFIX +
+        "White croaker Genyonemus lineatus, small oval silvery body, faint oblique lines on "
+        "upper sides, small inferior mouth, dusky yellow fins, 2-3 small chin pores, "
+        "precise scientific accuracy",
+
+    "white-seabass":
+        PREFIX +
+        "White seabass Atractoscion nobilis, elongated silver body with blue-grey back, "
+        "distinctive raised ridge along belly, large oblique mouth, forked tail, "
+        "faint diagonal lines on upper sides, precise scientific accuracy",
+
+    "california-scorpionfish":
+        PREFIX +
+        "California scorpionfish Scorpaena guttata, mottled red-brown-orange body with "
+        "dark blotches, large spiny head with multiple sharp dorsal spines, "
+        "large pectoral fins, rough warty skin texture, precise scientific accuracy",
+
+    "blue-rockfish":
+        PREFIX +
+        "Blue rockfish Sebastes mystinus, deep oval body, dark blue-black to grey-blue "
+        "coloration, lighter belly, small mouth, rounded tail, prominent lateral line, "
+        "precise scientific accuracy",
+
+    "rainbow-trout":
+        PREFIX +
+        "Rainbow trout Oncorhynchus mykiss, streamlined body, pink-red lateral stripe "
+        "along midline, silver sides with small black spots on body and fins, "
+        "white belly, slightly forked tail, precise scientific accuracy",
+
+    "bluegill":
+        PREFIX +
+        "Bluegill Lepomis macrochirus, deep oval laterally compressed body, iridescent "
+        "blue-purple opercle flap, olive-green back, orange-yellow belly, "
+        "dark vertical bars on sides, small mouth, precise scientific accuracy",
+
+    "striped-bass":
+        PREFIX +
+        "Striped bass Morone saxatilis, elongated silver body with 7-8 distinct dark "
+        "horizontal black stripes running full length of body, large mouth, "
+        "two separate dorsal fins, forked tail, precise scientific accuracy",
 }
 
 BASE_URL = (
