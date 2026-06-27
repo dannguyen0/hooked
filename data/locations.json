@@ -7,71 +7,17 @@
       "lon": -117.8826,
       "station": "9410580",
       "water": "salt",
-      "tags": [
-        "Jetty",
-        "Channel",
-        "Sand"
-      ],
-      "extrema": [
-        [
-          3,
-          18,
-          4.7,
-          "H"
-        ],
-        [
-          9,
-          44,
-          0.2,
-          "L"
-        ],
-        [
-          15,
-          58,
-          3.8,
-          "H"
-        ],
-        [
-          22,
-          20,
-          -0.4,
-          "L"
-        ]
-      ],
-      "cond": {
-        "wind": "7 kn",
-        "windDir": "SW",
-        "swell": "2.3 ft",
-        "swellP": "11 s",
-        "baro": "1014",
-        "trend": -1.6,
-        "moon": "68%"
-      },
+      "tags": ["Jetty", "Channel", "Sand"],
+      "extrema": [[3,18,4.7,"H"],[9,44,0.2,"L"],[15,58,3.8,"H"],[22,20,-0.4,"L"]],
+      "cond": {"wind":"7 kn","windDir":"SW","swell":"2.3 ft","swellP":"11 s","baro":"1014","trend":-1.6,"moon":"68%"},
       "fish": [
-        {
-          "slug": "kelp-bass",
-          "tide": "incoming",
-          "light": "dawn",
-          "note": "Work the jetty rocks on the push; let it sink into the wash."
-        },
-        {
-          "slug": "california-halibut",
-          "tide": "outgoing",
-          "light": "dusk",
-          "note": "Drag the channel edge slow; expect a soft tap then weight."
-        },
-        {
-          "slug": "spotfin-croaker",
-          "tide": "incoming",
-          "light": "night",
-          "note": "First trough on a building high; set on the load."
-        },
-        {
-          "slug": "pacific-bonito",
-          "tide": "any",
-          "light": "dawn",
-          "note": "Chase boils at the harbor mouth on a grey-light morning."
-        }
+        {"slug":"kelp-bass","tide":"incoming","light":"dawn","note":"Work the jetty rocks on the push; let it sink into the wash."},
+        {"slug":"california-halibut","tide":"outgoing","light":"dusk","note":"Drag the channel edge slow on the outgoing; expect a soft tap then weight."},
+        {"slug":"spotfin-croaker","tide":"incoming","light":"night","note":"First trough on a building high tide at the sandy corner of the jetty."},
+        {"slug":"pacific-bonito","tide":"any","light":"dawn","note":"Chase boils at the harbor mouth on a grey-light morning; fast iron retrieve."},
+        {"slug":"barred-sand-bass","tide":"outgoing","light":"dusk","note":"Sandy mud flat adjacent to the channel on the drop; slow yo-yo retrieve."},
+        {"slug":"yellowfin-croaker","tide":"incoming","light":"night","note":"Rocky base of the west jetty on a building tide; sensitive bottom rig."},
+        {"slug":"white-seabass","tide":"outgoing","light":"dawn","note":"Deep channel edge at first light in spring; ghost shrimp or live squid."}
       ]
     },
     {
@@ -81,65 +27,16 @@
       "lon": -117.869,
       "station": "9410580",
       "water": "salt",
-      "tags": [
-        "Surf",
-        "Sand",
-        "Jetty"
-      ],
-      "extrema": [
-        [
-          3,
-          30,
-          4.5,
-          "H"
-        ],
-        [
-          9,
-          55,
-          0.4,
-          "L"
-        ],
-        [
-          16,
-          8,
-          3.7,
-          "H"
-        ],
-        [
-          22,
-          34,
-          -0.2,
-          "L"
-        ]
-      ],
-      "cond": {
-        "wind": "5 kn",
-        "windDir": "W",
-        "swell": "2.0 ft",
-        "swellP": "13 s",
-        "baro": "1015",
-        "trend": -0.8,
-        "moon": "68%"
-      },
+      "tags": ["Surf", "Sand", "Jetty"],
+      "extrema": [[3,30,4.5,"H"],[9,55,0.4,"L"],[16,8,3.7,"H"],[22,34,-0.2,"L"]],
+      "cond": {"wind":"5 kn","windDir":"W","swell":"2.0 ft","swellP":"13 s","baro":"1015","trend":-0.8,"moon":"68%"},
       "fish": [
-        {
-          "slug": "barred-surfperch",
-          "tide": "incoming",
-          "light": "dawn",
-          "note": "Read the troughs at low; fish the foam seam."
-        },
-        {
-          "slug": "california-corbina",
-          "tide": "incoming",
-          "light": "midday",
-          "note": "Sight-fish them tailing in inches of water on a warm flood."
-        },
-        {
-          "slug": "kelp-bass",
-          "tide": "incoming",
-          "light": "dusk",
-          "note": "Tuck casts tight to the rock fingers at the south end."
-        }
+        {"slug":"barred-surfperch","tide":"incoming","light":"dawn","note":"Read the troughs at low; fish the foam seam on the push."},
+        {"slug":"california-corbina","tide":"incoming","light":"midday","note":"Sight-fish them tailing in inches of water on a warm incoming flood."},
+        {"slug":"spotfin-croaker","tide":"incoming","light":"night","note":"First trough along the sandy stretch; sand crab after dark."},
+        {"slug":"yellowfin-croaker","tide":"incoming","light":"dusk","note":"Shares the trough with spotfin; mussel and ghost shrimp both work."},
+        {"slug":"california-halibut","tide":"outgoing","light":"dawn","note":"Sandy flat between the jetties on the outgoing; swimbait dragged slow."},
+        {"slug":"kelp-bass","tide":"incoming","light":"dusk","note":"Tuck casts tight to the rock fingers at the south end of the beach."}
       ]
     },
     {
@@ -149,72 +46,17 @@
       "lon": -117.829,
       "station": "9410580",
       "water": "salt",
-      "tags": [
-        "Reef",
-        "Rock",
-        "Kelp",
-        "Tidepool"
-      ],
-      "extrema": [
-        [
-          3,
-          40,
-          4.6,
-          "H"
-        ],
-        [
-          10,
-          2,
-          0.5,
-          "L"
-        ],
-        [
-          16,
-          18,
-          3.6,
-          "H"
-        ],
-        [
-          22,
-          40,
-          -0.1,
-          "L"
-        ]
-      ],
-      "cond": {
-        "wind": "9 kn",
-        "windDir": "WSW",
-        "swell": "3.1 ft",
-        "swellP": "10 s",
-        "baro": "1013",
-        "trend": -2.2,
-        "moon": "68%"
-      },
+      "tags": ["Reef", "Rock", "Kelp", "Tidepool"],
+      "extrema": [[3,40,4.6,"H"],[10,2,0.5,"L"],[16,18,3.6,"H"],[22,40,-0.1,"L"]],
+      "cond": {"wind":"9 kn","windDir":"WSW","swell":"3.1 ft","swellP":"10 s","baro":"1013","trend":-2.2,"moon":"68%"},
       "fish": [
-        {
-          "slug": "kelp-bass",
-          "tide": "incoming",
-          "light": "dawn",
-          "note": "Stay tight to structure; pull hard early or they bury you in kelp."
-        },
-        {
-          "slug": "california-sheephead",
-          "tide": "any",
-          "light": "midday",
-          "note": "Reef edges and crevices; let bait sit on the bottom."
-        },
-        {
-          "slug": "opaleye",
-          "tide": "incoming",
-          "light": "midday",
-          "note": "Berley a wash zone over rock; small hooks, light leader."
-        },
-        {
-          "slug": "barred-sand-bass",
-          "tide": "outgoing",
-          "light": "dusk",
-          "note": "Sandy gaps between reef on the drop; slow yo-yo retrieve."
-        }
+        {"slug":"kelp-bass","tide":"incoming","light":"dawn","note":"Stay tight to structure; pull hard early or they bury you in the kelp."},
+        {"slug":"california-sheephead","tide":"any","light":"midday","note":"Reef edges and crevices at 20–40 ft; let bait sit on the bottom."},
+        {"slug":"opaleye","tide":"incoming","light":"midday","note":"Berley a wash zone over rock with frozen peas; small hooks, light leader."},
+        {"slug":"barred-sand-bass","tide":"outgoing","light":"dusk","note":"Sandy gaps between reef sections on the drop; slow yo-yo retrieve."},
+        {"slug":"california-scorpionfish","tide":"any","light":"day","note":"Sits motionless on the reef bottom; drop bait straight down over structure."},
+        {"slug":"blue-rockfish","tide":"any","light":"day","note":"Mid-water over the kelp canopy; bait or small jig works well."},
+        {"slug":"white-seabass","tide":"outgoing","light":"dawn","note":"Kelp edges at first light in spring and summer; live squid or mackerel."}
       ]
     },
     {
@@ -224,65 +66,17 @@
       "lon": -117.703,
       "station": "9410580",
       "water": "salt",
-      "tags": [
-        "Harbor",
-        "Pier",
-        "Sheltered"
-      ],
-      "extrema": [
-        [
-          3,
-          12,
-          4.4,
-          "H"
-        ],
-        [
-          9,
-          38,
-          0.6,
-          "L"
-        ],
-        [
-          15,
-          50,
-          3.9,
-          "H"
-        ],
-        [
-          22,
-          12,
-          -0.3,
-          "L"
-        ]
-      ],
-      "cond": {
-        "wind": "4 kn",
-        "windDir": "SW",
-        "swell": "1.4 ft",
-        "swellP": "12 s",
-        "baro": "1016",
-        "trend": 0.4,
-        "moon": "68%"
-      },
+      "tags": ["Harbor", "Pier", "Sheltered"],
+      "extrema": [[3,12,4.4,"H"],[9,38,0.6,"L"],[15,50,3.9,"H"],[22,12,-0.3,"L"]],
+      "cond": {"wind":"4 kn","windDir":"SW","swell":"1.4 ft","swellP":"12 s","baro":"1016","trend":0.4,"moon":"68%"},
       "fish": [
-        {
-          "slug": "spotted-bay-bass",
-          "tide": "outgoing",
-          "light": "dusk",
-          "note": "Dock pilings and eelgrass edges; reaction bites on the drop."
-        },
-        {
-          "slug": "california-halibut",
-          "tide": "incoming",
-          "light": "dawn",
-          "note": "Fan-cast the harbor sand flats off the launch ramp."
-        },
-        {
-          "slug": "pacific-mackerel",
-          "tide": "any",
-          "light": "dawn",
-          "note": "Load the bait tank off the pier at first light."
-        }
+        {"slug":"spotted-bay-bass","tide":"outgoing","light":"dusk","note":"Dock pilings and eelgrass edges; reaction bites on the drop."},
+        {"slug":"california-halibut","tide":"incoming","light":"dawn","note":"Fan-cast the harbor sand flats off the launch ramp."},
+        {"slug":"pacific-mackerel","tide":"any","light":"dawn","note":"Load the bait tank off the pier at first light with a sabiki."},
+        {"slug":"kelp-bass","tide":"incoming","light":"dawn","note":"Rocky entrance boulders and kelp on the outside of the jetty."},
+        {"slug":"pacific-bonito","tide":"any","light":"dawn","note":"Harbor mouth on a grey-light morning when schools push inside."},
+        {"slug":"yellowfin-croaker","tide":"incoming","light":"night","note":"Inside the harbor near sandy patches after dark; mussel or shrimp."},
+        {"slug":"white-croaker","tide":"any","light":"night","note":"Anywhere in the harbor at night; easy to catch, great live bait."}
       ]
     },
     {
@@ -292,39 +86,16 @@
       "lon": -117.706,
       "station": null,
       "water": "fresh",
-      "tags": [
-        "Freshwater",
-        "Reservoir",
-        "Shore-only",
-        "No tide"
-      ],
+      "tags": ["Freshwater", "Reservoir", "Shore-only", "No tide"],
       "extrema": null,
-      "cond": {
-        "wind": "3 kn",
-        "windDir": "NW",
-        "baro": "1015",
-        "trend": -0.6,
-        "moon": "68%"
-      },
+      "cond": {"wind":"3 kn","windDir":"NW","baro":"1015","trend":-0.6,"moon":"68%"},
       "fish": [
-        {
-          "slug": "largemouth-bass",
-          "tide": "—",
-          "light": "dawn",
-          "note": "Points and timber early; cliffs at 18–25 ft midday. Catch-and-release."
-        },
-        {
-          "slug": "channel-catfish",
-          "tide": "—",
-          "light": "night",
-          "note": "Soak cut bait on the flats or west shore after dark."
-        },
-        {
-          "slug": "black-crappie",
-          "tide": "—",
-          "light": "dusk",
-          "note": "Suspend a mini-jig over brush; floating lantern after dark."
-        }
+        {"slug":"largemouth-bass","tide":"—","light":"dawn","note":"Points and timber early; red-clay cliffs at 18–25 ft midday. Catch-and-release."},
+        {"slug":"channel-catfish","tide":"—","light":"night","note":"Soak cut bait on the west shore flats or near the dam after dark."},
+        {"slug":"black-crappie","tide":"—","light":"dusk","note":"Suspend a mini-jig over brush piles; floating lantern after dark."},
+        {"slug":"rainbow-trout","tide":"—","light":"day","note":"Stocked regularly Nov–Apr; troll a gold Kastmaster or soak PowerBait near inlet."},
+        {"slug":"bluegill","tide":"—","light":"day","note":"Dock edges and reed beds with crickets or waxworms; great fun on light tackle."},
+        {"slug":"striped-bass","tide":"—","light":"dawn","note":"Deep structure near the dam on swimbaits or live crawfish at first and last light."}
       ]
     }
   ]
