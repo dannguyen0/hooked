@@ -219,8 +219,12 @@
       <div class="form-section">
         <div class="form-sec-head">
           <span class="form-label">SPECIES AT THIS SPOT</span>
-          <button type="button" class="btn-add-sp" id="addSpeciesRowBtn">+ add species</button>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button type="button" class="btn-auto-research" id="autoResearchBtn">✦ Auto-research</button>
+            <button type="button" class="btn-add-sp" id="addSpeciesRowBtn">+ add manually</button>
+          </div>
         </div>
+        <div id="researchStatus" hidden></div>
         <div id="speciesRows"></div>
       </div>
       <div class="form-actions">
@@ -232,6 +236,6 @@
 </div>
 
 <script src="src/leaflet.js"></script>
-<script type="module" src="src/app.js?v=20"></script>
+<script type="module" src="src/app.js?v=21"></script>
 </body>
 </html>

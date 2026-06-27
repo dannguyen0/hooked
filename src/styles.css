@@ -431,6 +431,27 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   border-bottom: 1px dashed rgba(14,165,233,.4);
 }
 .btn-add-sp:hover { color: var(--ink); }
+
+.btn-auto-research {
+  font-size: 12px; font-weight: 700; color: #fff; letter-spacing: .02em;
+  background: linear-gradient(135deg, var(--amber), var(--cyan));
+  border-radius: 100px; padding: 5px 13px;
+  transition: opacity .15s, transform .1s;
+}
+.btn-auto-research:hover { opacity: .88; transform: translateY(-1px); }
+.btn-auto-research:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+.research-status {
+  font-size: 12px; font-weight: 500; color: var(--ink-dim);
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: 10px 14px; line-height: 1.6;
+}
+.research-status.err { color: var(--red); background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.2); }
+
+.api-key-row {
+  display: flex; gap: 8px; align-items: center; margin-top: 8px;
+}
+.api-key-row .form-input { flex: 1; font-size: 12px; }
 .sp-row {
   display: grid; grid-template-columns: 2fr 1fr 1fr 2fr auto;
   gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line);

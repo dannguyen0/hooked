@@ -190,7 +190,28 @@ function deleteSpot(id) {
   if (active.id === id) { active = SPOTS[0]; nowMin = realNow; isPreview = false; }
   renderAll();
 }
+const CUSTOM_SPECIES_KEY = 'hooked_custom_species_v1';
+function loadCustomSpecies() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_SPECIES_KEY) || '{}'); } catch { return {}; }
+}
+function saveCustomSpecies(db) {
+  localStorage.setItem(CUSTOM_SPECIES_KEY, JSON.stringify(db));
+}
+
 function addCustomSpot(spot) {
+  // Persist any FISHDB entries that were added by auto-research and aren't in the base species.json
+  const baseKeys = Object.keys(FISHDB);
+  const customSp = loadCustomSpecies();
+  let changed = false;
+  spot.fish?.forEach(f => {
+    if (FISHDB[f.slug] && !customSp[f.slug]) {
+      // Check if this was already in the original fetch (can't tell exactly, so save all new ones)
+      customSp[f.slug] = FISHDB[f.slug];
+      changed = true;
+    }
+  });
+  if (changed) saveCustomSpecies(customSp);
+
   const customs = loadCustomSpots();
   customs.push(spot);
   saveCustomSpots(customs);
@@ -675,6 +696,125 @@ addSpeciesRowBtn.onclick = () => {
   speciesRowsEl.appendChild(row);
 };
 
+// ── Auto-research species via Claude API ──────────────────────────────────
+const CLAUDE_KEY_KEY = 'hooked_claude_key';
+const autoResearchBtn = $('autoResearchBtn');
+const researchStatus  = $('researchStatus');
+
+function showResearchStatus(msg, isErr = false) {
+  researchStatus.hidden = false;
+  researchStatus.className = 'research-status' + (isErr ? ' err' : '');
+  researchStatus.innerHTML = msg;
+}
+function hideResearchStatus() { researchStatus.hidden = true; }
+
+async function callClaude(apiKey, spotInfo) {
+  const system = `You are an expert Southern California fishing guide.
+Return ONLY a raw JSON object (no markdown) with this schema:
+{"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence spot note","cast":"where/how to cast (1-2 sentences)","depth":"e.g. 5-30 ft","regs":{"size":"e.g. 12\\" TL or No minimum","bag":"e.g. 5/day","season":"e.g. Year-round"},"rigs":[{"name":"...","detail":"2-3 sentences, specific sizes/weights","line":"e.g. 20 lb fluoro"},{"name":"...","detail":"...","line":"..."},{"name":"...","detail":"...","line":"..."}]}]}
+Rules: 4-6 species most commonly caught at this spot type. Exactly 3 rigs per species ordered best-first. Use verified CDFW regs or write "Verify CDFW regs before fishing". For freshwater use SoCal lake species.`;
+
+  const user = `Spot: ${spotInfo.name}\nLat: ${spotInfo.lat}, Lon: ${spotInfo.lon}\nWater: ${spotInfo.water}\nTags: ${spotInfo.tags}\n\nWhat are the top 4-6 species an angler would target here? Return the JSON object.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-calls': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 4096,
+      system,
+      messages: [{ role: 'user', content: user }],
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+  const data = await res.json();
+  let raw = data.content[0].text.trim().replace(/^```[a-z]*\n?/, '').replace(/\n?```$/, '');
+  return JSON.parse(raw);
+}
+
+function injectResearchedSpecies(fish) {
+  // Clear existing rows
+  speciesRowsEl.innerHTML = '';
+  fish.forEach((f, idx) => {
+    // If species not in FISHDB yet, add it temporarily so the select works
+    if (!FISHDB[f.slug]) {
+      FISHDB[f.slug] = { n: f.n, s: f.s || '', cast: f.cast || '', depth: f.depth || '', rigs: f.rigs || [] };
+      if (f.regs) FISHDB[f.slug].regs = f.regs;
+    }
+    const row = document.createElement('div');
+    row.className = 'sp-row';
+    row.innerHTML = `
+      <select class="form-select" name="slug_${idx}"><option value="">Species…</option>${buildSpeciesOptions()}</select>
+      <select class="form-select" name="tide_${idx}">
+        <option value="any">any tide</option><option value="incoming">incoming</option>
+        <option value="outgoing">outgoing</option><option value="—">—</option>
+      </select>
+      <select class="form-select" name="light_${idx}">
+        <option value="dawn">dawn</option><option value="dusk">dusk</option>
+        <option value="midday">midday</option><option value="night">night</option><option value="any">any light</option>
+      </select>
+      <input class="form-input" name="note_${idx}" type="text" placeholder="Short note…">
+      <button type="button" class="btn-rm-sp" title="Remove">×</button>`;
+    row.querySelector(`[name="slug_${idx}"]`).value = f.slug;
+    row.querySelector(`[name="tide_${idx}"]`).value = f.tide || 'any';
+    row.querySelector(`[name="light_${idx}"]`).value = f.light || 'any';
+    row.querySelector(`[name="note_${idx}"]`).value = f.note || '';
+    row.querySelector('.btn-rm-sp').onclick = () => row.remove();
+    speciesRowsEl.appendChild(row);
+  });
+}
+
+autoResearchBtn.onclick = async () => {
+  const fd = new FormData(addSpotForm);
+  const name = fd.get('name')?.trim();
+  const lat  = parseFloat(fd.get('lat'));
+  const lon  = parseFloat(fd.get('lon'));
+  if (!name || isNaN(lat) || isNaN(lon)) {
+    showResearchStatus('Fill in the spot name and coordinates first.', true);
+    return;
+  }
+
+  let apiKey = localStorage.getItem(CLAUDE_KEY_KEY) || '';
+  if (!apiKey) {
+    showResearchStatus(`To auto-research species, enter your Anthropic API key once — it's saved locally and never sent anywhere except Anthropic.<br><div class="api-key-row"><input class="form-input" id="claudeKeyInput" type="password" placeholder="sk-ant-..." autocomplete="off"><button type="button" class="btn-save" id="saveKeyBtn" style="padding:8px 14px;border-radius:100px;font-size:12px">Save & Research</button></div>`);
+    document.getElementById('saveKeyBtn').onclick = async () => {
+      const k = document.getElementById('claudeKeyInput').value.trim();
+      if (!k.startsWith('sk-ant-')) { showResearchStatus('Key should start with sk-ant-…', true); return; }
+      localStorage.setItem(CLAUDE_KEY_KEY, k);
+      await doResearch(k, { name, lat, lon, water: fd.get('water') || 'salt', tags: fd.get('tags') || '' });
+    };
+    return;
+  }
+  await doResearch(apiKey, { name, lat, lon, water: fd.get('water') || 'salt', tags: fd.get('tags') || '' });
+};
+
+async function doResearch(apiKey, spotInfo) {
+  autoResearchBtn.disabled = true;
+  showResearchStatus('🔍 Researching species for this location…');
+  try {
+    const data = await callClaude(apiKey, spotInfo);
+    const fish = data.fish || [];
+    if (!fish.length) throw new Error('No species returned');
+    injectResearchedSpecies(fish);
+    showResearchStatus(`✓ Found ${fish.length} species — review below and save.`);
+  } catch (e) {
+    showResearchStatus(`Research failed: ${e.message}. Check your API key or try again.`, true);
+    if (e.message.includes('401') || e.message.includes('Invalid')) {
+      localStorage.removeItem(CLAUDE_KEY_KEY);
+    }
+  } finally {
+    autoResearchBtn.disabled = false;
+  }
+}
+
 addSpotForm.onsubmit = e => {
   e.preventDefault();
   const fd = new FormData(addSpotForm);
@@ -798,7 +938,7 @@ document.querySelectorAll('input[name="water"]').forEach(r => r.onchange = () =>
       fetch('data/locations.json').then(r => r.json()),
       fetch('data/species.json').then(r => r.json()),
     ]);
-    FISHDB = fish.species;
+    FISHDB = { ...fish.species, ...loadCustomSpecies() };
     const hiddenIds = loadHiddenIds();
     SPOTS = locs.locations.filter(s => !hiddenIds.includes(s.id));
     // Merge custom spots from localStorage
