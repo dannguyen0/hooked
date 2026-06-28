@@ -707,34 +707,55 @@ function showResearchStatus(msg, isErr = false) {
 }
 function hideResearchStatus() { researchStatus.hidden = true; }
 
-async function researchSpecies(spotInfo) {
-  const prompt = `You are an expert Southern California fishing guide. Return ONLY a valid JSON object with this exact structure, no markdown, no extra text:
-{"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence spot note","cast":"where/how to cast","depth":"e.g. 5-30 ft","regs":{"size":"e.g. 12 in TL","bag":"e.g. 5/day","season":"e.g. Year-round"},"rigs":[{"name":"Rig name","detail":"2-3 sentences with specific lure brands/sizes","line":"e.g. 20 lb fluoro"},{"name":"Rig name","detail":"detail","line":"line"},{"name":"Rig name","detail":"detail","line":"line"}]}]}
-
-Spot: ${spotInfo.name}, Lat: ${spotInfo.lat}, Lon: ${spotInfo.lon}, Water: ${spotInfo.water}, Tags: ${spotInfo.tags}
-Return top 4-6 species caught here. Exactly 3 rigs per species ordered best-first. CDFW regs or "Verify CDFW regs". Freshwater = SoCal lake species.`;
-
-  const res = await fetch('https://text.pollinations.ai/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      messages: [{ role: 'user', content: prompt }],
-      model: 'openai',
-      jsonMode: true,
-      seed: 42,
-    }),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  // jsonMode returns JSON directly — try res.json() first, fall back to text parse
-  let data;
-  try {
-    data = await res.json();
-  } catch {
-    const raw = (await res.text()).trim().replace(/^```[a-z]*\n?/, '').replace(/\n?```$/, '');
-    data = JSON.parse(raw);
+function showToast(msg, duration = 3500) {
+  let t = document.getElementById('hooked-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'hooked-toast';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 18px;border-radius:100px;font-size:13px;font-family:var(--font-mono,monospace);z-index:9999;pointer-events:none;transition:opacity .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.25)';
+    document.body.appendChild(t);
   }
-  // Handle both {fish:[...]} and bare [...] responses
-  return Array.isArray(data) ? { fish: data } : data;
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, duration);
+}
+
+async function researchSpecies(spotInfo) {
+  const prompt = `You are an expert Southern California fishing guide. Return ONLY a valid JSON object — no markdown, no explanation, no code fences.
+Schema: {"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence spot note","cast":"where/how to cast","depth":"e.g. 5-30 ft","regs":{"size":"e.g. 12 in TL","bag":"e.g. 5/day","season":"e.g. Year-round"},"rigs":[{"name":"Rig name","detail":"2-3 sentences with specific lure brands/sizes","line":"e.g. 20 lb fluoro"},{"name":"Rig name","detail":"detail","line":"line"},{"name":"Rig name","detail":"detail","line":"line"}]}]}
+Spot: ${spotInfo.name}, Lat: ${spotInfo.lat}, Lon: ${spotInfo.lon}, Water: ${spotInfo.water}, Tags: ${spotInfo.tags}
+Top 4-6 species commonly caught here. Exactly 3 rigs per species, best first. CDFW regs or write "Verify CDFW regs". Freshwater = SoCal lake species.`;
+
+  const parseResponse = raw => {
+    const cleaned = raw.trim().replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
+    const data = JSON.parse(cleaned);
+    return Array.isArray(data) ? { fish: data } : data;
+  };
+
+  // Try Pollinations first
+  try {
+    const res = await fetch('https://text.pollinations.ai/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], model: 'openai-large', jsonMode: true, seed: 42 }),
+    });
+    if (res.ok) {
+      const text = await res.text();
+      const data = parseResponse(text);
+      if (data.fish?.length) return data;
+    }
+  } catch (e) { console.warn('Pollinations failed:', e.message); }
+
+  // Fallback: OpenRouter free model (no key required for some routes via referrer)
+  const res2 = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'HTTP-Referer': 'https://dannguyen0.github.io/hooked/', 'X-Title': 'Hooked' },
+    body: JSON.stringify({ model: 'meta-llama/llama-3.1-8b-instruct:free', messages: [{ role: 'user', content: prompt }], response_format: { type: 'json_object' } }),
+  });
+  if (!res2.ok) throw new Error(`HTTP ${res2.status}`);
+  const j = await res2.json();
+  return parseResponse(j.choices[0].message.content);
 }
 
 function collectFishFromForm() {
@@ -806,16 +827,11 @@ addSpotForm.onsubmit = e => {
 
 // Research runs after the spot is already saved — updates it in place when done
 async function backgroundResearch(spotId, spotInfo) {
-  // Show a subtle indicator on the rail chip
-  const setChipStatus = (msg) => {
-    const chip = document.querySelector(`.rail-chip[data-id="${spotId}"] .chip-name`);
-    if (chip) chip.title = msg;
-  };
-  setChipStatus('Researching species…');
+  showToast(`Looking up species for ${spotInfo.name}…`, 10000);
   try {
     const data = await researchSpecies(spotInfo);
     const fish = data.fish || [];
-    if (!fish.length) return;
+    if (!fish.length) { showToast('No species found — try editing the spot.', 4000); return; }
 
     // Merge new species into FISHDB and persist
     const customSp = loadCustomSpecies();
@@ -835,17 +851,12 @@ async function backgroundResearch(spotId, spotInfo) {
     if (idx !== -1) {
       SPOTS[idx].fish = fish.map(f => ({ slug: f.slug, tide: f.tide || 'any', light: f.light || 'any', note: f.note || '' }));
       persistCustomSpots();
-      // Re-render so the species appear
-      if (active?.id === spotId) {
-        initSampleCtx(SPOTS[idx]);
-        renderAll();
-      } else {
-        renderRail();
-      }
+      if (active?.id === spotId) { initSampleCtx(SPOTS[idx]); renderAll(); } else { renderRail(); }
     }
-    setChipStatus('');
-  } catch {
-    setChipStatus('Species lookup failed');
+    showToast(`✓ Found ${fish.length} species for ${spotInfo.name}`);
+  } catch (e) {
+    console.error('backgroundResearch failed:', e);
+    showToast('Species lookup failed — edit the spot to retry.', 5000);
   }
 }
 
