@@ -815,38 +815,36 @@ async function doResearch(apiKey, spotInfo) {
   }
 }
 
-addSpotForm.onsubmit = e => {
-  e.preventDefault();
-  const fd = new FormData(addSpotForm);
-  const name = fd.get('name')?.trim();
-  const lat = parseFloat(fd.get('lat'));
-  const lon = parseFloat(fd.get('lon'));
-  if (!name || isNaN(lat) || isNaN(lon)) { alert('Name, latitude, and longitude are required.'); return; }
-  const water = fd.get('water') || 'salt';
-  const station = fd.get('station')?.trim() || null;
-  const tagsRaw = fd.get('tags')?.trim() || '';
-  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+function collectFishFromForm() {
   const fish = [];
   speciesRowsEl.querySelectorAll('.sp-row').forEach((row, idx) => {
     const slug = row.querySelector(`[name="slug_${idx}"]`)?.value;
     if (!slug) return;
     fish.push({
       slug,
-      tide: row.querySelector(`[name="tide_${idx}"]`)?.value || 'any',
+      tide:  row.querySelector(`[name="tide_${idx}"]`)?.value || 'any',
       light: row.querySelector(`[name="light_${idx}"]`)?.value || 'dawn',
-      note: row.querySelector(`[name="note_${idx}"]`)?.value?.trim() || '',
+      note:  row.querySelector(`[name="note_${idx}"]`)?.value?.trim() || '',
     });
   });
+  return fish;
+}
+
+function saveSpotWithFish(fd, fish) {
+  const name    = fd.get('name')?.trim();
+  const lat     = parseFloat(fd.get('lat'));
+  const lon     = parseFloat(fd.get('lon'));
+  const water   = fd.get('water') || 'salt';
+  const station = fd.get('station')?.trim() || null;
+  const tags    = (fd.get('tags') || '').split(',').map(t => t.trim()).filter(Boolean);
+
   if (editingSpotId) {
-    // Update existing custom spot in-place
     const idx = SPOTS.findIndex(s => s.id === editingSpotId);
     if (idx !== -1) {
       const existing = SPOTS[idx];
       SPOTS[idx] = { ...existing, name, lat, lon, station: station || null, water, tags, fish };
-      // Clear cached live data so it refetches with the new station
       delete spotData[editingSpotId];
       localStorage.removeItem(`hooked_v1_${editingSpotId}_${TODAY_ISO}`);
-      // Persist updated custom spots
       const customs = SPOTS.filter(s => s._custom);
       localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs));
       if (active?.id === editingSpotId) active = SPOTS[idx];
@@ -862,7 +860,68 @@ addSpotForm.onsubmit = e => {
     addCustomSpot(spot);
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+addSpotForm.onsubmit = async e => {
+  e.preventDefault();
+  const fd = new FormData(addSpotForm);
+  const name = fd.get('name')?.trim();
+  const lat = parseFloat(fd.get('lat'));
+  const lon = parseFloat(fd.get('lon'));
+  if (!name || isNaN(lat) || isNaN(lon)) { alert('Name, latitude, and longitude are required.'); return; }
+
+  const manualFish = collectFishFromForm();
+
+  // If species already filled in (manual or prior auto-research), save immediately
+  if (manualFish.length > 0) {
+    saveSpotWithFish(fd, manualFish);
+    return;
+  }
+
+  // No species — auto-research before saving
+  const water = fd.get('water') || 'salt';
+  const tags  = fd.get('tags') || '';
+  const spotInfo = { name, lat, lon, water, tags };
+
+  let apiKey = localStorage.getItem(CLAUDE_KEY_KEY) || '';
+  if (!apiKey) {
+    // Prompt for key inline, then research, then save
+    showResearchStatus(`To auto-populate species, enter your Anthropic API key once — saved locally, only sent to Anthropic.<br><div class="api-key-row"><input class="form-input" id="claudeKeyInput" type="password" placeholder="sk-ant-..." autocomplete="off"><button type="button" class="btn-save" id="saveKeyBtn" style="padding:8px 14px;border-radius:100px;font-size:12px">Research & Save</button><button type="button" class="btn-cancel" id="skipKeyBtn" style="padding:8px 14px;border-radius:100px;font-size:12px;margin-left:6px">Save without species</button></div>`);
+    document.getElementById('skipKeyBtn').onclick = () => saveSpotWithFish(fd, []);
+    document.getElementById('saveKeyBtn').onclick = async () => {
+      const k = document.getElementById('claudeKeyInput').value.trim();
+      if (!k.startsWith('sk-ant-')) { showResearchStatus('Key should start with sk-ant-…', true); return; }
+      localStorage.setItem(CLAUDE_KEY_KEY, k);
+      await researchThenSave(k, spotInfo, fd);
+    };
+    return;
+  }
+
+  await researchThenSave(apiKey, spotInfo, fd);
 };
+
+async function researchThenSave(apiKey, spotInfo, fd) {
+  const saveBtn = addSpotForm.querySelector('.btn-save');
+  if (saveBtn) saveBtn.disabled = true;
+  showResearchStatus('✦ Researching species for this location…');
+  try {
+    const data = await callClaude(apiKey, spotInfo);
+    const fish = data.fish || [];
+    if (!fish.length) throw new Error('No species returned');
+    injectResearchedSpecies(fish);
+    showResearchStatus(`✓ Found ${fish.length} species`);
+    await new Promise(r => setTimeout(r, 600)); // brief pause so user sees the confirmation
+    saveSpotWithFish(fd, collectFishFromForm());
+  } catch (err) {
+    showResearchStatus(`Research failed: ${err.message} — saving without species.`, true);
+    if (err.message.includes('401') || err.message.includes('Invalid')) localStorage.removeItem(CLAUDE_KEY_KEY);
+    await new Promise(r => setTimeout(r, 1200));
+    saveSpotWithFish(fd, []);
+  } finally {
+    if (saveBtn) saveBtn.disabled = false;
+  }
+}
+
 
 // ── NOAA station lookup — fetch all tide stations once, cache in localStorage ─
 const NOAA_CACHE_KEY = 'hooked_noaa_stations_v1';
