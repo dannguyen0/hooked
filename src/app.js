@@ -722,40 +722,27 @@ function showToast(msg, duration = 3500) {
 }
 
 async function researchSpecies(spotInfo) {
-  const prompt = `You are an expert Southern California fishing guide. Return ONLY a valid JSON object — no markdown, no explanation, no code fences.
-Schema: {"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence spot note","cast":"where/how to cast","depth":"e.g. 5-30 ft","regs":{"size":"e.g. 12 in TL","bag":"e.g. 5/day","season":"e.g. Year-round"},"rigs":[{"name":"Rig name","detail":"2-3 sentences with specific lure brands/sizes","line":"e.g. 20 lb fluoro"},{"name":"Rig name","detail":"detail","line":"line"},{"name":"Rig name","detail":"detail","line":"line"}]}]}
-Spot: ${spotInfo.name}, Lat: ${spotInfo.lat}, Lon: ${spotInfo.lon}, Water: ${spotInfo.water}, Tags: ${spotInfo.tags}
-Top 4-6 species commonly caught here. Exactly 3 rigs per species, best first. CDFW regs or write "Verify CDFW regs". Freshwater = SoCal lake species.`;
+  const prompt = `You are an expert Southern California fishing guide. Respond with ONLY a JSON object, no markdown.
+{"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence tip","cast":"where to cast","depth":"depth range","regs":{"size":"size limit","bag":"bag limit","season":"season"},"rigs":[{"name":"name","detail":"detail with brands","line":"line spec"},{"name":"name","detail":"detail","line":"line"},{"name":"name","detail":"detail","line":"line"}]}]}
+Spot: ${spotInfo.name}, Water: ${spotInfo.water}${spotInfo.tags ? ', Tags: ' + spotInfo.tags : ''}
+List top 5 species caught here. 3 rigs each. SoCal fishing. JSON only.`;
 
-  const parseResponse = raw => {
-    const cleaned = raw.trim().replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
-    const data = JSON.parse(cleaned);
-    return Array.isArray(data) ? { fish: data } : data;
-  };
-
-  // Try Pollinations first
-  try {
-    const res = await fetch('https://text.pollinations.ai/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], model: 'openai-large', jsonMode: true, seed: 42 }),
-    });
-    if (res.ok) {
-      const text = await res.text();
-      const data = parseResponse(text);
-      if (data.fish?.length) return data;
-    }
-  } catch (e) { console.warn('Pollinations failed:', e.message); }
-
-  // Fallback: OpenRouter free model (no key required for some routes via referrer)
-  const res2 = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const res = await fetch('https://text.pollinations.ai/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'HTTP-Referer': 'https://dannguyen0.github.io/hooked/', 'X-Title': 'Hooked' },
-    body: JSON.stringify({ model: 'meta-llama/llama-3.1-8b-instruct:free', messages: [{ role: 'user', content: prompt }], response_format: { type: 'json_object' } }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messages: [{ role: 'user', content: prompt }],
+      model: 'openai-large',
+      jsonMode: true,
+      seed: Math.floor(Math.random() * 1000),
+    }),
   });
-  if (!res2.ok) throw new Error(`HTTP ${res2.status}`);
-  const j = await res2.json();
-  return parseResponse(j.choices[0].message.content);
+  if (!res.ok) throw new Error(`Pollinations HTTP ${res.status}`);
+  const text = await res.text();
+  console.log('[hooked] researchSpecies raw:', text.slice(0, 300));
+  const cleaned = text.trim().replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
+  const data = JSON.parse(cleaned);
+  return Array.isArray(data) ? { fish: data } : data;
 }
 
 function collectFishFromForm() {
