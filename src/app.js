@@ -708,16 +708,11 @@ function showResearchStatus(msg, isErr = false) {
 function hideResearchStatus() { researchStatus.hidden = true; }
 
 async function researchSpecies(spotInfo) {
-  const prompt = `You are an expert Southern California fishing guide. Respond ONLY with a raw JSON object, no markdown, no explanation.
+  const prompt = `You are an expert Southern California fishing guide. Return ONLY a valid JSON object with this exact structure, no markdown, no extra text:
+{"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence spot note","cast":"where/how to cast","depth":"e.g. 5-30 ft","regs":{"size":"e.g. 12 in TL","bag":"e.g. 5/day","season":"e.g. Year-round"},"rigs":[{"name":"Rig name","detail":"2-3 sentences with specific lure brands/sizes","line":"e.g. 20 lb fluoro"},{"name":"Rig name","detail":"detail","line":"line"},{"name":"Rig name","detail":"detail","line":"line"}]}]}
 
-Schema: {"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence spot note","cast":"where/how to cast","depth":"e.g. 5-30 ft","regs":{"size":"e.g. 12 in TL","bag":"e.g. 5/day","season":"e.g. Year-round"},"rigs":[{"name":"...","detail":"2-3 sentences with specific lure brands/sizes","line":"e.g. 20 lb fluoro"},{"name":"...","detail":"...","line":"..."},{"name":"...","detail":"...","line":"..."}]}]}
-
-Spot: ${spotInfo.name}
-Lat: ${spotInfo.lat}, Lon: ${spotInfo.lon}
-Water: ${spotInfo.water}
-Tags: ${spotInfo.tags}
-
-Return the top 4-6 species most commonly caught here. Exactly 3 rigs per species, best first. Use CDFW regs or write "Verify CDFW regs". For freshwater use SoCal lake species. Return only the JSON object.`;
+Spot: ${spotInfo.name}, Lat: ${spotInfo.lat}, Lon: ${spotInfo.lon}, Water: ${spotInfo.water}, Tags: ${spotInfo.tags}
+Return top 4-6 species caught here. Exactly 3 rigs per species ordered best-first. CDFW regs or "Verify CDFW regs". Freshwater = SoCal lake species.`;
 
   const res = await fetch('https://text.pollinations.ai/', {
     method: 'POST',
@@ -730,66 +725,16 @@ Return the top 4-6 species most commonly caught here. Exactly 3 rigs per species
     }),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const raw = (await res.text()).trim().replace(/^```[a-z]*\n?/, '').replace(/\n?```$/, '');
-  return JSON.parse(raw);
-}
-
-function injectResearchedSpecies(fish) {
-  speciesRowsEl.innerHTML = '';
-  fish.forEach((f, idx) => {
-    if (!FISHDB[f.slug]) {
-      FISHDB[f.slug] = { n: f.n, s: f.s || '', cast: f.cast || '', depth: f.depth || '', rigs: f.rigs || [] };
-      if (f.regs) FISHDB[f.slug].regs = f.regs;
-    }
-    const row = document.createElement('div');
-    row.className = 'sp-row';
-    row.innerHTML = `
-      <select class="form-select" name="slug_${idx}"><option value="">Species…</option>${buildSpeciesOptions()}</select>
-      <select class="form-select" name="tide_${idx}">
-        <option value="any">any tide</option><option value="incoming">incoming</option>
-        <option value="outgoing">outgoing</option><option value="—">—</option>
-      </select>
-      <select class="form-select" name="light_${idx}">
-        <option value="dawn">dawn</option><option value="dusk">dusk</option>
-        <option value="midday">midday</option><option value="night">night</option><option value="any">any light</option>
-      </select>
-      <input class="form-input" name="note_${idx}" type="text" placeholder="Short note…">
-      <button type="button" class="btn-rm-sp" title="Remove">×</button>`;
-    row.querySelector(`[name="slug_${idx}"]`).value = f.slug;
-    row.querySelector(`[name="tide_${idx}"]`).value = f.tide || 'any';
-    row.querySelector(`[name="light_${idx}"]`).value = f.light || 'any';
-    row.querySelector(`[name="note_${idx}"]`).value = f.note || '';
-    row.querySelector('.btn-rm-sp').onclick = () => row.remove();
-    speciesRowsEl.appendChild(row);
-  });
-}
-
-autoResearchBtn.onclick = async () => {
-  const fd = new FormData(addSpotForm);
-  const name = fd.get('name')?.trim();
-  const lat  = parseFloat(fd.get('lat'));
-  const lon  = parseFloat(fd.get('lon'));
-  if (!name || isNaN(lat) || isNaN(lon)) {
-    showResearchStatus('Fill in the spot name and coordinates first.', true);
-    return;
-  }
-  await doResearch({ name, lat, lon, water: fd.get('water') || 'salt', tags: fd.get('tags') || '' });
-};
-
-async function doResearch(spotInfo) {
-  autoResearchBtn.disabled = true;
-  showResearchStatus('✦ Researching species for this location…');
+  // jsonMode returns JSON directly — try res.json() first, fall back to text parse
+  let data;
   try {
-    const data = await researchSpecies(spotInfo);
-    const fish = data.fish || [];
-    if (!fish.length) throw new Error('No species returned');
-    injectResearchedSpecies(fish);
-    showResearchStatus(`✓ Found ${fish.length} species — review below and save.`);
-  } catch (e) {
-    showResearchStatus(`Research failed: ${e.message}. Try again.`, true);
-  } finally {
-    autoResearchBtn.disabled = false;
+    data = await res.json();
+  } catch {
+    const raw = (await res.text()).trim().replace(/^```[a-z]*\n?/, '').replace(/\n?```$/, '');
+    data = JSON.parse(raw);
   }
+  // Handle both {fish:[...]} and bare [...] responses
+  return Array.isArray(data) ? { fish: data } : data;
 }
 
 function collectFishFromForm() {
@@ -807,6 +752,10 @@ function collectFishFromForm() {
   return fish;
 }
 
+function persistCustomSpots() {
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(SPOTS.filter(s => s._custom)));
+}
+
 function saveSpotWithFish(fd, fish) {
   const name    = fd.get('name')?.trim();
   const lat     = parseFloat(fd.get('lat'));
@@ -818,12 +767,10 @@ function saveSpotWithFish(fd, fish) {
   if (editingSpotId) {
     const idx = SPOTS.findIndex(s => s.id === editingSpotId);
     if (idx !== -1) {
-      const existing = SPOTS[idx];
-      SPOTS[idx] = { ...existing, name, lat, lon, station: station || null, water, tags, fish };
+      SPOTS[idx] = { ...SPOTS[idx], name, lat, lon, station: station || null, water, tags, fish };
       delete spotData[editingSpotId];
       localStorage.removeItem(`hooked_v1_${editingSpotId}_${TODAY_ISO}`);
-      const customs = SPOTS.filter(s => s._custom);
-      localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs));
+      persistCustomSpots();
       if (active?.id === editingSpotId) active = SPOTS[idx];
       closeModal();
       initSampleCtx(SPOTS[idx]);
@@ -839,44 +786,66 @@ function saveSpotWithFish(fd, fish) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-addSpotForm.onsubmit = async e => {
+addSpotForm.onsubmit = e => {
   e.preventDefault();
   const fd = new FormData(addSpotForm);
   const name = fd.get('name')?.trim();
-  const lat = parseFloat(fd.get('lat'));
-  const lon = parseFloat(fd.get('lon'));
+  const lat  = parseFloat(fd.get('lat'));
+  const lon  = parseFloat(fd.get('lon'));
   if (!name || isNaN(lat) || isNaN(lon)) { alert('Name, latitude, and longitude are required.'); return; }
 
   const manualFish = collectFishFromForm();
+  saveSpotWithFish(fd, manualFish);
 
-  // If species already filled in (manual or prior auto-research), save immediately
-  if (manualFish.length > 0) {
-    saveSpotWithFish(fd, manualFish);
-    return;
+  // If no species were manually added, kick off background research
+  if (!manualFish.length && !editingSpotId) {
+    const spotId = SPOTS[SPOTS.length - 1]?.id;
+    if (spotId) backgroundResearch(spotId, { name, lat, lon, water: fd.get('water') || 'salt', tags: fd.get('tags') || '' });
   }
-
-  // No species — auto-research before saving (free, no key needed)
-  await researchThenSave({ name, lat, lon, water: fd.get('water') || 'salt', tags: fd.get('tags') || '' }, fd);
 };
 
-async function researchThenSave(spotInfo, fd) {
-  const saveBtn = addSpotForm.querySelector('.btn-save');
-  if (saveBtn) saveBtn.disabled = true;
-  showResearchStatus('✦ Researching species for this location…');
+// Research runs after the spot is already saved — updates it in place when done
+async function backgroundResearch(spotId, spotInfo) {
+  // Show a subtle indicator on the rail chip
+  const setChipStatus = (msg) => {
+    const chip = document.querySelector(`.rail-chip[data-id="${spotId}"] .chip-name`);
+    if (chip) chip.title = msg;
+  };
+  setChipStatus('Researching species…');
   try {
     const data = await researchSpecies(spotInfo);
     const fish = data.fish || [];
-    if (!fish.length) throw new Error('No species returned');
-    injectResearchedSpecies(fish);
-    showResearchStatus(`✓ Found ${fish.length} species`);
-    await new Promise(r => setTimeout(r, 600));
-    saveSpotWithFish(fd, collectFishFromForm());
-  } catch (err) {
-    showResearchStatus(`Research failed: ${err.message} — saving without species.`, true);
-    await new Promise(r => setTimeout(r, 1200));
-    saveSpotWithFish(fd, []);
-  } finally {
-    if (saveBtn) saveBtn.disabled = false;
+    if (!fish.length) return;
+
+    // Merge new species into FISHDB and persist
+    const customSp = loadCustomSpecies();
+    let spChanged = false;
+    fish.forEach(f => {
+      if (!FISHDB[f.slug]) {
+        FISHDB[f.slug] = { n: f.n, s: f.s || '', cast: f.cast || '', depth: f.depth || '', rigs: f.rigs || [] };
+        if (f.regs) FISHDB[f.slug].regs = f.regs;
+        customSp[f.slug] = FISHDB[f.slug];
+        spChanged = true;
+      }
+    });
+    if (spChanged) saveCustomSpecies(customSp);
+
+    // Update the spot in SPOTS and localStorage
+    const idx = SPOTS.findIndex(s => s.id === spotId);
+    if (idx !== -1) {
+      SPOTS[idx].fish = fish.map(f => ({ slug: f.slug, tide: f.tide || 'any', light: f.light || 'any', note: f.note || '' }));
+      persistCustomSpots();
+      // Re-render so the species appear
+      if (active?.id === spotId) {
+        initSampleCtx(SPOTS[idx]);
+        renderAll();
+      } else {
+        renderRail();
+      }
+    }
+    setChipStatus('');
+  } catch {
+    setChipStatus('Species lookup failed');
   }
 }
 
