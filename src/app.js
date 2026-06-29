@@ -727,18 +727,19 @@ async function researchSpecies(spotInfo) {
 Spot: ${spotInfo.name}, Water: ${spotInfo.water}${spotInfo.tags ? ', Tags: ' + spotInfo.tags : ''}
 List top 5 species caught here. 3 rigs each. SoCal fishing. JSON only.`;
 
-  const res = await fetch('https://text.pollinations.ai/', {
+  const res = await fetch('https://text.pollinations.ai/openai', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      messages: [{ role: 'user', content: prompt }],
       model: 'openai-large',
-      jsonMode: true,
+      messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' },
       seed: Math.floor(Math.random() * 1000),
     }),
   });
   if (!res.ok) throw new Error(`Pollinations HTTP ${res.status}`);
-  const text = await res.text();
+  const j = await res.json();
+  const text = j.choices?.[0]?.message?.content ?? JSON.stringify(j);
   console.log('[hooked] researchSpecies raw:', text.slice(0, 300));
   const cleaned = text.trim().replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
   const data = JSON.parse(cleaned);
