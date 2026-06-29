@@ -732,7 +732,7 @@ async function researchSpecies(spotInfo) {
 Spot: ${spotInfo.name}, Water: ${spotInfo.water}${spotInfo.tags ? ', Tags: ' + spotInfo.tags : ''}
 Top 5 species commonly caught here. 3 rigs each, best first. SoCal fishing. CDFW regs. JSON only.`;
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
