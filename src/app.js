@@ -721,26 +721,32 @@ function showToast(msg, duration = 3500) {
   t._timer = setTimeout(() => { t.style.opacity = '0'; }, duration);
 }
 
-async function researchSpecies(spotInfo) {
-  const prompt = `You are an expert Southern California fishing guide. Respond with ONLY a JSON object, no markdown.
-{"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence tip","cast":"where to cast","depth":"depth range","regs":{"size":"size limit","bag":"bag limit","season":"season"},"rigs":[{"name":"name","detail":"detail with brands","line":"line spec"},{"name":"name","detail":"detail","line":"line"},{"name":"name","detail":"detail","line":"line"}]}]}
-Spot: ${spotInfo.name}, Water: ${spotInfo.water}${spotInfo.tags ? ', Tags: ' + spotInfo.tags : ''}
-List top 5 species caught here. 3 rigs each. SoCal fishing. JSON only.`;
+const GEMINI_KEY_KEY = 'hooked_gemini_key';
 
-  const res = await fetch('https://text.pollinations.ai/openai', {
+async function researchSpecies(spotInfo) {
+  const apiKey = localStorage.getItem(GEMINI_KEY_KEY);
+  if (!apiKey) throw new Error('NO_KEY');
+
+  const prompt = `You are an expert Southern California fishing guide. Return ONLY a valid JSON object, no markdown, no explanation.
+{"fish":[{"slug":"kebab-case-id","n":"Common Name","s":"Scientific name","tide":"incoming|outgoing|any","light":"dawn|dusk|night|day|any","note":"one-sentence tip","cast":"where to cast","depth":"depth range","regs":{"size":"size limit","bag":"bag limit","season":"season"},"rigs":[{"name":"Rig name","detail":"2-3 sentences with specific lure brands","line":"line spec"},{"name":"Rig name","detail":"detail","line":"line"},{"name":"Rig name","detail":"detail","line":"line"}]}]}
+Spot: ${spotInfo.name}, Water: ${spotInfo.water}${spotInfo.tags ? ', Tags: ' + spotInfo.tags : ''}
+Top 5 species commonly caught here. 3 rigs each, best first. SoCal fishing. CDFW regs. JSON only.`;
+
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'openai-large',
-      messages: [{ role: 'user', content: prompt }],
-      response_format: { type: 'json_object' },
-      seed: Math.floor(Math.random() * 1000),
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json' },
     }),
   });
-  if (!res.ok) throw new Error(`Pollinations HTTP ${res.status}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 400 || res.status === 401 || res.status === 403) localStorage.removeItem(GEMINI_KEY_KEY);
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
   const j = await res.json();
-  const text = j.choices?.[0]?.message?.content ?? JSON.stringify(j);
-  console.log('[hooked] researchSpecies raw:', text.slice(0, 300));
+  const text = j.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
   const cleaned = text.trim().replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/i, '').trim();
   const data = JSON.parse(cleaned);
   return Array.isArray(data) ? { fish: data } : data;
@@ -815,6 +821,13 @@ addSpotForm.onsubmit = e => {
 
 // Research runs after the spot is already saved — updates it in place when done
 async function backgroundResearch(spotId, spotInfo) {
+  // Prompt for Gemini key if missing
+  if (!localStorage.getItem(GEMINI_KEY_KEY)) {
+    const k = prompt('Enter your free Gemini API key to auto-research species.\nGet one free at: aistudio.google.com/app/apikey\n\n(Stored locally, only sent to Google)');
+    if (!k?.trim()) { showToast('No API key — species not loaded.', 4000); return; }
+    localStorage.setItem(GEMINI_KEY_KEY, k.trim());
+  }
+
   showToast(`Looking up species for ${spotInfo.name}…`, 10000);
   try {
     const data = await researchSpecies(spotInfo);
