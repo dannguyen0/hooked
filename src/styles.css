@@ -634,10 +634,11 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   );
 }
 .plate img {
-  max-height: 110px;
-  max-width: 88%;
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,.13));
+  max-height: 115px;
+  max-width: 92%;
+  filter: drop-shadow(0 2px 6px rgba(18,16,10,.12));
   position: relative;
+  mix-blend-mode: multiply;
 }
 .plate .ph {
   font-size: 10px;

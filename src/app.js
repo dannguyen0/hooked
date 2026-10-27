@@ -513,8 +513,7 @@ function renderFish() {
   $('fishGrid').innerHTML = active.fish.map(ref => {
     const f = FISHDB[ref.slug];
     if (!f) return '';
-    const photo = 'images/fish/' + ref.slug + '.png';
-    const vector = 'images/fish/vector/' + ref.slug + '.png';
+    const vector = 'images/fish/vector/' + ref.slug + '.svg';
     const r1 = f.rigs[0], rest = f.rigs.slice(1);
     const regs = f.regs;
     const regsHtml = regs ? `<div class="reg-bar">
@@ -524,7 +523,7 @@ function renderFish() {
       <span class="reg-verify">Verify CDFW regs before fishing</span>
     </div>` : '';
     return `<div class="card">
-      <div class="plate"><img src="${photo}" alt="${f.n}" loading="lazy" data-fb="${vector}" onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.dataset.fb='';}else{this.style.display='none';this.parentNode.innerHTML='<span class=ph>NO PLATE</span>';}"/></div>
+      <div class="plate"><img src="${vector}" alt="${f.n}" loading="lazy" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=ph>NO PLATE</span>';"/></div>
       <div class="cbody">
         <div class="fh"><div><div class="fn">${f.n}</div><div class="sci">${f.s}</div></div>
           <div class="pref"><span>tide</span> ${ref.tide}<br><span>light</span> ${ref.light}</div></div>
