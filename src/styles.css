@@ -114,7 +114,7 @@ html, body { height: 100%; width: 100%; }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--disp);
+  font-family: var(--serif);
   -webkit-font-smoothing: antialiased;
   line-height: 1.5;
   min-height: 100vh;
@@ -517,6 +517,7 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--mute);
+  font-family: var(--disp);
 }
 
 .readout { display: flex; align-items: flex-end; gap: 16px; }

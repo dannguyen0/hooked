@@ -337,7 +337,7 @@ function renderInstrument() {
   let legX = padL;
   legItems.forEach(([c, lbl]) => {
     g += `<rect x="${legX}" y="8" width="7" height="7" rx="1.5" fill="${c}"/>`;
-    g += `<text x="${legX + 10}" y="15" fill="#9CA3AF" font-family="Space Grotesk" font-size="9" font-weight="600">${lbl}</text>`;
+    g += `<text x="${legX + 10}" y="15" fill="#8A7B64" font-family="Playfair Display, Georgia, serif" font-size="9" font-weight="600">${lbl}</text>`;
     legX += lbl.length * 5.4 + 18;
   });
 
@@ -348,7 +348,7 @@ function renderInstrument() {
   }
 
   // ── Activity strip ───────────────────────────────────────────────────────
-  g += `<text x="${padL}" y="${stripY - 5}" fill="#9CA3AF" font-family="Space Grotesk" font-size="9.5" font-weight="700" letter-spacing="1.5">FISH ACTIVITY</text>`;
+  g += `<text x="${padL}" y="${stripY - 5}" fill="#8A7B64" font-family="Playfair Display, Georgia, serif" font-size="9.5" font-weight="700" letter-spacing="1.5">FISH ACTIVITY</text>`;
   g += `<clipPath id="stripClip"><rect x="${padL}" y="${stripY}" width="${stripW}" height="${stripH}" rx="5"/></clipPath>`;
   g += `<rect x="${padL}" y="${stripY}" width="${stripW}" height="${stripH}" rx="5" fill="rgba(0,0,0,.05)"/>`;
 
@@ -417,8 +417,8 @@ function renderInstrument() {
     for (let m = 0; m <= 1440; m += 4) { const v = interp(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ',' + Y(v).toFixed(1) + ' '; }
     const baseY = padT + tideH;
     g += `<g clip-path="url(#tideClip)">`;
-    g += `<path d="${d}L${Wd - padR},${baseY} L${padL},${baseY}Z" fill="rgba(14,165,233,.09)"/>`;
-    g += `<path d="${d}" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linejoin="round"/>`;
+    g += `<path d="${d}L${Wd - padR},${baseY} L${padL},${baseY}Z" fill="rgba(28,58,107,.12)"/>`;
+    g += `<path d="${d}" fill="none" stroke="#1C3A6B" stroke-width="2.5" stroke-linejoin="round"/>`;
 
     // Labels — clipped to tide area, positioned above/below extrema dots
     ex.forEach(e => {
@@ -426,17 +426,17 @@ function renderInstrument() {
       const up = e.type === 'H';
       const lblY = up ? Math.max(cy - 30, padT + 14) : Math.min(cy + 14, padT + tideH - 30);
       const timeY = lblY + 13;
-      g += `<rect x="${cx - 30}" y="${lblY - 11}" width="60" height="27" rx="5" fill="rgba(255,255,255,.92)" stroke="rgba(0,0,0,.08)" stroke-width="1"/>`;
-      g += `<text x="${cx}" y="${lblY}" fill="${up ? '#0EA5E9' : '#374151'}" font-family="Space Grotesk" font-size="10.5" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
-      g += `<text x="${cx}" y="${timeY}" fill="#6B7280" font-family="Space Grotesk" font-size="9.5" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
-      g += `<line x1="${cx}" y1="${up ? lblY + 20 : lblY - 2}" x2="${cx}" y2="${up ? cy - 4 : cy + 4}" stroke="#0EA5E9" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>`;
-      g += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#fff" stroke="#0EA5E9" stroke-width="2.5"/>`;
+      g += `<rect x="${cx - 30}" y="${lblY - 11}" width="60" height="27" rx="2" fill="rgba(244,237,224,.96)" stroke="rgba(18,16,10,.14)" stroke-width="1"/>`;
+      g += `<text x="${cx}" y="${lblY}" fill="${up ? '#1C3A6B' : '#3C3020'}" font-family="Playfair Display, Georgia, serif" font-size="10.5" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
+      g += `<text x="${cx}" y="${timeY}" fill="#8A7B64" font-family="Playfair Display, Georgia, serif" font-size="9.5" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
+      g += `<line x1="${cx}" y1="${up ? lblY + 20 : lblY - 2}" x2="${cx}" y2="${up ? cy - 4 : cy + 4}" stroke="#1C3A6B" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>`;
+      g += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#F4EDE0" stroke="#1C3A6B" stroke-width="2.5"/>`;
     });
     g += `</g>`;
 
     const xn = X(nowMin), vn = interp(+dayStart + nowMin * MIN);
-    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".8"/>`;
-    g += `<circle cx="${xn}" cy="${Y(vn)}" r="6" fill="${isPreview ? '#0EA5E9' : '#F97316'}" stroke="#fff" stroke-width="2.5"/>`;
+    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#1C3A6B' : '#D97706'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".9"/>`;
+    g += `<circle cx="${xn}" cy="${Y(vn)}" r="6" fill="${isPreview ? '#1C3A6B' : '#D97706'}" stroke="#F4EDE0" stroke-width="2.5"/>`;
   } else {
     const yMid = padT + tideH / 2;
     const isFresh = active.water === 'fresh';
@@ -444,11 +444,11 @@ function renderInstrument() {
       : isFresh ? 'Freshwater — solunar + light scoring'
       : 'Add a NOAA Station ID to enable tide data';
     g += `<line x1="${padL}" y1="${yMid}" x2="${Wd - padR}" y2="${yMid}" stroke="rgba(0,0,0,.07)" stroke-dasharray="6 5"/>`;
-    g += `<text x="${Wd/2}" y="${yMid - 10}" fill="#9CA3AF" font-family="Space Grotesk" font-size="14" font-weight="600" text-anchor="middle">${msg}</text>`;
+    g += `<text x="${Wd/2}" y="${yMid - 10}" fill="#8A7B64" font-family="Playfair Display, Georgia, serif" font-size="14" font-weight="600" text-anchor="middle">${msg}</text>`;
     if (!isFresh && !sd?.loading)
-      g += `<text x="${Wd/2}" y="${yMid + 16}" fill="#F97316" font-family="Space Grotesk" font-size="12" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → edit spot</text>`;
+      g += `<text x="${Wd/2}" y="${yMid + 16}" fill="#D97706" font-family="Playfair Display, Georgia, serif" font-size="12" font-weight="500" text-anchor="middle">tidesandcurrents.noaa.gov → find your station → edit spot</text>`;
     const xn = Xm(nowMin);
-    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#0EA5E9' : '#F97316'}" stroke-width="1.8" opacity=".8"/>`;
+    g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#1C3A6B' : '#D97706'}" stroke-width="1.8" opacity=".9"/>`;
   }
 
   // ── Sun rise/set ─────────────────────────────────────────────────────────
@@ -459,7 +459,7 @@ function renderInstrument() {
       if (m < 0 || m > 1440) return;
       const x = Xm(m);
       g += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${stripY}" stroke="rgba(251,191,36,.45)" stroke-width="1" stroke-dasharray="4 4"/>`;
-      g += `<text x="${x}" y="${footY}" fill="#D97706" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">${lbl}</text>`;
+      g += `<text x="${x}" y="${footY}" fill="#D97706" font-family="Playfair Display, Georgia, serif" font-size="10" font-weight="600" text-anchor="middle">${lbl}</text>`;
     });
   }
 
