@@ -306,8 +306,8 @@ function renderHead() {
 function renderInstrument() {
   const sp = active, svg = $('tideSvg');
   const Wd = 960, padL = 18, padR = 18;
-  const padT = 28;
-  const tideH = 248;
+  const padT = 44;
+  const tideH = 240;
   const stripY = padT + tideH + 14;
   const stripH = 22;
   const footY  = stripY + stripH + 18;
@@ -331,20 +331,20 @@ function renderInstrument() {
 
   // ── Legend row (top of chart, inside SVG) ───────────────────────────────
   const legItems = [
-    ['#10B981','Prime ≥75'],['#F97316','Good 55–74'],['#0EA5E9','Fair 35–54'],
+    ['#10B981','Prime ≥75'],['#D97706','Good 55–74'],['#1C3A6B','Fair 35–54'],
     ['rgba(139,92,246,.7)','Solunar peak'],
   ];
   let legX = padL;
   legItems.forEach(([c, lbl]) => {
-    g += `<rect x="${legX}" y="8" width="7" height="7" rx="1.5" fill="${c}"/>`;
-    g += `<text x="${legX + 10}" y="15" fill="#8A7B64" font-family="Playfair Display, Georgia, serif" font-size="9" font-weight="600">${lbl}</text>`;
-    legX += lbl.length * 5.4 + 18;
+    g += `<rect x="${legX}" y="10" width="7" height="7" rx="1.5" fill="${c}" opacity=".8"/>`;
+    g += `<text x="${legX + 11}" y="17" fill="#8A7B64" font-family="Space Grotesk, system-ui, sans-serif" font-size="9" font-weight="600" letter-spacing=".04em">${lbl}</text>`;
+    legX += lbl.length * 5.6 + 20;
   });
 
   // ── Subtle grid lines ────────────────────────────────────────────────────
   for (let i = 0; i <= 4; i++) {
     const y = padT + tideH * i / 4;
-    g += `<line x1="${padL}" y1="${y}" x2="${Wd - padR}" y2="${y}" stroke="rgba(0,0,0,.05)" stroke-width="1"/>`;
+    g += `<line x1="${padL}" y1="${y}" x2="${Wd - padR}" y2="${y}" stroke="rgba(18,16,10,.035)" stroke-width="1"/>`;
   }
 
   // ── Activity strip ───────────────────────────────────────────────────────
@@ -354,9 +354,9 @@ function renderInstrument() {
 
   for (let m = 0; m < 1440; m += 4) {
     const s = scoreAt(sp, m).s;
-    const col = s >= 75 ? '#10B981' : s >= 55 ? '#F97316' : s >= 35 ? '#0EA5E9' : null;
+    const col = s >= 75 ? '#10B981' : s >= 55 ? '#D97706' : s >= 35 ? '#1C3A6B' : null;
     if (!col) continue;
-    const op = s >= 75 ? 0.88 : s >= 55 ? 0.72 : 0.48;
+    const op = s >= 75 ? 0.85 : s >= 55 ? 0.70 : 0.42;
     const x = padL + stripW * m / 1440, w = stripW * 4 / 1440 + 0.5;
     g += `<rect x="${x}" y="${stripY}" width="${w}" height="${stripH}" fill="${col}" opacity="${op}" clip-path="url(#stripClip)"/>`;
   }
@@ -401,7 +401,7 @@ function renderInstrument() {
     };
     const allEx = [synPre, ...ex, synPost];
 
-    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .5, hi = Math.max(...vs) + .5;
+    const vs = ex.map(e => e.height), lo = Math.min(...vs) - .4, hi = Math.max(...vs) + .4;
     const X = m => Xm(m);
     const Y = v => padT + tideH * (1 - (v - lo) / (hi - lo));
     const interp = ms => {
@@ -416,23 +416,33 @@ function renderInstrument() {
     let d = '';
     for (let m = 0; m <= 1440; m += 4) { const v = interp(+dayStart + m * MIN); d += (m === 0 ? 'M' : 'L') + X(m).toFixed(1) + ',' + Y(v).toFixed(1) + ' '; }
     const baseY = padT + tideH;
+    // Tide fill + curve clipped to chart area
     g += `<g clip-path="url(#tideClip)">`;
-    g += `<path d="${d}L${Wd - padR},${baseY} L${padL},${baseY}Z" fill="rgba(28,58,107,.12)"/>`;
+    g += `<path d="${d}L${Wd - padR},${baseY} L${padL},${baseY}Z" fill="rgba(28,58,107,.10)"/>`;
     g += `<path d="${d}" fill="none" stroke="#1C3A6B" stroke-width="2.5" stroke-linejoin="round"/>`;
-
-    // Labels — clipped to tide area, positioned above/below extrema dots
-    ex.forEach(e => {
-      const m = (+e.t - +dayStart) / MIN, cx = X(m), cy = Y(e.height);
-      const up = e.type === 'H';
-      const lblY = up ? Math.max(cy - 30, padT + 14) : Math.min(cy + 14, padT + tideH - 30);
-      const timeY = lblY + 13;
-      g += `<rect x="${cx - 30}" y="${lblY - 11}" width="60" height="27" rx="2" fill="rgba(244,237,224,.96)" stroke="rgba(18,16,10,.14)" stroke-width="1"/>`;
-      g += `<text x="${cx}" y="${lblY}" fill="${up ? '#1C3A6B' : '#3C3020'}" font-family="Playfair Display, Georgia, serif" font-size="10.5" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
-      g += `<text x="${cx}" y="${timeY}" fill="#8A7B64" font-family="Playfair Display, Georgia, serif" font-size="9.5" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
-      g += `<line x1="${cx}" y1="${up ? lblY + 20 : lblY - 2}" x2="${cx}" y2="${up ? cy - 4 : cy + 4}" stroke="#1C3A6B" stroke-width="1" stroke-dasharray="2 2" opacity=".4"/>`;
-      g += `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#F4EDE0" stroke="#1C3A6B" stroke-width="2.5"/>`;
-    });
     g += `</g>`;
+
+    // Labels rendered OUTSIDE clip so they never get cut off
+    let labelG = '';
+    ex.forEach(e => {
+      const m = (+e.t - +dayStart) / MIN;
+      const up = e.type === 'H';
+      const rawCx = X(m);
+      // clamp horizontal so box never exits the SVG
+      const cx = Math.max(padL + 34, Math.min(rawCx, Wd - padR - 34));
+      const cy = Y(e.height);
+      // vertical: for high tide go above; clamp so box stays fully inside SVG
+      const lblY = up
+        ? Math.max(cy - 34, 6)
+        : Math.min(cy + 34, padT + tideH - 2);
+      const timeY = lblY + 14;
+      labelG += `<circle cx="${rawCx}" cy="${cy}" r="4.5" fill="#F4EDE0" stroke="#1C3A6B" stroke-width="2"/>`;
+      labelG += `<line x1="${rawCx}" y1="${up ? cy - 5 : cy + 5}" x2="${cx}" y2="${up ? lblY + 16 : lblY - 14}" stroke="#1C3A6B" stroke-width="1" stroke-dasharray="2 3" opacity=".3"/>`;
+      labelG += `<rect x="${cx - 34}" y="${lblY - 13}" width="68" height="29" rx="2" fill="rgba(244,237,224,.97)" stroke="rgba(18,16,10,.11)" stroke-width="1"/>`;
+      labelG += `<text x="${cx}" y="${lblY}" fill="${up ? '#1C3A6B' : '#3C3020'}" font-family="Space Grotesk, system-ui, sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">${up ? '▲' : '▼'} ${e.height.toFixed(1)} ft</text>`;
+      labelG += `<text x="${cx}" y="${timeY}" fill="#8A7B64" font-family="Space Grotesk, system-ui, sans-serif" font-size="9.5" font-weight="500" text-anchor="middle">${fmt((+e.t - +dayStart)/MIN)}</text>`;
+    });
+    g += labelG;
 
     const xn = X(nowMin), vn = interp(+dayStart + nowMin * MIN);
     g += `<line x1="${xn}" y1="${padT}" x2="${xn}" y2="${stripY + stripH}" stroke="${isPreview ? '#1C3A6B' : '#D97706'}" stroke-width="1.8" stroke-dasharray="${isPreview ? '5 3' : '0'}" opacity=".9"/>`;
@@ -542,7 +552,10 @@ function renderAll() { renderRail(); renderHead(); renderInstrument(); renderRea
 
 // ── Tide SVG scrub interaction ─────────────────────────────────────────────
 let dragging = false;
+let hoverLocked = false; // true after click; hover doesn't override until mouseleave
 const svg = $('tideSvg');
+let _lastHoverT = 0;
+
 function scrub(e) {
   const rect = svg.getBoundingClientRect();
   const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
@@ -550,10 +563,36 @@ function scrub(e) {
   isPreview = Math.abs(nowMin - realNow) > 7;
   renderInstrument(); renderReadout();
 }
-svg.addEventListener('pointerdown', e => { dragging = true; svg.setPointerCapture(e.pointerId); scrub(e); });
-svg.addEventListener('pointermove', e => { if (dragging) scrub(e); });
-svg.addEventListener('pointerup', () => dragging = false);
-$('resetNow').onclick = () => { nowMin = realNow; isPreview = false; renderInstrument(); renderReadout(); };
+
+// Hover: track mouse without requiring click, throttled to ~30fps
+svg.addEventListener('pointermove', e => {
+  if (dragging) { scrub(e); return; }
+  if (hoverLocked) return;
+  const now = Date.now();
+  if (now - _lastHoverT < 34) return;
+  _lastHoverT = now;
+  scrub(e);
+});
+
+// Click/drag: lock the preview at that position
+svg.addEventListener('pointerdown', e => {
+  dragging = true; hoverLocked = true;
+  svg.setPointerCapture(e.pointerId);
+  scrub(e);
+});
+svg.addEventListener('pointerup', () => { dragging = false; });
+
+// Mouse leave: snap back to NOW unless user drag-locked a position
+svg.addEventListener('pointerleave', () => {
+  if (hoverLocked) return; // keep locked position on leave
+  nowMin = realNow; isPreview = false;
+  renderInstrument(); renderReadout();
+});
+
+$('resetNow').onclick = () => {
+  nowMin = realNow; isPreview = false; hoverLocked = false;
+  renderInstrument(); renderReadout();
+};
 
 // ── Add-spot modal ────────────────────────────────────────────────────────
 const modal = $('addSpotModal');
