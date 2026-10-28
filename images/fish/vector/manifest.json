@@ -2,71 +2,71 @@
   "kelp-bass": {
     "name": "Calico / Kelp Bass",
     "sci": "Paralabrax clathratus",
-    "file": "kelp-bass.png"
+    "file": "kelp-bass.svg"
   },
   "barred-sand-bass": {
     "name": "Barred Sand Bass",
     "sci": "Paralabrax nebulifer",
-    "file": "barred-sand-bass.png"
+    "file": "barred-sand-bass.svg"
   },
   "spotted-bay-bass": {
     "name": "Spotted Bay Bass",
     "sci": "Paralabrax maculatofasciatus",
-    "file": "spotted-bay-bass.png"
+    "file": "spotted-bay-bass.svg"
   },
   "largemouth-bass": {
     "name": "Largemouth Bass",
     "sci": "Micropterus salmoides",
-    "file": "largemouth-bass.png"
+    "file": "largemouth-bass.svg"
   },
   "spotfin-croaker": {
     "name": "Spotfin Croaker",
     "sci": "Roncador stearnsii",
-    "file": "spotfin-croaker.png"
+    "file": "spotfin-croaker.svg"
   },
   "california-corbina": {
     "name": "California Corbina",
     "sci": "Menticirrhus undulatus",
-    "file": "california-corbina.png"
+    "file": "california-corbina.svg"
   },
   "pacific-bonito": {
     "name": "Pacific Bonito",
     "sci": "Sarda lineolata",
-    "file": "pacific-bonito.png"
+    "file": "pacific-bonito.svg"
   },
   "pacific-mackerel": {
     "name": "Pacific Mackerel",
     "sci": "Scomber japonicus",
-    "file": "pacific-mackerel.png"
+    "file": "pacific-mackerel.svg"
   },
   "barred-surfperch": {
     "name": "Barred Surfperch",
     "sci": "Amphistichus argenteus",
-    "file": "barred-surfperch.png"
+    "file": "barred-surfperch.svg"
   },
   "opaleye": {
     "name": "Opaleye",
     "sci": "Girella nigricans",
-    "file": "opaleye.png"
+    "file": "opaleye.svg"
   },
   "california-sheephead": {
     "name": "California Sheephead",
     "sci": "Bodianus pulcher",
-    "file": "california-sheephead.png"
+    "file": "california-sheephead.svg"
   },
   "black-crappie": {
     "name": "Black Crappie",
     "sci": "Pomoxis nigromaculatus",
-    "file": "black-crappie.png"
+    "file": "black-crappie.svg"
   },
   "channel-catfish": {
     "name": "Channel Catfish",
     "sci": "Ictalurus punctatus",
-    "file": "channel-catfish.png"
+    "file": "channel-catfish.svg"
   },
   "california-halibut": {
     "name": "California Halibut",
     "sci": "Paralichthys californicus",
-    "file": "california-halibut.png"
+    "file": "california-halibut.svg"
   }
 }
