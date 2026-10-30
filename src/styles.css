@@ -592,7 +592,6 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1.5px solid var(--rule-mid);
   background: var(--paper);
   position: relative;
   overflow: hidden;
