@@ -616,7 +616,7 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   max-width: 92%;
   filter: drop-shadow(0 2px 6px rgba(18,16,10,.12));
   position: relative;
-  mix-blend-mode: multiply;
+  mix-blend-mode: darken;
 }
 .plate .ph {
   font-size: 10px;
