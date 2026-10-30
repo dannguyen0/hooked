@@ -306,8 +306,8 @@ function renderHead() {
 function renderInstrument() {
   const sp = active, svg = $('tideSvg');
   const Wd = 960, padL = 18, padR = 18;
-  const padT = 44;
-  const tideH = 240;
+  const padT = 36;
+  const tideH = 140;
   const stripY = padT + tideH + 14;
   const stripH = 22;
   const footY  = stripY + stripH + 18;

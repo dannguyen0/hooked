@@ -506,6 +506,7 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   line-height: .88;
   letter-spacing: -.03em;
   font-variant-numeric: tabular-nums;
+  transition: color .12s;
 }
 .score small { font-size: 20px; color: var(--mute); font-weight: 400; }
 .verdict .lab { font-family: var(--serif); font-size: 17px; font-weight: 700; }
