@@ -581,7 +581,6 @@ svg.tide { display: block; width: 100%; touch-action: none; }
   background: var(--surface);
   display: flex;
   flex-direction: column;
-  border: 1.5px solid var(--rule-mid);
   border-radius: var(--r-sm);
   overflow: hidden;
   transition: box-shadow .2s, transform .2s;
